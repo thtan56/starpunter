@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Demo Vue.js+PHP+MySQL</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">      
+
+    <script src="lib/vue.min.js"></script>
+    <script src="lib/vue-resource.min.js"></script>
+
+</head>
+<body>
+<table  class="display" id="property" style="width:100%">
+    <thead>
+      <tr><th>ID</th><th>NAME</th><th>SURNAME</th><th>Town</th><th>EXTRA</th></tr>
+    </thead>
+    <tfoot>
+      <tr><th>ID</th><th>NAME</th><th>SURNAME</th><th>Town</th><th>EXTRA</th></tr>
+    </tfoot>
+    <tbody>
+      <tr><td>1</td><td>James Tan</td><td>Tan</td><td>Klang</td><td>Married</td></tr>
+      <tr><td>2</td><td>Peter Lim</td><td>Lim</td><td>PJ</td><td>Single</td></tr>    
+      <tr><td>3</td><td>Mary Chiam</td><td>Chiam</td><td>KL</td><td>Married</td></tr>
+      <tr><td>4</td><td>Walter Lim</td><td>Lim</td><td>Penang</td><td>Single</td></tr>
+      <tr><td>5</td><td>Peter Goh</td><td>Goh</td><td>Klang</td><td>Married</td></tr>
+      <tr><td>6</td><td>Wendy Tan</td><td>Tan</td><td>KL</td><td>Single</td></tr>        
+    </tbody>
+</table>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+</body>
+<script>
+$(document).ready(function() {
+    var table1 = $('#property').DataTable( {
+        "sScrollX": '100%',
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );    // .on
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );    // column
+            } );        // this.apio
+            }           // initComplete
+    } );                // DataTable
+  });                   // document ready
+</script>
+</html>

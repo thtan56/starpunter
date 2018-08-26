@@ -1,0 +1,112 @@
+<html>
+<head>
+<script>
+window.onload = function() {
+
+	var dataPoints1 = [];
+	var dataPoints2 = [];
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light2",
+		title: { text: "Daily Sales Data" },
+		axisX: { title: "Date", labelAngle: 50 },
+		axisY: { title: "Units", titleFontSize: 24 },
+		data: [
+			{ type: "line",showInLegend: true,name: "SUNCON", 
+			indexLabel: "{y}", indexLabelOrientation: "vertical", 
+			yValueFormatString: "#0.##",   //	legendText:"PPB",
+				dataPoints: dataPoints1 },
+			{ type: "line",showInLegend: true,name: "PBB", 
+			indexLabel: "{y}", indexLabelOrientation: "vertical", 
+			yValueFormatString: "#0.##",   //	legendText:"PPB",
+				dataPoints: dataPoints2 },				
+		]
+	});
+
+	function addData(data) {
+		console.log(data);
+		for (var i = 0; i < data.length; i++) {
+			if (data[i].ticker=='SUNCON') {
+				dataPoints1.push({
+					x: new Date(data[i].date),
+					y: data[i].price
+				});
+			} else if (data[i].ticker=='PPB') {
+				dataPoints2.push({
+					x: new Date(data[i].date),
+					y: data[i].price
+				});				
+			}
+		};
+		console.log(dataPoints1);
+		console.log(dataPoints2);
+		chart.render();
+	}
+	$.getJSON("json_data_favorite.php?favorite=1", addData);
+
+}
+</script>
+</head>
+<body>
+  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
+<html>
+<head>
+<script>
+window.onload = function() {
+
+	var dataPoints1 = [];
+	var dataPoints2 = [];
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light2",
+		title: { text: "Daily Sales Data" },
+		axisX: { title: "Date", labelAngle: 50 },
+		axisY: { title: "Units", titleFontSize: 24 },
+		data: [
+			{ type: "line",showInLegend: true,name: "SUNCON", 
+			indexLabel: "{y}", indexLabelOrientation: "vertical", 
+			yValueFormatString: "#0.##",   //	legendText:"PPB",
+				dataPoints: dataPoints1 },
+			{ type: "line",showInLegend: true,name: "PBB", 
+			indexLabel: "{y}", indexLabelOrientation: "vertical", 
+			yValueFormatString: "#0.##",   //	legendText:"PPB",
+				dataPoints: dataPoints2 },				
+		]
+	});
+
+	function addData(data) {
+		console.log(data);
+		for (var i = 0; i < data.length; i++) {
+			if (data[i].ticker=='SUNCON') {
+				dataPoints1.push({
+					x: new Date(data[i].date),
+					y: data[i].price
+				});
+			} else if (data[i].ticker=='PPB') {
+				dataPoints2.push({
+					x: new Date(data[i].date),
+					y: data[i].price
+				});				
+			}
+		};
+		console.log(dataPoints1);
+		console.log(dataPoints2);
+		chart.render();
+	}
+	$.getJSON("json_data_favorite.php?favorite=1", addData);
+
+}
+</script>
+</head>
+<body>
+  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

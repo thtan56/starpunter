@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js-Index.html</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="node_modules/vuetify/dist/vuetify.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+
+<div id="app">
+  <v-app>     
+    <navbars role="customer"></navbars>
+    <v-content>
+      <v-container fluid>
+<!--        <a href='rssFeeds.html'>'feeds'</a>
+        <feed-item></feed-item>
+-->        
+        <router-view></router-view> 
+      </v-container>
+    </v-content>
+  </v-app>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script src="node_modules/vue-resource/dist/vue-resource.min.js"></script>
+<script src="node_modules/axios/dist/axios.min.js"></script>
+<script src="node_modules/lodash/lodash.js"></script>
+
+<script src="node_modules/vuetify/dist/vuetify.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="node_modules/vuex/dist/vuex.js"></script>
+
+<script src="components/compbars.js"></script>
+<script src="components/complogin.js"></script>
+<script src="components/compregister.js"></script>
+<script src="components/compAFL.js"></script>
+<script src="components/compBasketball.js"></script>
+<script src="components/compNRL.js"></script>
+
+<script src="lib/accounting.js"></script>
+<script src="node_modules/lodash/lodash.js"></script>
+
+<script src="components/compproduct.js"></script>
+<script src="components/compfeeds.js"></script>
+<script src="components/mystore.js"></script>
+<script src="components/customerinfo.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

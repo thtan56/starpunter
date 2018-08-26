@@ -1,0 +1,13 @@
+.icon-bar {
+	width: 22px; 
+	height: 2px;
+	background-color: white;
+	display: block;
+	transition: all 0.2s;
+	margin-top: 4px
+}
+ 
+.navbar-toggler {
+  border: none;
+  background: transparent !important;
+}

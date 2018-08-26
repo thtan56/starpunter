@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web scraping</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css" 
+  media="screen" title="no title" charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+<div id="app">
+  <topbar></topbar>
+
+	<div class="row">
+			<div class="col-md-6 my-2">
+    		<div class="panel panel-info">
+      		<div class="panel-heading">Web scraping</div>
+      		<div class="panel-body">
+            quarter update:<input type="checkbox" v-model="toggle_update" true-value="yes" false-value="no"/> (by sectors)
+            <table><tr><td>	
+      		  <v-select :on-change="changeFavorite" v-model="vs1selected" :options="vs1options" placeholder="Select a favorite"></v-select>	
+            </td><td>
+            <v-select :on-change="changeSector" v-model="vs2selected" :options="vs2options" placeholder="Select a sector"></v-select> 
+            </td><td>
+            <v-select :on-change="changeTicker" v-model="vs3selected" :options="vs3options" placeholder="Select a ticker"></v-select>
+            </td></tr></table>
+            <echart :options="e5combo"></echart>             
+				  </div>
+			  </div>
+		  </div>
+<!-- ************************************** -->   
+      <div class="col-md-6 my-2">
+        <div class="panel panel-primary">
+          <div class="panel-heading">e6chart:eps</div>
+          <div class="panel-body">
+           <echart :options="e6chart" :auto-resize=true style="height: 400px; width: 100%;"></echart>
+          </div>
+        </div>
+      </div>    
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Sharpes Table-3</div>
+        <div class="panel-body" style="font-size: small">
+          <div class="table-responsive">
+            <vuetable ref="vuetable3" :api-mode="false" :fields="fields3" 
+                  :data-total="dataCount3" :data-manager="  dataManager3"
+                  pagination-path="pagination" :per-page="10" :css="css.table"
+                  @vuetable:pagination-data="onPaginationData3">
+            </vuetable>
+            <vuetable-pagination-info ref="paginationInfo3"></vuetable-pagination-info>
+            <vuetable-pagination ref="pagination3" class="pull-right" @vuetable-pagination:change-page="onChangePage3"></vuetable-pagination> 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 my-2">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Financial Table-2</div>
+        <div class="panel-body" style="font-size: small">
+          <div class="table-responsive">    
+            
+            <div class="filter-bar ui basic segment grid">
+              <div class="ui form">
+                <div class="inline field">
+                  <label>Search for:</label>
+                  <input type="text" v-model="filterText" class="three wide column" @keyup.enter="doFilter" placeholder="ticker, nickname, or email">
+                  <button class="ui primary button" @click="doFilter">Go</button>
+                  <button class="ui button" @click="resetFilter">Reset</button>
+                </div>
+              </div>
+            </div>
+
+            <vuetable ref="vuetable2" :api-mode="false" :fields="fields2" :append-params="moreParams" 
+                  :data-total="dataCount2" 
+                  :data-manager="  dataManager2"
+                  pagination-path="pagination" :per-page="10" :css="css.table"
+                  @vuetable:pagination-data="onPaginationData2"
+                  @vuetable:loading="onLoading">
+            </vuetable>
+            <vuetable-pagination-info ref="paginationInfo2"></vuetable-pagination-info>
+            <vuetable-pagination ref="pagination2" class="pull-right"
+                    @vuetable-pagination:change-page="onChangePage2"></vuetable-pagination> 
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <div class="panel panel-primary">
+        <div class="panel-heading">API Table</div>
+        <div class="panel-body" style="font-size: small">
+          <div class="table-responsive">   
+      
+            <div class="vuetable-pagination ui basic segment grid">
+              <vuetable-pagination-info ref="paginationInfoTop"></vuetable-pagination-info>
+              <vuetable-pagination ref="paginationTop"@vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+            </div>
+            <vuetable ref="vuetable" api-url="https://vuetable.ratiw.net/api/users" :fields="fields"
+              pagination-path="" :per-page="10"
+              detail-row-component="my-detail-row"              
+              @vuetable:cell-clicked="onCellClicked"            
+              @vuetable:pagination-data="onPaginationData">
+            </vuetable>  
+            <div class="vuetable-pagination ui basic segment grid">
+              <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
+              <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>       <!-- app -->
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js" charset="utf-8"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://unpkg.com/vuetable-2@1.7.5"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js"></script>
+
+<script src="lib/vue-echarts.js"></script>
+<script src="lib/vue-select.js"></script>
+
+<script src="lib/accounting.js"></script>
+<script src="lib/moment.min.js"></script>
+<script src="js/topbar_tabs.js"></script>
+
+<script src="js/update_fin_report.js"></script>
+
+</html>

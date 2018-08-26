@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web scraping</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css" 
+  media="screen" title="no title" charset="utf-8">    
+</head>
+<body>
+  <div id="app" class="ui container">
+    <h2>&lt;Vuetable-2&gt; Data mode</h2>
+    <vuetable ref="vuetable" :api-mode="false" :fields="fields" :data-total="dataCount" :data-manager="dataManager"
+      pagination-path="pagination" :per-page="3" :css="css.table"
+      @vuetable:pagination-data="onPaginationData">
+      <template slot="actions" slot-scope="props">
+      <div class="table-button-container">
+          <button class="btn btn-warning" @click="editRow(props.rowData)">
+            <span class="glyphicon glyphicon-pencil"></span> Edit</button>&nbsp;&nbsp;
+          <button class="btn btn-danger" @click="deleteRow(props.rowData)">
+            <span class="glyphicon glyphicon-trash"></span> Delete</button>&nbsp;&nbsp;
+      </div>
+      </template>
+    </vuetable>
+    <vuetable-pagination ref="pagination" class="pull-right" @vuetable-pagination:change-page="onChangePage"
+    ></vuetable-pagination>
+
+    <vuetable ref="vuetable2" :api-mode="false" :fields="fields2" :data-total="dataCount2" :data-manager="dataManager2"
+      pagination-path="pagination" :per-page="3" :css="css.table"
+      @vuetable:pagination-data="onPaginationData2">
+    </vuetable>
+    <vuetable-pagination ref="pagination2" class="pull-right" @vuetable-pagination:change-page="onChangePage2"
+    ></vuetable-pagination>
+
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js" charset="utf-8"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://unpkg.com/vuetable-2@1.7.5"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js"></script>
+
+<script src="lib/accounting.js"></script>
+<script src="lib/moment.min.js"></script>
+<script src="js/topbar_tabs.js"></script>    <!-- main vue js components here -->
+<script src="js/vt2_test.js"></script>
+</html>

@@ -1,0 +1,2 @@
+
+{"message":"1) json_post_mybetr.php","context":{"op":"update mybet set  bet_score1 = 162.50 ,bet_amount = 156.90 ,bet_type = 'over' ,bet_odd_type = 'lose' where id = 25"},"level":200,"level_name":"INFO","channel":"channel_name","datetime":{"date":"2018-08-26 16:19:54.658626","timezone_type":3,"timezone":"Europe/Berlin"},"extra":[]}

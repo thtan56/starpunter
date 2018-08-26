@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8"/>
+<head>
+  <title>Demo Vue.js+PHP+MySQL</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="node_modules/vuetify/dist/vuetify.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body >
+<div id="app" class="container">
+  <v-app id="register" class="primary">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md6 lg6>
+            <v-card class="elevation-1 pa-3">
+              <v-card-text>
+                <div class="layout column align-center">
+                  <img src="images/tipstars.jpg" width="250" height="100">
+                  <h2 class="flex my-4 primary--text">Toby Sports</h2>
+                </div>
+                <h3>Registration Form</h3>       
+                         
+                <v-form>
+                  <v-container grid-list-md text-xs-center>
+                    <v-layout row wrap>
+                      <v-flex xs12 sm6 d-flex><v-text-field append-icon="person" label="Name" type="text" v-model="user.name"></v-text-field></v-flex>
+                      <v-flex xs12 sm6 d-flex><v-text-field append-icon="lock" label="Password" id="password" type="password" v-model="user.password"></v-text-field></v-flex>
+                      <v-flex xs6><v-text-field append-icon="email" label="Email" type="text" v-model="user.email"></v-text-field></v-flex>
+                      <v-flex xs6>
+                        <v-combobox v-model="user.role" :items="roles" label="Select your role:"></v-combobox>
+                      </v-flex>
+                    </v-layout>
+
+                    <v-layout row wrap>
+                      <v-flex xs6><v-text-field append-icon="person" label="First name" type="text" v-model="user.firstname"></v-text-field></v-flex>
+                      <v-flex xs6><v-text-field append-icon="person" label="Last name" type="text" v-model="user.lastname"></v-text-field></v-flex>
+                    </v-layout>
+                    <v-layout row wrap>
+                      <v-flex xs6><v-text-field append-icon="home" name="address1" label="Address 1" type="text" v-model="user.address1"></v-text-field></v-flex>
+                      <v-flex xs6><v-text-field append-icon="home" name="address2" label="Address 2" type="text" v-model="user.address2"></v-text-field></v-flex>
+                    </v-layout> 
+                    <v-layout row wrap>
+                      <v-flex xs4><v-text-field append-icon="home" label="Town" type="text" v-model="user.town"></v-text-field></v-flex>
+                      <v-flex xs4><v-text-field append-icon="home" label="Postcode" type="text" v-model="user.postcode"></v-text-field></v-flex>
+                      <v-flex xs4>
+                        <v-select append-icon="outlined_flag" label="Country" v-model="user.country" :items="countries"></v-select>
+                      </v-flex>
+                    </v-layout>                        
+                    <v-layout row wrap>
+                      <v-flex xs6><v-text-field append-icon="outlined_flag" name="bsb" label="Bank BSB" type="text" v-model="user.bankbsb"></v-text-field></v-flex>
+                      <v-flex xs6><v-text-field append-icon="home" name="bankaccount" label="Bank account" type="text" v-model="user.bankaccount"></v-text-field></v-flex>
+                    </v-layout>                    
+                  </v-container>   
+                </v-form>
+               
+              </v-card-text>
+              <v-card-actions>
+                <v-btn icon><v-icon color="blue">fa fa-facebook-square fa-lg</v-icon></v-btn>
+                <v-btn icon><v-icon color="red">fa fa-google fa-lg</v-icon></v-btn>
+                <v-btn icon><v-icon color="light-blue">fa fa-twitter fa-lg</v-icon></v-btn>
+                <v-spacer></v-spacer>
+                <v-btn block color="primary" @click="save" :loading="loading">Register</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script src="node_modules/vuetify/dist/vuetify.js"></script>
+<script src="lib/accounting.js"></script>
+<script src="components/myregister.js"></script>
+</body>
+</html>

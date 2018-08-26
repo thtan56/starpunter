@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart2</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="people">
+  <button @click="applyFilter(letter)" class="btn btn-default" v-for="letter in letters" :class="{active: letter==selectedLetter}">
+    {{letter}}
+  </button>
+  <button  class="btn btn-default" @click="applyFilter('')">
+  clear
+  </button>
+  <v-client-table :data="tableData" :columns="columns" :options="options"></v-client-table>
+</div>
+</body>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://unpkg.com/vuetable-2@1.6.0"></script>  -->
+<script src="lib/vue-tables-2.min.js"></script>
+<script src="lib/vue-select.js"></script>
+
+<script src="js/filter.js"></script>
+
+</html>

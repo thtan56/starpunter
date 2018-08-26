@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Demo Vue.js+PHP+MySQL</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="lib/vue.min.js"></script>
+    <script src="lib/vue-resource.min.js"></script>
+</head>
+<body >
+<div id="app" class="container">
+    <h2>Demo Vue.js+PHP+MySQL</h2>
+    <br>
+    <form name="form" v-on:submit.prevent="save" novalidate>
+        <div>
+            <div class="form-group">
+                <input type="hidden" v-model="product.id">
+                <label class="control-label" for="name">Product Name:</label>
+                <input class="form-control" type="text" id="name" v-model='product.name' placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="price">Price:</label>
+                <input class="form-control" type="text" id="price" v-model='product.price'  placeholder="Price">
+            </div>
+            <div  class="form-group">
+                <span class="badge badge-danger">{{error}}</span>
+            </div>
+            <div  class="form-group">
+                <button class="btn btn-primary">Save</button>
+                Status: {{ result }}
+            </div>
+        </div>
+    </form>
+    <br>
+    <p>
+        <button v-on:click="getAllData" class="btn btn-danger">Fetch Data from Server</button>
+    </p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in products">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price | number:2 }}</td>
+                <td><a href="javascript:void(0)" v-on:click="editItem(item)">edit</a> |
+                    <a href="javascript:void(0)" v-on:click="deleteItem(item)">delete</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="components/productservices.js"></script>
+</body>
+</html>

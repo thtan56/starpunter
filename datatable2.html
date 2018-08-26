@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Data Table</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">      
+
+    <script src="lib/vue.min.js"></script>
+    <script src="lib/vue-resource.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" 
+            data-toggle="dropdown" aria-haspopup="true"aria-expanded="true">
+    Dropdown
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li><a href="#">Action</a></li>
+      <li><a href="#">Another action</a></li>
+      <li><a href="#">Something else here</a></li>
+      <li role="separator" class="divider"></li>
+      <li><a href="#">Separated link</a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <table id="example" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Office</th><th>Extn</th><th>Start date</th><th>Salary</th></tr>
+      </thead>
+    </table>
+  </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<script>
+$(document).ready(function() {
+    console.log("JQuery started");
+    $('.dropdown-toggle').dropdown();
+
+    $("#sel_sector").change(function() {
+      console.log("select change");
+      $.ajax({
+        type: "POST",
+        data: {sector: sector},
+        url: '/database/get_sector_list.php',
+        dataType: 'json',
+        success: function(json) {
+          var $el=$("#name");
+          $el.empty();   // remove old options
+          $el.append($("<option><option>")
+              .attr("value",'').text("Please select"));
+          $.each(json,function(value, key){
+            $el.append($("<option></option>")
+                  .attr("value",value).text(key));
+          });
+        }     // success
+      });     // ajax
+    });        // change
+    var table1 = $('#example').dataTable( { 
+        ajax: "/database/arrays.txt",
+        columns: [
+            { data: 'name' },
+            { data: 'position' },
+            { data: 'office' },
+            { data: 'extn' },
+            { data: 'start_date' },
+            { data: 'salary' }            
+        ],
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );    // .on
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );    // column
+            } );        // this.apio
+        }           // initComplete
+/*
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );   // .on
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );   // column
+            } );      // this.api
+        } //initComplete function 
+*/
+      } );              // DataTable
+  });                   // document ready
+
+</script>
+</html>
