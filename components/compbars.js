@@ -107,6 +107,9 @@ const navBars = Vue.component('public', {
         { icon: 'lock_open', title: 'Sign in', path: '/login' }
       ],
       items: [
+        { action: 'help_outline', title: 'Documentations', items: [
+              { title: 'User Guide', path: '/userguide' },
+              { title: 'Exchange Rate Conversion', path: '/rateguide' } ]},
         { action: 'local_activity', title: 'Basketballs', items: [
               { title: 'Asia Games 2018 Basketball', path: '/AG2018Bas' },
               { title: 'NBA 2018 Basketball', path: '/basketballNBA' },
@@ -118,13 +121,15 @@ const navBars = Vue.component('public', {
               { title: 'New Products', path: '/product' } ] }
       ],
       games: [
+        { action: 'local_activity', title: 'Games for the week ' + moment().format('W'), path: '/gameH2H' },
         { action: 'local_activity', title: 'Asia Games 2018 Basketball', path: '/AG2018Bas' },
         { action: 'local_offer', title: 'NBA 2018 Basketball', path: '/basketballNBA' },
         { action: 'directions_run', title: 'NBL 2018 Basketball', path: '/basketballNBL' }
       ],
       newsfeeds: [
         { action: 'local_activity', title: 'Basketball (NBA)', path: '/newsNBA' },
-        { action: 'restaurant', title: 'Football (AFL)', path: '/newsAFL' }
+        { action: 'restaurant', title: 'Football (AFL)', path: '/newsAFL' },
+        { action: 'help_outline', title: 'Faqs Database', path: '/faqs' },
       ],
     }
   },
@@ -212,10 +217,15 @@ const navBars2 = Vue.component('customer', {
               { title: 'New Products', path: '/product' } ] }
       ],
       games: [
-        { action: 'local_activity', title: 'Games for the week ' + moment().format('W'), path: '/AG2018Bas' },
-        { action: 'local_offer', title: 'NBA 2018 Basketball', path: '/basketballNBA' },
+        { action: 'rowing', title: 'Bets for the week (quorum based) ' + moment().format('W'), path: '/gameH2H' },
+        { action: 'local_activity', title: 'Results for the week ' + moment().format('W'), path: '/gameResults'}, 
+        { action: 'local_activity', title: 'Players for the week ' + moment().format('W'), path: '/gamePools'},           
+        { action: 'euro_symbol', title: 'Bets for the week (odd based) ' + moment().format('W'), path: '/gameOdds'},
+
+        { action: 'local_offer',    title: 'NBA 2018 Basketball', path: '/basketballNBA' },
         { action: 'directions_run', title: 'NBL 2018 Basketball', path: '/basketballNBL' },
-        { action: 'school', title: 'My Profile', path: '/user' }
+        { action: 'school',         title: 'My Records', path: '/user' },
+        { action: 'help_outline',   title: 'Faqs Database', path: '/faqs' },
       ],
     }
   },
@@ -284,7 +294,6 @@ const navBars3 = Vue.component('manager', {
                 </v-list-tile>
               </v-list-group>
             </v-list>
-           
           </v-card>
         </v-flex>
       </v-layout>
@@ -325,6 +334,7 @@ const navBars3 = Vue.component('manager', {
               { title: 'Asia Games 2018 Basketball', path: '/AG2018Bas' },
               { title: 'NBA 2018 Basketball', path: '/basketballNBA' },
               { title: 'NBL 2018 Basketball', path: '/basketballNBL' } ]},
+        { action: 'school', title: 'Top N Games', items: [ { title: 'Top N Games' , path: '/gameAFL' } ]},      
         { action: 'school', title: 'Footballs', items: [ { title: 'AFL Tournament' , path: '/gameAFL' } ]},
         { action: 'directions_run', title: 'Rifles', items: [ { title: 'List Item' }]},
         { action: 'healing', title: 'BaseBalls', items: [ { title: 'List Item' } ]},
@@ -333,12 +343,19 @@ const navBars3 = Vue.component('manager', {
               { title: 'New Products', path: '/product' } ] }
       ],
       games: [
-        { action: 'local_activity', title: 'Games for the week ' + moment().format('W'), path: '/AG2018Bas' },
-        { action: 'local_offer', title: 'Contestants for the week' + moment().format('W'), path: '/basketballNBL' },
-        { action: 'directions_run', title: 'Players List', path: '/users' }
+        { action: 'local_activity', title: 'Bets for the week ' + moment().format('W'), path: '/gameH2H' },
+        { action: 'local_activity', title: 'Players for the week ' + moment().format('W'), path: '/gamePools'},
+        { action: 'local_activity', title: 'Results for the week ' + moment().format('W'), path: '/gameResults'}, 
+        { action: 'euro_symbol', title: 'Bets for the week (odd based) ' + moment().format('W'), path: '/gameOdds'},
+        { action: 'local_offer', title: 'My Games in the week' + moment().format('W'), path: '/basketballNBL' },
+        { action: 'directions_run', title: 'Players List', path: '/users' },
+        { action: 'help_outline', title: 'Faqs Database', path: '/faqs' },
+        { action: 'rowing',         title: 'Head to Head Games', path: '/gameH2H'},
       ],
+
       maintenances: [
-        { action: 'local_activity', title: 'users', path: 'apiUser.html' },
+        { action: 'local_activity', title: 'users/teams/games/bets', path: 'apiUser.html' },
+
         { action: 'local_offer', title: 'products', path: 'apiProduct.html' },
         { action: 'local_offer', title: 'games', path: 'apiTournament.html' },
       ],

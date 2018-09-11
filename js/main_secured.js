@@ -17,15 +17,13 @@ const Signup = { template: '<div>Signup</div>' }
 
 const store = new Vuex.Store({
   state: {
-    myId: 't.h.tan@dunelm.org.uk',
+    loginUser: { username: 'thtan99', role: 'guest', email: 'guest@gmail.com' },
     baseUrl: 'http://vueapp.test/database/',
     resultUrl: 'https://www.footywire.com/afl/footy/ft_match_list',
-    xchgRate: 100
+    xchgRate: 2.5 
   },
   mutations: {
-    modifyMyId (state, newId) {
-      state.myId = newId;
-    }
+    modifyMyRecord (state, newUser) { state.loginUser = newUser; }
   }
 });
 
@@ -37,7 +35,7 @@ const routes = [
   { path: '/gameAFL', component: AFL },
   { path: '/basketball/NBL', component: nbaBet },
   { path: '/basketball/NBA', component: nbaBet },
-  { path: '/AG2018Bas', component: AG2018B1 },  
+  { path: '/AG2018Bas', component: asiaBet },  
   { path: '/gameNRL', component: NRL },    
   { path: '/product', component: Product },
   { path: '/logout', component: Login }
@@ -53,8 +51,7 @@ new Vue({
   store,
   data () {
     return {
+      user: {}
     }
   },
-  methods: {
-  }       // methods
 });

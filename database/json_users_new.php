@@ -1,49 +1,22 @@
 <?php
-
-require __DIR__ . '/../vendor/autoload.php';   // goto parent first
-use Monolog\Logger;						// load Monolog library
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\LogmaticHandler;
-use Monolog\Formatter\JsonFormatter; 
-
-$logger = new Monolog\Logger('channel_name');		// create a log channel
-$formatter = new JsonFormatter();		// create a Json formatter
-$stream = new StreamHandler(__DIR__.'/application-json.log', Logger::DEBUG);	// create a handler
-$stream->setFormatter($formatter);
-$logger->pushHandler($stream);		// bind
-//---- start logging from here ----------------------------- 
+require_once('../php/configDb.php');
+//require_once('../php/configLog.php');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
-$conn = mysqli_connect("localhost", "root", "cancer56", "test");
+//$logger = getLogger();
+//$logger->info('_POST:', $_POST);
 
-$logger->info('_POST:', $_POST);
+$data = file_get_contents('php://input');
+$json = json_decode($data);
 
-/* check connection */
-if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
-}
-
-$query  = 'INSERT INTO USERS (username, email) VALUES (?, ?)';
-
-$stmt = mysqli_prepare($conn, $query);
-
-mysqli_stmt_bind_param($stmt, "ss", $_POST['username'], $_POST['email']);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_close($stmt);
-
+$pdo = getPdoConnection();
+$stmt = $pdo->prepare('INSERT INTO USERS (username, email) VALUES (?, ?)');
+$stmt->execute([ $_POST['username'], $_POST['email']	]);
+$stmt = null;
 $responses=array("message"=>"success");
-//$results=json_encode($data_points, JSON_PRETTY_PRINT); JSON_NUMERIC_CHECK
-//echo($results);
-//die();
-
-mysqli_close($conn);
 echo json_encode($responses, JSON_PRETTY_PRINT);
-
-
-
 //	var values = [ req.body['username'], req.body['email'], req.body['password'], req.body['role'], req.body['bankbsb'], req.body['bankaccount'],
 //	req.body['firstname'], req.body['lastname'], req.body['address1'], req.body['address2'], req.body['town'], req.body['postcode'], req.body['country'] ];
 //	res.locals.connection.query(qry1+qry2, values, 

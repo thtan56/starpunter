@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>component test</title>	
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.1.14/vuetify.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+	<div id='app'>
+		<v-app>
+			<button @click="dialog=true">Open Dialog</button>
+			<dialogbet :dialog.sync="dialog" :mybet="mybet" />
+<!--			<dialogbet :mybet="mybet" :dialog=false></dialogbet>   -->
+		</v-app>
+	</div>
+
+<!--	<script src="https://unpkg.com/vue"></script>  -->
+	<script src="lib/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.1.14/vuetify.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+	<script src="components/dialogbet.js"></script>
+
+<script>
+	var app = new Vue({
+		el: '#app',
+  	data () {
+    	return {
+				dialog: false,
+      	mybet: { game_name: '', organiser: '', venue: '', game_date: '', game_winner: '', 
+              bet_odd: 0, bet_type: '', pool_id: 0, username: '', bet_winner: '', bet_amount: 0, id: 0 },  
+      } 
+  	},
+  	created() { this.mybet.username="thtan56"; },
+	});
+	</script>
+</body>
+</html>

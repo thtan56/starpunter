@@ -5,10 +5,9 @@
   <title>Demo Vue.js+PHP+MySQL</title>
   <link rel="stylesheet" href="css/bootstrap.css">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-  <link href="node_modules/vuetify/dist/vuetify.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-</head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.1.14/vuetify.css" rel="stylesheet">
 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body >
 <div id="app" class="container">
@@ -29,15 +28,17 @@
       <v-btn color="info" href="/apiLogin.html">Log out<v-icon>logout</v-icon></v-btn>
       <v-btn icon><v-icon>search</v-icon></v-btn>
       <v-btn icon><v-icon>more_vert</v-icon></v-btn>
-      <v-tabs slot="extension" color="cyan" align-with-title>
+
+      <v-tabs slot="extension" v-model="tabs" color="cyan" align-with-title>
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab v-for="item in items" :key="item">
           {{ item }}
         </v-tab>
       </v-tabs>
     </v-toolbar>
-    <v-tabs-items>
-    <v-tab-item>
+
+    <v-tabs-items v-model="tabs">
+    <v-tab-item id='user_tab'>
       <v-layout column>
         <v-toolbar color="pink" dark><v-toolbar-title>User Management</v-toolbar-title></v-toolbar>
         <v-container fluid grid-list-md>
@@ -83,18 +84,28 @@
         </v-container>
       </v-layout>
     </v-tab-item>
+    <!-- **************************************************************** -->
+<v-tab-item id='team_tab'><v-icon>build</v-icon><v-card><v-card-text><teamcomponent></teamcomponent></v-card-text></v-card></v-tab-item>
+<v-tab-item id='game_tab'><v-icon>motor</v-icon><v-card><v-card-text><gamecomponent></gamecomponent></v-card-text></v-card></v-tab-item> <v-tab-item id='bet_tab'><v-icon>motor</v-icon><v-card><v-card-text><betcomponent></betcomponent></v-card-text></v-card></v-tab-item>
+    <!-- ***************************************************  -->
   </v-tabs-items>
 </v-app>
 </div>
-<!--
-<v-tab-item v-for="item in items" :key="item">
-      <v-card flat>
-        <v-card-text>
--->
+
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
-<script src="node_modules/vuetify/dist/vuetify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.1.14/vuetify.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
 <script src="lib/accounting.js"></script>
+<script src="lib/moment.js"></script>
+
+<script src="components/comp2Team.js"></script>
+<script src="components/comp2Game.js"></script>
+<script src="components/comp2Bet.js"></script>
 <script src="components/serviceuser.js"></script>
+
 </body>
 </html>

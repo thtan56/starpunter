@@ -65,5 +65,7 @@ const demo = new Vue({
             });
         }
     },
-    beforeMount(){ this.getAllData(); }
+    beforeMount(){
+        console.log('1) beforeMount: getAllData');
+        this.getAllData(); }
 });

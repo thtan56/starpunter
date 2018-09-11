@@ -6,6 +6,7 @@ Vue.use(Vuetify, {
     error: '#b71c1c'
   }
 });
+Vue.use(Vuex);
 
 const Attractions = { template: '<div>Attractions</div>' }
 const Breakfast = { template: '<div>Breakfast</div>' }
@@ -20,7 +21,7 @@ const store = new Vuex.Store({
     loginUser: { username: 'thtan99', role: 'guest', email: 'guest@gmail.com' },
     baseUrl: 'http://vueapp.test/database/',
     resultUrl: 'https://www.footywire.com/afl/footy/ft_match_list',
-    xchgRate: 100
+    xchgRate: 2.5 
   },
   mutations: {
     modifyMyRecord (state, newUser) {
@@ -35,6 +36,10 @@ const routes = [
   { path: '/meat', component: Meat },
   { path: '/sushi', component: Sushi },
   { path: '/gameAFL', component: AFL },
+  { path: '/gameH2H',  component: nGames},           // 2) nTop games
+  { path: '/gameResults',  component: GameResults},           // 2) nTop games
+  { path: '/gamePools',  component: GamePools},           // 2) nTop games
+  { path: '/gameOdds',  component: GameOdds},           // 2) nTop games
   { path: '/basketballNBL', component: nblBet },
   { path: '/basketballNBA', component: nbaBet },
   { path: '/AG2018Bas', component: asiaBet },  
@@ -46,11 +51,16 @@ const routes = [
   { path: '/newsAFL', component: AFLnews },
   { path: '/user/:userId', name: 'secured', component: loginCustomer },
   { path: '/user', component: loginCustomer },
+  { path: '/faqs', component: FAQs },
+//  { path: '/userguide', component: userGuide },
+//  { path: '/rateguide', component: rateGuide },
 ]
 
 const router = new VueRouter({
   routes // short for `routes: routes`
 })
+
+window.eventBus = new Vue();
 
 const myparent = new Vue({
   el: '#app',
@@ -67,7 +77,9 @@ const myparent = new Vue({
     }
   },
   created () {
-    console.log('1) main.js :created');   
+    console.log('1) main.js :created');
+
+//    eventBus.$on('reload', (data) => this.reload(data));  
   },
   methods: {
   }       // methods

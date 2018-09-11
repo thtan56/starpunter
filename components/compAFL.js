@@ -26,7 +26,7 @@ const AFL = Vue.component('AFLcomponent', {
                   <v-layout wrap>
                     <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.round" label="Round"></v-text-field></v-flex>
                     <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.date" label="Date"></v-text-field></v-flex>
-                    <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.home_v_away_teams" label="Home v away teams"></v-text-field></v-flex>
+                    <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.name" label="Name"></v-text-field></v-flex>
                     <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.venue" label="Venue"></v-text-field></v-flex>
                     <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.result" label="Result"></v-text-field></v-flex>
                   </v-layout>
@@ -54,7 +54,7 @@ const AFL = Vue.component('AFLcomponent', {
                 <td>{{ props.item.id }}</td>
                 <td class="text-xs-left">{{ props.item.round }}</td>
                 <td class="text-xs-left">{{ props.item.date }}</td>
-                <td class="text-xs-left">{{ props.item.home_v_away_teams }}</td>
+                <td class="text-xs-left">{{ props.item.name }}</td>
                 <td class="text-xs-left">{{ props.item.venue }}</td>
                 <td class="text-xs-left">{{ props.item.result }}</td>
                 <td class="justify-center layout px-0">
@@ -80,7 +80,7 @@ const AFL = Vue.component('AFLcomponent', {
               <td>{{ props.item.id }}</td>
               <td class="text-xs-left">{{ props.item.round }}</td>
               <td class="text-xs-left">{{ props.item.date }}</td>
-              <td class="text-xs-left">{{ props.item.home_v_away_teams }}</td>
+              <td class="text-xs-left">{{ props.item.name }}</td>
               <td class="text-xs-left">{{ props.item.venue }}</td>
               <td class="text-xs-left">{{ props.item.result }}</td>
             </template>
@@ -116,12 +116,12 @@ const AFL = Vue.component('AFLcomponent', {
         { text: 'Id', value: 'id' },        
         { text: 'Round', value: 'round' },
         { text: 'Date', value: 'date' },
-        { text: 'Home_v_Away Teams', value: 'home_v_away_teams' },        
+        { text: 'Home_v_Away Teams', value: 'name' },        
         { text: 'Venue', value: 'venue' },
         { text: 'Results', value: 'result' }
       ],
       editedIndex: -1,
-      editedItem: { round: '', date: '', home_v_away_teams: '', venue: '', result: '' },
+      editedItem: { round: '', date: '', name: '', venue: '', result: '' },
       pagination: {
         page: 1,
         rowsPerPage: 10,
@@ -153,7 +153,7 @@ const AFL = Vue.component('AFLcomponent', {
   },
   created () {
     console.log('1) compAFL.js:created');
-    let qry = 'database/json_afl2018.php';   
+    let qry = 'database/json_football.php';   
     axios.get(qry)
       .then(response => { 
         this.games = response.data;                       // 1) data table
@@ -179,7 +179,7 @@ const AFL = Vue.component('AFLcomponent', {
     },
     deleteItem (item) {
       const index = this.games.indexOf(item);
-      confirm('Are you sure you want to delete this item (' + this.games[index].home_v_away_teams + ') ?') && this.games.splice(index, 1);
+      confirm('Are you sure you want to delete this item (' + this.games[index].name + ') ?') && this.games.splice(index, 1);
     },
     save () {
       console.log('save');

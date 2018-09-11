@@ -1,7 +1,25 @@
 <?php
+include 'php/config.php';
 // Notes:
 //   on new selection, the new datatable gets append to the bottom ???????
 //
+
+
+/* Connect to a MySQL database using driver invocation */
+/*
+$dsn = 'mysql:dbname=testdb;host=127.0.0.1';
+$user = 'dbuser';
+$password = 'dbpass';
+
+try {
+    $dbh = new PDO($dsn, $user, $password);
+} catch (PDOException $e) {
+    echo 'Connection failed: ' . $e->getMessage();
+}
+
+*/
+
+
 $conn = mysqli_connect("localhost", "root", "cancer56", "test");
 $query = 'select sector, count(*) from stocks where sector <> "" group by sector';
 $tab_result = mysqli_query( $conn, $query);

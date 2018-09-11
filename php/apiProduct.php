@@ -1,30 +1,12 @@
 <?php
+//require_once('configLog.php');
 require_once('Product.php');
-//------------------------------------------------------
-//require __DIR__ . '/../vendor/autoload.php';   // goto parent first
-//use Monolog\Logger;                     // load Monolog library
-//use Monolog\Handler\StreamHandler;
-//use Monolog\Handler\LogmaticHandler;
-//use Monolog\Formatter\JsonFormatter; 
 
-// $logger = new Monolog\Logger('channel_name');       // create a log channel
-// $formatter = new JsonFormatter();       // create a Json formatter
-// $stream = new StreamHandler(__DIR__.'/application-json.log', Logger::DEBUG);    // create a handler
-//$stream->setFormatter($formatter);
-// $logger->pushHandler($stream);      // bind
-//---- start logging from here ----------------------------- 
-// $logger->info('1) api.php', array('username' => 'Seldaek'));
-//---- start logging from here ----------------------------- 
 $data = file_get_contents('php://input');
-//$logger->info('2) api.php', array('data' => $data) );
-
 $json = json_decode($data);
 
-//$logger->info('3) api.php', array('json' => $json) );
-
+//$logger = getLogger();
 $op = $json->{'op'};
-
-//$logger->info('4) api.php', array('op' => $op) );
 
 if(isset($op)){
 
@@ -34,10 +16,10 @@ if(isset($op)){
             $ret = $obj->getProducts();
             $count = count($ret,1);
             $msg = $obj->getMsg();
+
             if (!empty($msg)) { $resp = array('code' => -1, 'msg' => $msg);
             } else { $resp = array('code' => 1, 'msg' => '','data' => $ret);
             };
-            // $logger->info('12) getProducts>$resp:', $resp);
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST');
@@ -46,16 +28,15 @@ if(isset($op)){
             break;
         case "save":
             $id = $json->{'data'}->{'id'};
-            $name = $json->{'data'}->{'name'};
-            $price = $json->{'data'}->{'price'};
 
             $obj = new Product();
             $code = -1;
-            if(empty($id) || $id=="") { $code = $obj->insertProduct($name,$price);
-            }else{ $code = $obj->updateProduct($id,$name,$price);
+            if(empty($id) || $id=="") { 
+                $code = $obj->insertProduct($json);
+            } else { 
+                $code = $obj->updateProduct($json);
             };
             $resp = array('code' => $code, 'msg' => $obj->getMsg());
-
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST');
@@ -63,13 +44,10 @@ if(isset($op)){
             break;
 
         case "delete":
-
             $id = $json->{'id'};
-
             $obj = new Product();
             $code = $obj->deleteProduct($id);
             $resp = array('code' => $code, 'msg' => $obj->getMsg());
-
             header('Content-Type: application/json');
             header('Access-Control-Allow-Origin: *');
             header('Access-Control-Allow-Methods: GET, POST');

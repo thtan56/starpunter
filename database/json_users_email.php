@@ -1,16 +1,20 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST');              
+require_once('../php/configDb.php');
+//require_once('../php/configLog.php');
+//$logger = getLogger();
 
-$conn = mysqli_connect("localhost", "root", "cancer56", "test");
-$sql = "SELECT *  FROM user where user.email ='".$_GET['email']."'";
+$condition = (isset($_GET['email'])) ? " where email='".$_GET['email']."'" : "";
 
-$resultset = mysqli_query($conn, $sql) or die("database error:". mysqli_error($conn));
-$data = array();
-while( $rows = mysqli_fetch_assoc($resultset) ) {
-	$data[] = $rows;
-}
-mysqli_close($conn);
-echo json_encode($data);
+$sql = "SELECT  * FROM user ". $condition;
+//$logger->info('1) json_mybet.php', array('sql' => $sql));
+
+$pdo = getPdoConnection();
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = null;
+echo json_encode($arr, TRUE);   // array instead of object
 ?>

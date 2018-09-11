@@ -1,85 +1,22 @@
 Vue.filter('currency', function(val, dec) {
-    return accounting.formatMoney(val, '$', dec)
+    return accounting.formatMoney(val, '$ ', dec)
 });
 Vue.filter('number', function(val, dec) {
     return accounting.formatNumber(val, dec, ',', '.')
 });
-
-const cashFlow = Vue.component('cashComponent', {
-  template: `
-  <div id="cashTable">
-  <v-tabs v-model="tabs" color="cyan" dark slider-color="yellow">
-    <v-tab v-for="filter in filterList" :key="filter.activity">{{filter.activity}}</v-tab>
-      <v-tab-item v-for="filter in filterList" :key="filter.activity">
-
-          <v-data-table :headers="columns" :items="filteredRecords(filter.activity)">
-            <template slot="items" slot-scope="props">   
-              <td class="text-xs-left">{{ props.item.username }}</td>                             
-              <td class="text-xs-left">{{ props.item.date | moment }}</td>
-              <td class="text-xs-left">{{ props.item.value }}</td>
-              <td class="text-xs-left">{{ props.item.activity }}</td>
-              <td class="text-xs-left">{{ props.item.description }}</td>
-              <td>{{ props.item.reference_number }}</td>
-              <td>{{ props.item.id }}</td>
-            </template>      
-          </v-data-table>         
-      </v-tab-item>
-    </v-tab>
-  </v-tabs>
-  </div>
-  `,
-  data () {
-    return {
-      tabs: null,
-      filterList: [
-        { activity: 'deposit' },
-        { activity: 'withdrawal' }
-      ],
-      columns: [   
-        { text: 'Username', value: 'username' },  
-        { text: 'Date', value: 'date' },    
-        { text: 'Amount($)', value: 'value'},
-        { text: 'Activity', value: 'activity' },
-        { text: 'Description', value: 'description' },
-        { text: 'Reference', value: 'reference_number' },
-        { text: 'Id', value: 'id' }            
-      ],
-      myrecords: [],
-    }
-  },
-  created () {
-    let qry = 'database/json_cashflow.php?username=' + this.$store.state.loginUser.username;
-    axios.get(qry)
-      .then(response => { this.myrecords = response.data; })  
-      .catch(error => { console.log(error) });  
-  },
-  methods: {
-    filteredRecords(key) {
-      const res = this.myrecords
-      if (key) { return this.myrecords.filter(myrecord => myrecord.activity === key) }
-      return res
-    },
-  },
-  filters: {
-    moment: function (date) {
-      return moment(date).format('L');
-    }
-  }
-});
-
+//====================================================================
 const loginCustomer=Vue.component('custComponent', {
   template: `
   <v-content>
     <navbars></navbars>
-    <h2>My Profile</h2>    
-    <v-container fluid grid-list-lg>
+    <v-container fluid grid-list-md>
       <v-layout row wrap>
-        <v-flex xs12 sm12 md6 class="my-3">
-          <v-card color="grey lighten-4" flat height="200px">
+        <v-flex xs12 sm12 md12 class="my-3">
+          <v-card color="grey lighten-4" flat height="300px">
           
     <v-toolbar color="cyan" dark tabs>
       <v-toolbar-side-icon><img src="images/tristars2.png" width="70" height="40"></v-toolbar-side-icon>
-      <v-toolbar-title>AFL Tournaments</v-toolbar-title>
+      <v-toolbar-title>My Profile</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-tabs slot="extension" v-model="tabs" color="grey" align-with-title>
@@ -93,17 +30,17 @@ const loginCustomer=Vue.component('custComponent', {
     <v-tabs-items v-model="tabs">
       <v-tab-item>
         <v-card flat>
-          <v-card-text>
-            Personal content
-            <v-flex xs12 sm6 d-flex><v-text-field append-icon="person" label="Username" type="text" v-model="user.username"></v-text-field></v-flex>
-            <v-flex xs12 sm6 d-flex><v-text-field append-icon="lock" label="Password" type="password" v-model="user.password"></v-text-field></v-flex>
-            <v-flex xs6><v-text-field append-icon="email" label="Email" type="text" v-model="user.email"></v-text-field></v-flex>
-            <v-flex xs6>
+          <v-card-text>Personal<v-icon>fingerprint</v-icon>
+            <v-flex xs6 sm6 d-flex><v-text-field append-icon="person" label="Username" type="text" v-model="user.username"></v-text-field></v-flex>
+            <v-flex xs6 sm6 d-flex><v-text-field append-icon="lock" label="Password" type="password" v-model="user.password"></v-text-field></v-flex>
+            <v-flex xs6 d-flex><v-text-field append-icon="email" label="Email" type="text" v-model="user.email"></v-text-field></v-flex>
+            <v-flex xs6 d-flex>
               <v-combobox v-model="user.role" :items="roles" label="Select your role:"></v-combobox>
             </v-flex>
-          </v-card-text></v-card></v-tab-item>             
-      <v-tab-item>
-        <v-icon>motorcycle</v-icon>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>             
+      <v-tab-item>Address<v-icon>contact_mail</v-icon>
         <v-card flat>
           <v-card-text>
             Address content
@@ -115,9 +52,10 @@ const loginCustomer=Vue.component('custComponent', {
               <v-flex xs6><v-text-field append-icon="home" name="address1" label="Address 1" type="text" v-model="user.address1"></v-text-field></v-flex>
               <v-flex xs6><v-text-field append-icon="home" name="address2" label="Address 2" type="text" v-model="user.address2"></v-text-field></v-flex>
             </v-layout> 
-          </v-card-text></v-card></v-tab-item>
-      <v-tab-item>
-        <v-icon>pets</v-icon>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>Account<v-icon>business</v-icon>
         <v-card flat>
           <v-card-text>
             Banking Details
@@ -133,34 +71,23 @@ const loginCustomer=Vue.component('custComponent', {
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
-        <v-icon>build</v-icon>
-        <v-card>
-        <v-card-text>
-          <btComponent></btComponent>
-        </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-icon>account_balance</v-icon>
-        <v-card>
-        <v-card-text>
-          <cashComponent></cashComponent>
-        </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-icon>face</v-icon>
-        <v-card>
-        <v-card-text>other</v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+      <v-tab-item>Cash Flow<v-icon>account_balance</v-icon><v-card><v-card-text>
+        <cashComponent></cashComponent>           <!-- components/customerinfo.js -->
+      </v-card-text></v-card></v-tab-item>
 
-          </v-card>
-        </v-flex>
-        <v-flex xs12 sm12 md6 class="my-3">
-          <v-card color="grey lighten-4" flat height="200px">
+      <v-tab-item>Bet History<v-icon>build</v-icon><v-card><v-card-text>
+        <betComponent status='closed' />              <!-- components/compBasketball.js (close) -->
+
+      </v-card-text></v-card></v-tab-item>
+      <v-tab-item>Games<v-icon>games</v-icon><v-card><v-card-text>
+        <betComponent status='open' />              <!-- components/compBasketball.js (open) -->
+      </v-card-text></v-card></v-tab-item>
+
+      <v-tab-item><v-icon>account_balance</v-icon><v-card><v-card-text>
+        <poolComponent></poolComponent>           <!-- components/customerinfo.js -->
+      </v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>face</v-icon><v-card><v-card-text>other</v-card-text></v-card></v-tab-item>
+    </v-tabs-items>
 
           </v-card>
         </v-flex>
@@ -173,7 +100,7 @@ const loginCustomer=Vue.component('custComponent', {
     return {
       isActive: false, 
       tabs: null,
-      items: ['Personal', 'Address', 'Account', 'Order History', 'Cash Flow', 'Contracts'],
+      items: ['Personal', 'Address', 'Account','Cash Flow', 'Bet History', 'Games', 'Pool Summary', 'Contracts'],
       loading: false,
       status: '', 
       user: { firstname: '', lastname: '', username: '', password: '', email: '', role: '', address1: '', address2: '', town: '', postcode: '', country: '', bankbsb: '', bankaccount: '' },

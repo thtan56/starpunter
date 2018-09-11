@@ -33,7 +33,7 @@ const Login = Vue.component('logincomponent', {
     return { 
       isActive: false,
       loading: false,
-      model: { username: 'admin@isockde.com', password: 'password' },
+      model: { username: 'thtan56@gmail.com', password: 'password' },
       user: []
     }; 
   },
@@ -41,21 +41,22 @@ const Login = Vue.component('logincomponent', {
   mounted() { this.isActive = this.selected; },
   methods: {
     updateStore () {
+      console.log('4) updateStore');
       this.$store.commit('modifyMyRecord', this.user);
     },
-    login () {
+    login () {      
       let qry = 'database/json_users_email.php?email=' + this.model.username;
+      console.log('2) login-query:'+qry);
       axios.get(qry)
         .then(response => { 
           this.user = response.data[0];
-          this.updateStore();
+          console.log('3) login-this.user:');
+          console.log(this.user);
+          this.updateStore();               // update store
+          console.log('5) login-router to /user');
+          this.$router.push({ path: '/user' });  // dashboard v2
         })  
         .catch(error => { console.log(error) });  
-
-      this.loading = true;
-      setTimeout(() => { 
-        this.$router.push({ name: 'secured', params: { userId: this.model.username }});  // dashboard v2
-      }, 1000);
     },  
   }
 });

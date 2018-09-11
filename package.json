@@ -7,14 +7,8 @@
     "lib": "lib"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "moment": "^2.22.2",
-    "vue": "^2.5.17",
     "vue-events": "^3.1.0",
-    "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.1",
-    "vuetify": "^1.1.13",
-    "vuex": "^3.0.1"
+    "vuelidate": "^0.7.4"
   },
   "devDependencies": {
     "css-loader": "^1.0.0",

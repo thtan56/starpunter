@@ -2,24 +2,24 @@
 require_once('Mybet.php');
 //------------------------------------------------------
 require __DIR__ . '/../vendor/autoload.php';   // goto parent first
-use Monolog\Logger;                     // load Monolog library
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\LogmaticHandler;
-use Monolog\Formatter\JsonFormatter; 
+//use Monolog\Logger;                     // load Monolog library
+//use Monolog\Handler\StreamHandler;
+//use Monolog\Handler\LogmaticHandler;
+//use Monolog\Formatter\JsonFormatter; 
 
-$logger = new Monolog\Logger('channel_name');       // create a log channel
-$formatter = new JsonFormatter();       // create a Json formatter
-$stream = new StreamHandler(__DIR__.'/application-json.log', Logger::DEBUG);    // create a handler
-$stream->setFormatter($formatter);
-$logger->pushHandler($stream);      // bind
+//$logger = new Monolog\Logger('channel_name');       // create a log channel
+//$formatter = new JsonFormatter();       // create a Json formatter
+//$stream = new StreamHandler(__DIR__.'/application-json.log', Logger::DEBUG);    // create a handler
+//$stream->setFormatter($formatter);
+//$logger->pushHandler($stream);      // bind
 //---- start logging from here ----------------------------- 
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
 
 $op = $json->{'op'};
-$logger->info('1) apiMybet.php', array('op' => $op));
-$logger->info('2) apiMybet.php', array('op' => $json));
+//$logger->info('1) apiMybet.php', array('op' => $op));
+//$logger->info('2) apiMybet.php', array('op' => $json));
 //---- start logging from here ----------------------------- 
 if(isset($op)){
 
@@ -61,11 +61,11 @@ if(isset($op)){
             $obj = new Mybet();
             $code = -1;
             if(empty($id) || $id=="") {
-                $logger->info('3) apiMybet.php', array('id' => $id));
+  //              $logger->info('3) apiMybet.php', array('id' => $id));
                 $code = $obj->insertMybet($game, $date, $match, $score1, $score2, $mybetname,
                     $bet_amount, $bet_score1, $bet_score2, $bet_type, $bet_odd_type, $bet_odd, $remarks, $status);
             }else{
-                $logger->info('4) apiMybet.php', array('id' => $id));            
+//                $logger->info('4) apiMybet.php', array('id' => $id));            
                 $code = $obj->updateUser($id, $game, $date, $match, $score1, $score2, $mybetname,
                     $bet_amount, $bet_score1, $bet_score2, $bet_type, $bet_odd_type, $bet_odd, $remarks, $status);
             }

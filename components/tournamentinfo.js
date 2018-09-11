@@ -22,6 +22,7 @@ const demo = new Vue({
       roundList: [],
       venueList: [],
       items: ['Rounds', 'Search'],
+      organisers: ['NBA', 'NBL', 'NFL', 'AFL', 'Asian Games'],
       games: [],
       columns: [
         { text: 'Id', value: 'id' },        
@@ -61,7 +62,7 @@ const demo = new Vue({
   },
   created () {
     console.log('1) Profile:created' + this.$store.state.baseUrl);
-    let qry = 'database/json_afl2018.php';   
+    let qry = 'database/json_basketball.php';   
     axios.get(qry)
       .then(response => { 
         this.games = response.data;                       // 1) data table
