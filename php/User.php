@@ -9,11 +9,25 @@ class User {
     public $db;
     public function __construct() { $this->db = $this->connect(); }
     public function connect() {
-        $dsn = preg_match('/Windows/', getenv('os')) 
-                    ? "mysql:dbname=test;host=localhost"
-                    : "mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956";
         try {
-            $db = new PDO($dsn, $this->dbuser, $this->dbpass);
+            $server_id=$_SERVER['HTTP_HOST'];
+            if (preg_match('/\bappspot\b/', $server_id)) {
+                $dsn = "mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956";
+                $db = new PDO($dsn, $this->dbuser, $this->dbpass);
+            } else if (preg_match('/\bherokuapp\b/', $server_id)) {
+                $user="uorfkbdhshqhlv";
+                $password="4c6f9e3adecae17f2f8b3ac2351f75a5effe164dd867f176d6c9e6be90400050";
+                $host="ec2-54-235-242-63.compute-1.amazonaws.com";
+                $port="5432";
+                $dbname="dc1cog334s79lk";
+                $dsn="pgsql:host=".$host.";port=".$port.";sslmode=require;dbname=".$dbname.";user=".$user.";password=".$password;
+                $db = new PDO($dsn);
+            } else {
+                $dsn = "mysql:dbname=test;host=localhost"
+                $db = new PDO($dsn, $this->dbuser, $this->dbpass);
+            };
+
+
             $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         } 
         catch (PDOException $e){ $this->msg = $e->getMessage();     // report error via msg 

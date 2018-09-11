@@ -6,12 +6,11 @@ $password="4c6f9e3adecae17f2f8b3ac2351f75a5effe164dd867f176d6c9e6be90400050";
 $host="ec2-54-235-242-63.compute-1.amazonaws.com";
 $port="5432";
 $dbname="dc1cog334s79lk";
-$dsn="pgsql:host=".$host.";port=".$port.";dbname=".$dbname.";user=".$user.";password=".$password.";sslmode=require";
-echo $dsn;
-
+$dsn="pgsql:host=".$host.";port=".$port.";sslmode=require;dbname=".$dbname;
+//$dsn="pgsql:host=".$host.";port=".$port.";sslmode=require;dbname=".$dbname.";user=".$user.";password=".$password;
 //pgsql:host=localhost;port=5432;dbname=test;user=postgres;password=cancer56";
 try {
-	$pdo = new PDO($dsn);
+	$pdo = new PDO($dsn,  $user, $password);
 	echo '<br>connected';
 }
 catch(PDOException $e) {
