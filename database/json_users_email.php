@@ -8,7 +8,7 @@ require_once('../php/configDb.php');
 
 $condition = (isset($_GET['email'])) ? " where email='".$_GET['email']."'" : "";
 
-$sql = "SELECT  * FROM user ". $condition;
+$sql = "SELECT  * FROM users ". $condition;
 //$logger->info('1) json_mybet.php', array('sql' => $sql));
 
 $pdo = getPdoConnection();

@@ -1,33 +1,17 @@
 <?php
-echo "hello world, this is my first heroku app";
-// Connecting, selecting database
-$user="uorfkbdhshqhlv";
-$password="4c6f9e3adecae17f2f8b3ac2351f75a5effe164dd867f176d6c9e6be90400050";
-$host="ec2-54-235-242-63.compute-1.amazonaws.com";
-$port="5432";
-$dbname="dc1cog334s79lk";
-$dsn="pgsql:host=".$host.";port=".$port.";sslmode=require;dbname=".$dbname;
-//$dsn="pgsql:host=".$host.";port=".$port.";sslmode=require;dbname=".$dbname.";user=".$user.";password=".$password;
-//pgsql:host=localhost;port=5432;dbname=test;user=postgres;password=cancer56";
-try {
-	$pdo = new PDO($dsn,  $user, $password);
-	echo '<br>connected';
-}
-catch(PDOException $e) {
-	echo 'Error: '. $e->getMessage();
-};
-$sql='SELECT  * FROM users';     // cannot use 'user', conflict with system table
-//$sql = 'select * from information_schema.tables';
+require __DIR__.'/php/DBclass.php';
 
-$result = $pdo->query($sql);
-echo "<br>selected<br>";
-// Printing results in HTML
-//echo "<table>\n";
-while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-print_r($row);
-echo "<br>";
-//	echo "\t<tr>\n";
-//	echo "<td>".$row['user']."</td></tr>";
+header("Location: index.html"); /* Redirect browser */
+exit();
+
+$dbObj = new DB();
+$db = $dbObj->getPDO();
+echo "** Hello from ".$dbObj->dbServer."** <br>"; 
+//-------------------------------------
+$stmt = $db->prepare("select * from users");
+$stmt->execute();
+while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)) { 
+	print_r($row);
+	echo "<br>";
 }
-// echo "</table>\n";
 ?>

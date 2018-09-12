@@ -1,22 +1,14 @@
 <?php
+require __DIR__.'/DBclass.php';
 
 class Bet {
-    private $dbuser = "root";
-    private $dbpass = "cancer56";
     private $msg = "";
     private $result = 1;   // -1 if problem
     //---------------------------------------------   
     public $db;
-    public function __construct() { $this->db = $this->connect(); }
-    public function connect() {
-        $dsn = preg_match('/Windows/', getenv('os')) 
-                    ? "mysql:dbname=test;host=localhost"
-                    : "mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956";
-        try {
-            $db = new PDO($dsn, $this->dbuser, $this->dbpass);
-            $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-        } catch (PDOException $e){ $this->msg = $e->getMessage();  }   
-        return $db;
+    public function __construct() { 
+      $dbObj = new DB();
+      $this->db = $dbObj->getPDO(); 
     }
     //-------------------------------------
     public function getMsg() { return $this->msg; }
