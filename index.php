@@ -37,6 +37,7 @@ const TodoComponent={
   data () {
     return {
       users: [],
+      periods: [],
       result: '',
       pagination: { rowsPerPage: 4 },
       headers: [ { text: 'Username', value: 'username' },{ text: 'Email', value: 'email' },{ text: 'Role', value: 'role' }]
@@ -52,10 +53,10 @@ const TodoComponent={
       );
     },
     getAllData: function () {
-      var postdata = { op: "getUsers" };
-      axios.post('/php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
-        .then(response => { this.users = response.data.data;
-                            console.log("10)getAllData:users:", this.users);
+      var postdata = { op: "getPeriods" };
+      axios.post('/php/apiPeriod.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
+        .then(response => { this.periods = response.data.data;
+                            console.log("10)getAllData:periods:", this.periods);
         },    response => { this.result = 'Failed to load data to server.'; }
       );
     },    
