@@ -16,7 +16,7 @@ class Pool {
   public function getPools($json) {  
     $sql = "select a.id, a.pool_name, a.pool_type, a.entry_cost, a.entry_quorum";
     $sql .= ",a.entrants, a.pool_prize, a.payout ";
-    $sql .= ",a.organiser, a.round, b.start, b.end "; 
+    $sql .= ",a.organiser, a.round, b.start, b.end_dt "; 
     $sql .= " from pool a, period b ";
     $sql .= " where  a.organiser = ? and a.round = ? ";
     $sql .= " and  a.round = b.round ";
@@ -41,8 +41,8 @@ class Pool {
     $organisers = $json->{'data'}->{'organisers'};
     $today      = $json->{'data'}->{'today'};
     //--------------------------------------------
-    $sql1 = "select round, start, end from period ";
-    $sql1 .= " where organiser=? and ? between start and end ";
+    $sql1 = "select round, start, end_dt from period ";
+    $sql1 .= " where organiser=? and ? between start and end_dt ";
     $period = $this->db->prepare($sql1);
     //-----------------------------------------------------
     $sql2 = "select id, pool_name, pool_type, entry_cost, entry_quorum";
@@ -70,8 +70,8 @@ class Pool {
     $organiser = $json->{'data'}->{'organiser'};
     $today     = $json->{'data'}->{'today'};
     //--------------------------------------------
-    $sql1 = "select round, start, end from period ";
-    $sql1 .= " where organiser=? and ? between start and end ";
+    $sql1 = "select round, start, end_dt from period ";
+    $sql1 .= " where organiser=? and ? between start and end_dt ";
     $period = $this->db->prepare($sql1);
     $period->execute([ $organiser, $today ]);
     $arr = $period->fetchAll(PDO::FETCH_ASSOC);
@@ -81,7 +81,7 @@ class Pool {
     $sql2 = "select a.id, a.pool_name, a.pool_type, a.entry_cost, a.entry_quorum";
     $sql2 .= ",a.entrants, a.pool_prize, a.payout ";
     $sql2 .= ",a.organiser, a.round, a.status ";
-    $sql2 .= ",b.start, b.end ";
+    $sql2 .= ",b.start, b.end_dt ";
     $sql2 .= " from pool a ";
     $sql2 .= " inner join period b on a.organiser=b.organiser and a.round=b.round ";    
     $sql2 .= " where a.organiser=? and a.round=? ";
@@ -94,7 +94,7 @@ class Pool {
     $sql = "select a.id,       a.pool_name,  a.pool_type, a.entry_cost, a.entry_quorum";
     $sql .= ",a.entrants, a.pool_prize, a.payout";
     $sql .= ",a.organiser, a.round, a.remarks"; 
-    $sql .= ",b.start, b.end "; 
+    $sql .= ",b.start, b.end_dt "; 
     $sql .= " from pool a, period b ";
     $sql .= " where  a.organiser = ? ";
     $sql .= " and  a.round = b.round "; 
@@ -106,11 +106,11 @@ class Pool {
   public function getWeekPools($date) {
     $sql = "select a.id,  a.pool_name,  a.pool_type, a.entry_cost, a.entry_quorum";
     $sql .= ",a.entrants, a.pool_prize, a.payout ,   a.organiser,  a.round "; 
-    $sql .= ",b.start, b.end "; 
+    $sql .= ",b.start, b.end_dt "; 
     $sql .= " from pool a, period b ";
     $sql .= " where a.organiser = b.organiser ";
     $sql .= " and   a.round     = b.round ";
-    $sql .= " and  ? between b.start and b.end ";        
+    $sql .= " and  ? between b.start and b.end_dt ";        
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ $date ]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

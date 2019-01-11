@@ -79,7 +79,7 @@ Vue.component('userweektickettable', {
     <v-data-table :headers="headers" :pagination.sync="pagination" :items="ticketData">
       <template slot="items" slot-scope="props">
         <td>{{ props.item.username}} / {{ props.item.ticket_id}}</td>
-        <td>{{ props.item.start | moment}} / {{ props.item.end | moment}}</td> 
+        <td>{{ props.item.start | moment}} / {{ props.item.end_dt | moment}}</td> 
         <td>{{ props.item.pool_id}} / {{ props.item.pool_name}}/ {{ props.item.entry_quorum}}</td>
         <td>{{ props.item.entry_cost}} / {{ props.item.income}}</td> 
         <td>{{ props.item.pool_prize}} / {{ props.item.payout}}</td>

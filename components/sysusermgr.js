@@ -84,7 +84,7 @@ Vue.component('usertickets', {
           <td>{{ props.item.ticket_id}} : {{ props.item.pool_id}}/{{ props.item.pool_name}}</td>  
           <td>{{ props.item.entry_cost}}/{{ props.item.gamecount}}</td>
           <td>{{ props.item.pool_prize}} / {{ props.item.payout}}</td>
-          <td>{{ props.item.start | moment}} : {{ props.item.end | moment}}</td>
+          <td>{{ props.item.start | moment}} : {{ props.item.end_dt | moment}}</td>
           <td>{{ props.item.total_score}}/{{ props.item.income}}</td>
         </tr>
       </template>           

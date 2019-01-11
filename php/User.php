@@ -97,8 +97,8 @@ class User {
   }
   public function getOrgWeeks($json) {
     $results=[];
-    $sql = "select round, start, end from period ";
-    $sql .= " where organiser=? and ? between start and end ";
+    $sql = "select round, start, end_dt from period ";
+    $sql .= " where organiser=? and ? between start and end_dt ";
     $stmt = $this->db->prepare($sql);
 
     $organisers = $json->{'data'}->{'organisers'};  

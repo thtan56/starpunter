@@ -10,7 +10,7 @@ const homePools=Vue.component('homepools', {
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.organiser}}/{{ props.item.round }}</td>
                 <td>{{ props.item.entry_cost}}</td> 
-                <td>{{ props.item.start | moment}} - {{ props.item.end | moment}}</td>
+                <td>{{ props.item.start | moment}} - {{ props.item.end_dt | moment}}</td>
                 <td :style="{backgroundColor: (props.item.entrants > props.item.entry_quorum ? 'red' : 'transparent')}">
                     {{ props.item.entry_quorum}}:{{ props.item.entrants}}</td>
                 <td>{{ props.item.pool_prize}}</td>
