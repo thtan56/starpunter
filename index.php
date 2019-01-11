@@ -52,6 +52,15 @@ const TodoComponent={
       );
     },
     getAllData: function () {
+      var postdata = { op: "getUsers" };
+      axios.post('/php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
+        .then(response => { this.users = response.data.data;
+                            console.log("10)getAllData:users:", this.users);
+        },    response => { this.result = 'Failed to load data to server.'; }
+      );
+    },    
+  /*
+    getAllData: function () {
       var sport = {};
       var organiser = "NBA";                            // 1) default
       let $today = new Date;                            
@@ -71,6 +80,7 @@ const TodoComponent={
           },      response => { this.result = 'Failed to load data to server.';
       });
     }
+    */
   },  // end of methods
   created() { this.getAllData(); }
 };
