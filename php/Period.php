@@ -12,7 +12,7 @@ class Period {
   }
   //-------------------------------------
   public function getMsg() { return $this->msg; }
-  
+  /*
   public function getPeriods($organiser=NULL) {
     $sql = "select * from period ";
     $sql .= ($organiser !== NULL) ? " where organiser=?" : "";
@@ -27,6 +27,14 @@ class Period {
     };
     return $results;
   }
+  */
+  public function getPeriods() {
+    $sql = "select * from period ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();    
+    $arr = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    return $arr;
+  }  
   public function getRounds($organiser=NULL) {
     $sql = "select round from period ";
     $sql .= ($organiser !== NULL) ? " where organiser=?" : "";
