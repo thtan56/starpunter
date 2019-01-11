@@ -6,7 +6,8 @@ const Bet = Vue.component('betcomponent', {
 <!-- ========================================================== -->
   <v-form v-model="valid" ref="form">
     <v-layout row wrap>
-      <v-flex xs4><v-text-field label="Game Name" v-model="bet.game_name"></v-text-field></v-flex>
+      <v-flex xs4><v-text-field label="Home Team" v-model="bet.home_team"></v-text-field></v-flex>
+       <v-flex xs4><v-text-field label="Away Team" v-model="bet.away_team"></v-text-field></v-flex>     
       <v-flex xs4><v-combobox v-model="bet.organiser" :items="organisers" label="Select your organiser:"></v-combobox></v-flex>
       <v-flex xs4><v-text-field label="Venue" v-model="bet.venue"></v-text-field></v-flex>
       <v-flex xs4>
@@ -49,7 +50,8 @@ const Bet = Vue.component('betcomponent', {
               <div>
     <v-data-table :headers="headers" :items="games" :pagination.sync="pagination">
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.game_name}}</td>
+        <td>{{ props.item.home_team}} vs
+            {{ props.item.away_team}}</td>
         <td>{{ props.item.organiser}}</td>
 <!--        <td>{{ props.item.venue}}</td>  -->
         <td>{{ props.item.game_date | moment }}<br>
@@ -90,13 +92,13 @@ const Bet = Vue.component('betcomponent', {
         usernames: [],
         organisers: ['NBA', 'NBL', 'NFL', 'AFL', 'Asian Games'],
 
-        bet: { game_name: '', organiser: '', venue: '', game_date: '', game_winner: '', 
+        bet: { home_team: '', away_team:'', organiser: '', venue: '', game_date: '', game_winner: '', 
               bet_odd: 0, bet_type: '', pool_id: 0, username: '', bet_winner: '', bet_amount: 0, id: 0 },
-        defaultItem: { game_name: '', organiser: '', venue: '', game_date: '', game_winner: '', 
+        defaultItem: { home_team: '', away_team:'', organiser: '', venue: '', game_date: '', game_winner: '', 
               bet_odd: 0,  bet_type: '', pool_id: 0, username: '', bet_winner: '', bet_amount: 0, id: 0 },
         games: [],
         pagination: {},
-        headers: [{ text: 'name', value: 'name' }
+        headers: [{ text: 'Home vs Away Team', value: 'name' }
                   ,{ text: 'Organiser', value: 'organiser', width: '10px' } 
 //                  ,{ text: 'Venue', value: 'venue' }
                   ,{ text: 'Date/Week', value: 'date' }       
@@ -114,8 +116,8 @@ const Bet = Vue.component('betcomponent', {
 
     methods: {
       save: function () {
-        if(this.bet.game_name=='' || this.bet.organiser=='' || this.bet.game_date =='' ){     // mysql name (match) problem 
-          this.error = 'game name, organiser and date fields are required';           // use select `match`, ....
+        if(this.bet.home_team=='' || this.bet.away_team=='' || this.bet.organiser=='' || this.bet.game_date =='' ){     // mysql name (match) problem 
+          this.error = 'home & away team, organiser and date fields are required';           // use select `match`, ....
           return;
         };
         this.error = '';
@@ -125,7 +127,8 @@ const Bet = Vue.component('betcomponent', {
           .then(response => {
             this.result = response.body;
             this.getAllData();                 // refresh datatable
-            this.bet.game_name ='';
+            this.bet.home_team ='';
+            this.bet.away_team ='';
             this.bet.organiser = '';
             this.bet.venue = '';
             this.bet.game_date = '';

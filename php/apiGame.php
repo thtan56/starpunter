@@ -20,6 +20,62 @@ if(isset($op)){
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;
+    case "getGame":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getGame($json->{'id'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;     
+    case "getGameSummary":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getGameSummary();
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;   
+    case "getGameLeaders":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getGameLeaders();
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;  
+    case "getGameWeeks":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getGameWeeks();
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;
+    case "getWeek1Tickets":      // testing only
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getWeek1Tickets();
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;              
+    case "getWeek2Games":      // testing only
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getWeek2Games();
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;              
+    case "getDayGames":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getDayGames($json->{'key'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;      
     case "getOrgGames":
       $code = -1;
       $obj = new Game();
@@ -27,20 +83,48 @@ if(isset($op)){
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
+//      $logger->info('3) getOrgGame.php', array('data' => $ret));
       break;
+     case "getOrgRndGames":
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getOrgRndGames($json);  // organiser, round
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;     
+    case "getOrgJGames":    // date, json(g1, g2, etc)
+      $code = -1;
+      $obj = new Game();
+      $ret = $obj->getOrgJGames($json->{'id'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;      
     case "save":
       $id = $json->{'data'}->{'id'};
    
       $obj = new Game();
       if (empty($id) || $id=="") {
-//$logger->info('3) apiGame: save-insert', array('json' => $json));   
+// $logger->info('3) apiGame: save-insert', array('json' => $json));   
          $code = $obj->insertGame($json);
       } else {
-//$logger->info('4) apiGame: save-update', array('json' => $json)); 
+// $logger->info('4) apiGame: save-update', array('json' => $json)); 
          $code = $obj->updateGame( $json);     
       };                        
       $resp = array('code' => $code, 'msg' => $obj->getMsg());   // empty msg => ok
       break;
+    case "saveResult":
+      $obj = new Game();
+      $code = $obj->updateGameResult( $json);                                  
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());   // empty msg => ok
+      break;     
+    case "csvinsertGames": 
+  //    $logger->info('3) csvinsertGame', array('json' => $json));  
+      $obj = new Game();
+      $code = $obj->csvinsertGames($json->{'orgid'});
+      $resp = array('code' => $code, 'msg' => $obj->getMsg()); 
+      break; 
     case "delete":
       $code = -1;
       $obj = new Game();

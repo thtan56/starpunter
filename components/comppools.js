@@ -1,4 +1,5 @@
-const poolSummary = Vue.component('poolComponent', {
+//const poolSummary = 
+Vue.component('poolComponent', {
   template: `
   <div id="poolTable">
   <v-card>
@@ -6,11 +7,11 @@ const poolSummary = Vue.component('poolComponent', {
       <v-text-field v-model="search" label="Search" single-line hide-details></v-text-field>
       </v-text-field>
     </v-card-title>
-    <v-data-table :headers="columns" :items="betpools" :search="search"> 
+    <v-data-table :headers="columns" :items="bets" :search="search"> 
       <template slot="items" slot-scope="props">                            
-        <td>{{ props.item.pool }}</td><td>{{ props.item.username }}</td><td>{{ props.item.count }}</td>
+        <td>{{ props.item.pool_id }}</td><td>{{ props.item.username }}</td><td>{{ props.item.count }}</td>
         <td class="justify-center layout px-0">
-             <v-icon small class="mr-2" @click="joinItem(props.item)">edit</v-icon>join
+             <v-icon small class="mr-2" @click="joinPool(props.item)">edit</v-icon>join
         </td>   
       </template> 
       <template slot="footer">
@@ -29,24 +30,32 @@ const poolSummary = Vue.component('poolComponent', {
       dialog -edit
       ======================================== -->                                  
       <v-toolbar flat color="white">
-        <v-dialog v-model="contestdialog" max-width="500px">
+        <v-dialog v-model="contestdialog" max-width="1000px">
           <v-card dark color="blue-grey">
-            <v-card-title><span class="headline">My Bets</span></v-card-title>
+            <v-card-title><span class="headline">New Bet</span></v-card-title>
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md6><v-text-field v-model=$store.state.loginUser.username label="Username" readonly background-color="red"></v-text-field></v-flex>
                   <v-flex xs12 sm6 md6><v-text-field v-model="displayDate" label="Date" readonly background-color="red"></v-text-field></v-flex>
-                  <v-flex xs12 sm6 md12><v-text-field v-model="joinedItem.pool" label="Pool" readonly background-color="red"></v-text-field></v-flex>
+                  <v-flex xs12 sm6 md12><v-text-field v-model="joinedItem.id" label="Pool#" readonly background-color="red"></v-text-field></v-flex>
 
-                  <!-- checkboxes to select required matches (2 or 3 games)  -->
-                  <v-flex xs12 sm6 md4><v-text-field v-model="joinedItem.match" label="match" background-color="green"></v-text-field></v-flex>
+                  <!-- checkboxes to select required games (2 or 3 games)  -->
 
- <v-data-table :headers="headers" :items="matches" v-model="selected" item-key="id" select-all class="elevation-1">
+                <v-flex xs4>
+                  <v-select v-model="joinedItem.organiser" :items="organisers" label="Select your organiser:" @change="change2Organiser" background="green"></v-select>
+                </v-flex>
+                <v-flex xs4><v-select v-model="joinedItem.home_team" :items="teams" label="Home team:" background="green"></v-select></v-flex>
+                <v-flex xs4><v-select v-model="joinedItem.away_team" :items="teams" label="Away team:" background="green"></v-select></v-flex>  
+ 
+ <v-flex xs12>** My Bet History **</v-flex>  
+ <v-data-table :headers="headers" :items="pools" v-model="selected" item-key="id" select-all class="elevation-1">
     <template slot="items" slot-scope="props">
       <td><v-checkbox v-model="props.selected" primary hide-details></v-checkbox></td>
-      <td>{{ props.item.match }}</td>
-       <td><v-text-field slot="input" v-model="props.item.odd" label="odd"></v-text-field></td>
+      <td>{{ props.item.organiser }}:{{ props.item.home_team }} vs {{ props.item.away_team }}
+      </td>
+       <td><v-text-field slot="input" v-model="props.item.home_odd" label="home odd"></v-text-field></td>
+              <td><v-text-field slot="input" v-model="props.item.away_odd" label="away odd"></v-text-field></td>
        <td><v-text-field slot="input" v-model="props.item.bet_amount" label="bet amount"></v-text-field></td>
     </template>
   </v-data-table>
@@ -68,14 +77,18 @@ const poolSummary = Vue.component('poolComponent', {
   data () {
     return {
       search: '',
-      columns: [ { text: 'Pool', value: 'pool' }, { text: 'Username', value: 'username'}, { text: 'Count', value: 'count'} ],
-      betpools: [],
+      columns: [ { text: 'Pool#', value: 'pool_id' }, { text: 'Username', value: 'username'}, { text: 'Count', value: 'count'} ],
+      bets: [],
       contestdialog: false,
       joinedIndex: -1,
-      joinedItem: { pool: '', username: '', count: 0, match: '' },    
-      headers: [ { text: 'Match', value: 'match' } ],
+      joinedItem: { pool_id: '', username: '', count: 0, organiser: '' },    
+      headers: [ { text: 'organiser', value: 'organiser' } ],
       selected: [],
-      matches: []
+      pools: [],
+      teams: [],
+      organisers: ['NBA', 'NBL', 'NFL', 'AFL'],
+      organiser: '',
+      result: '',
     }
   },
   computed: {
@@ -87,25 +100,42 @@ const poolSummary = Vue.component('poolComponent', {
     }
   },
   methods: {
+    //=============================================================================
+    change2Organiser(selectObj) {
+      this.joinedItem.organiser = selectObj;
+      this.getTeams(selectObj);
+    },
+    getTeams(organiser) {
+      this.result = 'Getting data from server...';
+      var postdata = { op: "getOrgTeamNames", id: organiser };
+      this.$http.post('php/apiTeam.php', JSON.stringify(postdata), {
+          headers: { 'Content-Type': 'application/json' }
+        }).then(response => { this.teams = response.body.data;
+        },      response => { this.result = 'Failed to load data to server.';
+      });
+    },
+    //========================================
     getAllData() {
-      let qry = 'database/json_mybet_pools.php';
+      let qry = 'database/json_mybet_pools.php';    // summary from bet table
       axios.get(qry)
         .then(response => { 
-          this.betpools = response.data;
-          console.log('1) getAllData-this.betpools');
-          console.log(this.betpools);
+          this.bets = response.data;
+          console.log('1) getAllData-this.bets');
+          console.log(this.bets);
         })  
         .catch(error => { console.log(error) });  
     },
-    joinItem (item) {
-      let qry = 'database/json_basketball_matches.php';
-      axios.get(qry)
+    joinPool (item) {
+      let qry = 'database/json_basketball_matches.php';   // details from bet_pool
+      axios.post(qry, { data: item, op: "getPoolGames" } )
         .then(response => { 
-          this.matches = response.data; 
-          console.log('1) joinItem-this.matches');
-          console.log(this.matches);
-          this.joinedIndex = this.betpools.indexOf(item);
-          this.joinedItem = Object.assign({}, item);
+          this.pools = response.data; 
+          console.log('1) joinPool-this.pools');
+          console.log(this.pools);
+//          this.joinedIndex = this.bets.indexOf(item);
+  //        this.joinedItem = Object.assign({}, item);
+          this.joinedItem = this.pools[0];
+          this.joinedItem
           this.contestdialog = true;
         })  
         .catch(error => { console.log(error) }); 

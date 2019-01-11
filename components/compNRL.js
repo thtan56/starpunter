@@ -153,7 +153,7 @@ const NRL = Vue.component('NRLcomponent', {
   },
   created () {
     console.log('1) compNRL.js:created');
-    let qry = 'database/json_afl2018.php';   
+    let qry = 'database/json_football.php';   
     axios.get(qry)
       .then(response => { 
         this.games = response.data;                       // 1) data table

@@ -1,0 +1,153 @@
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css" media="print" rel="stylesheet">
+      
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <style>
+      .comp-full-calendar {
+        padding: 20px;
+        background: #fff;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+    </style>
+ </head>
+ <body>
+   <div id="app" class="wrapper">
+     <div class="comp-full-calendar test-fc">
+       <calendar  :events="events" :editable="true"></calendar>
+     </div>    
+ </div>
+ <script src="lib/vue.min.js"></script>
+ <script src='lib/moment.js'></script>
+ <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>  
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script> 
+
+ <script type="text/javascript">
+ Vue.component('calendar', {
+   template: '<div></div>',
+ 
+   props: {
+     events: {
+       type: Array, 
+       required: true
+     },
+ 
+     editable: {
+       type: Boolean,
+       required: false,
+       default: false
+     },
+ 
+     droppable: {
+       type: Boolean,
+       required: false,
+       default: false
+     },
+   },
+ 
+   data: function()
+   {
+     return {
+       cal: null
+     }
+   },
+ 
+   ready: function()
+   {
+     var self = this;
+     self.cal = $(self.$el);
+ 
+     var args = {
+       lang: 'de',
+       header: {
+         left:   'prev,next today',
+         center: 'title',
+         right:  'month,agendaWeek,agendaDay'
+       },
+       height: "auto",
+       allDaySlot: false,
+       slotEventOverlap: false,
+       timeFormat: 'HH:mm',
+ 
+       events: self.events,
+ 
+       dayClick: function(date)
+         {
+             self.$dispatch('day::clicked', date);
+             self.cal.fullCalendar('gotoDate', date.start);
+             self.cal.fullCalendar('changeView', 'agendaDay');
+       },
+ 
+       eventClick: function(event)
+         {
+                 self.$dispatch('event::clicked', event);
+         }
+     }
+ 
+     if (self.editable)
+     {
+       args.editable = true;
+       args.eventResize = function(event)
+       {
+         self.$dispatch('event::resized', event);
+       }
+ 
+       args.eventDrop = function(event)
+       {
+         self.$dispatch('event::dropped', event);
+       }
+     }
+ 
+     if (self.droppable)
+     {
+       args.droppable = true;
+       args.eventReceive = function(event)
+       {
+         self.$dispatch('event::received', event);
+       }
+     }
+ 
+     this.cal.fullCalendar(args);
+ 
+   }
+ 
+ })
+ 
+ new Vue({
+   el: '#app',
+ 
+   data: {    
+     events: [
+         {
+           title: 'Event1',
+           start: '2017-10-10 12:30:00',
+           end: '2017-10-13 16:30:00'
+         },
+         {
+           title: 'Event2',
+           start: '2017-10-07 17:30:00',
+           end: '2017-10-07 21:30:00'
+         }
+     ]
+   },
+ 
+   events: {
+     'day::clicked': function(date)
+     {
+       console.log(date);
+     }
+   }
+ })
+ 
+ </script>
+ </body>
+ 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>vue-event-fullcalendar</title>
+  <link href="node_modules/fullcalendar/dist/fullcalendar.css" rel="stylesheet">
+  <link href='calendar/dragdrop.css' rel="stylesheet">
+</head>
+<body>
+<!--  
+  <div id='wrap'>
+    <div id='external-events'>
+      <div id='external-events-listing'>
+        <h4>Draggable Events</h4>
+        <div class='fc-event'>My Event 1</div>
+        <div class='fc-event'>My Event 2</div>
+        <div class='fc-event'>My Event 3</div>
+        <div class='fc-event'>My Event 4</div>
+        <div class='fc-event'>My Event 5</div>
+      </div>
+      <p>
+        <input type='checkbox' id='drop-remove' checked='checked' />
+        <label for='drop-remove'>remove after drop</label>
+      </p>
+    </div>
+    <div class="container">
+        <div class="col-md-12">          
+          <div class="col-md-6 mb-20"><div id='calendar1'></div></div>
+          <div class="col-md-6 mb-20"><div id='calendar2'></div></div>
+          <div class="col-md-6 mb-20"><div id='calendar3'></div></div>
+        </div>
+    </div>
+    <div style='clear:both'></div>
+
+</div>
+-->
+<div id='calendar'></div>
+<script>
+$(function() {
+  // page is now ready, initialize the calendar...
+  $('#calendar').fullCalendar({
+    // put your options and callbacks here
+  })
+});
+</script>
+  <script src="js/jQuery/jQuery-2.2.0.min.js"></script>
+  <script src="node_modules/fullcalendar/dist/fullcalendar.js"></script>
+<!--  <script src="calendar/dragdrop.js"></script>   -->
+</body>
+</html>

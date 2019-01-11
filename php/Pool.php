@@ -1,94 +1,256 @@
 <?php
 require __DIR__.'/DBclass.php';
+
 class Pool {
-    private $msg = "";
-    private $result = 1;   // -1 if problem
-    //---------------------------------------------   
-    public $db;
-    public function __construct() { 
-        $dbObj = new DB();
-        $this->db = $dbObj->getPDO(); 
-    }
-    //-------------------------------------
-    public function getMsg() { return $this->msg; }
-  public function getPools() {
-    $sql = "select t1.name as name, t1.date as date, entry_cost, entry_quorum, entry_count";
-    $sql .= ",t1.organiser as organiser, pool_prize";
-    $sql .= ",payout, team1_count, team2_count, t1.id as id ";
-    $sql .= ",t2.odd as odd ";
-    $sql .= ",t3.username as username ";
-    $sql .= "from game_pool  t1 ";
-    $sql .= "inner join game t2 on t1.name = t2.name and t1.date = t2.date ";
-    $sql .= "inner join bet  t3 on t1.name = t3.game_name and t1.date = t3.game_date and t1.id = t3.pool_id ";
+  private $msg = "";
+  private $result = 1;   // -1 if problem
+  //---------------------------------------------   
+  public $db;
+  public function __construct() { 
+    $dbObj = new DB();
+    $this->db = $dbObj->getPDO(); 
+  }
+  //-------------------------------------
+  public function getMsg() { return $this->msg; }
+
+  public function getPools($json) {  
+    $sql = "select a.id, a.pool_name, a.pool_type, a.entry_cost, a.entry_quorum";
+    $sql .= ",a.entrants, a.pool_prize, a.payout ";
+    $sql .= ",a.organiser, a.round, b.start, b.end "; 
+    $sql .= " from pool a, period b ";
+    $sql .= " where  a.organiser = ? and a.round = ? ";
+    $sql .= " and  a.round = b.round ";
+    $sql .= " and  a.organiser = b.organiser ";
     $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $pools = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if(!$pools) {
-            $this->msg = 'No rows'; 
-            exit;
-        };
-        return $pools;
-    }
-  public function getGamePools($name, $date) {
-    $stmt = $this->db->prepare("select * from game_pool where name=? and date=?");
-    $stmt->execute([ $name, $date ]);
-    $pools = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if(!$pools) {
-      $this->msg = 'No rows'; 
-      exit;
+    $stmt->execute([ $json->{'data'}->{'organiser'},$json->{'data'}->{'round'}]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }
+  public function getPool($id) {    // pool_id
+    $sql = "select id, pool_name, pool_type, entry_cost, entry_quorum";
+    $sql .= ",entrants, pool_prize, payout, status ";
+    $sql .= ",organiser, round "; 
+    $sql .= " from pool ";
+    $sql .= " where  id = ? ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $id ]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }
+  public function getOrgsPools($json) {        // homepools.js
+    $organisers = $json->{'data'}->{'organisers'};
+    $today      = $json->{'data'}->{'today'};
+    //--------------------------------------------
+    $sql1 = "select round, start, end from period ";
+    $sql1 .= " where organiser=? and ? between start and end ";
+    $period = $this->db->prepare($sql1);
+    //-----------------------------------------------------
+    $sql2 = "select id, pool_name, pool_type, entry_cost, entry_quorum";
+    $sql2 .= ",entrants, pool_prize, payout ";
+    $sql2 .= ",organiser, round, status ";
+    $sql2 .= " from pool ";
+    $sql2 .= " where organiser=? and round=? ";
+    $pool = $this->db->prepare($sql2);
+    //-----------------------------------------
+    $results=[];
+    foreach($organisers as $organiser) {
+      $period->execute([ $organiser, $today ]);   
+      $arr = $period->fetchAll(PDO::FETCH_ASSOC);
+      $round = $arr[0]['round']; 
+      $pool->execute( [$organiser, $round ]);
+      while ($row = $pool->fetch(PDO::FETCH_ASSOC)) {
+        $row['orgweek'] = $row['organiser'].':'.$row['round'];    // additional
+        $row['pool_id'] = $row['id'];
+        array_push($results, $row);
+      };
     };
-    return $pools;
-  }
-  public function getWeekPools() {
-    $sql = "select t1.name as name, t1.date as date, entry_cost, entry_quorum, entry_count";
-    $sql .= ",t1.organiser as organiser, pool_prize";
-    $sql .= ",payout, team1_count, team2_count, t1.id as id";
-    $sql .= ",t2.odd as odd, t2.status as status ";
-//    $sql .= ",t3.username as username ";
-    $sql .= "from game_pool t1 ";
-    $sql .= "inner join game t2 on t1.name = t2.name and t1.date = t2.date ";
-//    $sql .= "inner join bet  t3 on t1.id = t3.pool_id ";
-    $sql .= " where week(now()) = week(t1.date) ";
+    return $results;
+  }  
+  public function getOrgDatePools($json) {        // homepools.js
+    $organiser = $json->{'data'}->{'organiser'};
+    $today     = $json->{'data'}->{'today'};
+    //--------------------------------------------
+    $sql1 = "select round, start, end from period ";
+    $sql1 .= " where organiser=? and ? between start and end ";
+    $period = $this->db->prepare($sql1);
+    $period->execute([ $organiser, $today ]);
+    $arr = $period->fetchAll(PDO::FETCH_ASSOC);
+    $round = $arr[0]['round']; 
+    //-----------------------------------------------------
+    $results=[];
+    $sql2 = "select a.id, a.pool_name, a.pool_type, a.entry_cost, a.entry_quorum";
+    $sql2 .= ",a.entrants, a.pool_prize, a.payout ";
+    $sql2 .= ",a.organiser, a.round, a.status ";
+    $sql2 .= ",b.start, b.end ";
+    $sql2 .= " from pool a ";
+    $sql2 .= " inner join period b on a.organiser=b.organiser and a.round=b.round ";    
+    $sql2 .= " where a.organiser=? and a.round=? ";
+    $pool = $this->db->prepare($sql2);
+    $pool->execute( [$organiser, $round ]);
+    $results = $pool->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }  
+  public function getOrgPools($id) {
+    $sql = "select a.id,       a.pool_name,  a.pool_type, a.entry_cost, a.entry_quorum";
+    $sql .= ",a.entrants, a.pool_prize, a.payout";
+    $sql .= ",a.organiser, a.round, a.remarks"; 
+    $sql .= ",b.start, b.end "; 
+    $sql .= " from pool a, period b ";
+    $sql .= " where  a.organiser = ? ";
+    $sql .= " and  a.round = b.round "; 
     $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $pools = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if(!$pools) {
-            $this->msg = 'No rows'; 
-            exit;
-        };
-        return $pools;
+    $stmt->execute([ $id ]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
   }
-    public function insertPool($json) { 
-       $sql = "insert into game_pool(name, date, entry_cost, entry_quorum, organiser, pool_prize, payout, created)";
-       $sql .= " values (?,?,?,?,?,?,?, now())";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([ $json->{'data'}->{'name'}      ,$json->{'data'}->{'date'} 
-                        ,$json->{'data'}->{'entry_cost'},$json->{'data'}->{'entry_quorum'}
-                        ,$json->{'data'}->{'organiser'} ,$json->{'data'}->{'pool_prize'}
-                        ,$json->{'data'}->{'payout'} ]);
+  public function getWeekPools($date) {
+    $sql = "select a.id,  a.pool_name,  a.pool_type, a.entry_cost, a.entry_quorum";
+    $sql .= ",a.entrants, a.pool_prize, a.payout ,   a.organiser,  a.round "; 
+    $sql .= ",b.start, b.end "; 
+    $sql .= " from pool a, period b ";
+    $sql .= " where a.organiser = b.organiser ";
+    $sql .= " and   a.round     = b.round ";
+    $sql .= " and  ? between b.start and b.end ";        
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $date ]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+  }
+  public function insertPool($json) { 
+       $sql = "insert into pool(pool_name, pool_type, entry_cost, entry_quorum, entrants";
+       $sql .= ", pool_prize, payout";
+       $sql .= ",organiser, round";
+       $sql .= ",remarks, created)";
+       $sql .= " values (?,?,?,?,?,?,?,?,?,now())";
+       $stmt = $this->db->prepare($sql);
+       $stmt->execute([ $json->{'data'}->{'pool_name'} ,$json->{'data'}->{'pool_type'} 
+            ,$json->{'data'}->{'entry_cost'}      
+            ,$json->{'data'}->{'entry_quorum'} ,$json->{'data'}->{'entrants'}
+            ,$json->{'data'}->{'pool_prize'}      ,$json->{'data'}->{'payout'}  
+            ,$json->{'data'}->{'organiser'}      ,$json->{'data'}->{'round'}  
+            ,$json->{'data'}->{'remarks'} ]);
     }
     public function deletePool($id) {
-        $stmt = $this->db->prepare("delete from game_pool where id=?");
+        $stmt = $this->db->prepare("delete from pool where id=?");
         $stmt->execute([ $id ]);
     }
     public function updatePool($json) {        // object, not array
-        $sql = "update game_pool set entry_quorum=?, pool_prize=?, payout=? where id=?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([ $json->{'data'}->{'entry_quorum'}, $json->{'data'}->{'pool_prize'}
-                        ,$json->{'data'}->{'payout'}       ,$json->{'data'}->{'id'} ]);
+       $sql  = "update pool set pool_name=?, pool_type=?";
+       $sql .= ",entry_cost=?, entry_quorum=?, entrants=?, pool_prize=?, payout=?";
+       $sql .= ",status=?";
+       $sql .= ",organiser=?, round=?";
+       $sql .= ",remarks=? where id=?";
+       $stmt = $this->db->prepare($sql);
+       $stmt->execute([ 
+             $json->{'data'}->{'pool_name'}       ,$json->{'data'}->{'pool_type'} 
+            ,$json->{'data'}->{'entry_cost'} ,$json->{'data'}->{'entry_quorum'}
+            ,$json->{'data'}->{'entrants'}
+            ,$json->{'data'}->{'pool_prize'} ,$json->{'data'}->{'payout'}  
+            ,$json->{'data'}->{'status'}    
+            ,$json->{'data'}->{'organiser'} ,$json->{'data'}->{'round'}   
+            ,$json->{'data'}->{'remarks'}    ,$json->{'data'}->{'id'} ]);
+            
     }
-    public function updatePoolCount($json) {        // object, not array
-        $sql = "update game_pool set entry_count=entry_count+1";     
+  public function autoGenPool() {
+    $sql0  = "Select * from pool where organiser=? and round=? and pool_name=? ";
 
-        $teams = $json->{'data'}->{'teams'};         
-        if ($json->{'data'}->{'bet_winner'} == $teams[0]) { 
-            $sql .= ",team1_count=team1_count + 1 ";
-        } else {
-            $sql .= ",team2_count=team2_count + 1 "; 
-        };
-        $sql .= " where id=?";
+    $sql="select a.organiser, a.pool_name,  a.pool_type, a.entry_cost, a.entry_quorum, a.pool_prize, a.payout";
+    $sql.=",b.round ";
+    $sql.=" from plan a ";
+    $sql.=" inner join period b on a.organiser = b.organiser";
+    $sql2 = "insert into pool(pool_name, pool_type, entry_cost, entry_quorum";
+    $sql2 .= ", pool_prize, payout";
+    $sql2 .= ", organiser, round";
+    $sql2 .= ", entrants , remarks, status, created)";
+    $sql2 .= " values (?,?,?,?,?,?,?,?,0,'autogen','pending', now())";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([ $json->{'data'}->{'id'} ]);
-    }
+    $plan  = $this->db->prepare($sql); 
+    $pool2 = $this->db->prepare($sql2);
+    $pool0 = $this->db->prepare($sql0);
+    $plan->execute();
+    while ($row = $plan->fetch(PDO::FETCH_ASSOC)) {
+      //======= check for duplicate ======================================================
+      $pool0->execute([ $row['organiser'], $row['round'], $row['pool_name'] ]);
+      $rows0 = $pool0->fetchAll(PDO::FETCH_ASSOC);
+      if(!$rows0) {
+        $pool2->execute([ 
+             $row['pool_name']  ,$row['pool_type']  ,$row['entry_cost'] ,$row['entry_quorum'] 
+            ,$row['pool_prize'] ,$row['payout']     ,$row['organiser']  ,$row['round']   ]);
+      };
+    };
+  }
+  public function updateCount($pid) {  
+    $sql  = "update pool set entrants=entrants + 1 where id=?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $pid ]);             
+  }
+  public function reverseCount($pid) {  
+    $sql  = "update pool set entrants=entrants - 1 where id=?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $pid ]);             
+  }
+  public function updatePoolWinners($json) {   // identify tickets that win in the gool
+    $sql =  "CALL g00_GenWinner()"; 
+    $sp = $this->db->prepare($sql);
+    $sp->execute();
+    $sp->closeCursor();
+    // - 2) create request records for winners (credit vcash) ---------------------
+    $sql2 = "insert into request(username, activity, description, reference_number ";
+    $sql2 .= ",exchange_rate, cash, vcash, created) ";
+    $sql2 .= " values (?,?,?,?,?,?,?,now())";
+    $insert = $this->db->prepare($sql2);
+
+    $sql  = "Select * from ticket where organiser=? and round=?";
+    $ticket = $this->db->prepare($sql);
+    $ticket->execute([ $json->{'data'}->{'organiser'}
+                      ,$json->{'data'}->{'round'} ]);
+    $rows = $ticket->fetchAll(PDO::FETCH_ASSOC);
+    foreach($rows as $row) {
+      if ($row['income'] > 0) {
+        $insert->execute([ $row['username'],'win pool'
+                        ,'won in pool#'. $row['pool_id']. ':'.$row['pool_name']  
+                        ,'pool#'.$row['pool_id']
+                        ,1,0
+                        , $row['income']   ]);
+        //----stage 3 (users - add to vcash)----------------------------------------
+        $user = $this->db->prepare("update users set vcash=vcash+? where username=?");
+        $user->execute([ $row['income'], $row['username'] ]); 
+      }
+    };
+    //======= check for duplicate (duplicate in username & reference number (pool id) ========
+  }
+  public function getPoolGames($pid) {
+    $sql =  "select a.id, a.username, a.ticket_id, a.pool_id, a.game_id, a.organiser, a.round, a.home_team, a.away_team"; 
+    $sql .= ", a.bet_team, a.bet_date, a.bet_score, a.game_winner ";
+    $sql .= ", a.home_odd, a.away_odd, a.odd_date, a.status ";
+    $sql .= ", g.start, g.home_score, g.away_score ";
+    $sql .= ", t.income ";
+    $sql .= " from ticket_games a ";
+    $sql .= " inner join game g on a.game_id = g.id";
+    $sql .= " inner join ticket t on a.ticket_id = t.id";
+    $sql .= " where a.pool_id=?";     
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $pid ]);      
+    $pgames = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$pgames) { 
+      $this->msg = 'No rows'; 
+      exit;
+    };
+    return $pgames;
+  }   
+  public function getPoolTickets($pid) {
+    $sql =  "select id, username, organiser, round, pool_id  "; 
+    $sql .= ", pool_name, total_score, income, fee, won, rank ";
+    $sql .= ", status ";
+    $sql .= " from ticket ";
+    $sql .= " where pool_id=?";     
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $pid ]);      
+    $ptickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$ptickets) { 
+      $this->msg = 'No rows'; 
+      exit;
+    };
+    return $ptickets;
+  }      
 }

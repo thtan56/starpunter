@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8"/>
+<head>
+  <title>System Management</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.4/vuetify.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body >
+<div id="app">
+  <v-app> 
+    <v-toolbar color="cyan" dark tabs>    
+      <v-toolbar-side-icon><img src="images/tristars2.png" width="70" height="40"></v-toolbar-side-icon>
+      <v-toolbar-title>AFL Tournaments</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu offset-y open-on-hover>
+        <v-btn flat primary slot="activator">Schedules<v-icon>arrow_drop_down</v-icon></v-btn>
+        <v-list>
+          <v-list-tile v-for="(item, i) in menuItems" :key="i" :href="item.href">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn icon href="/home.html"><v-icon>home</v-icon></v-btn>
+        <v-btn icon href="/profile.html"><v-icon>folder_open</v-icon></v-btn>      
+        <v-btn color="success" href="/sysMain.html">Users<v-icon>account_box</v-icon></v-btn>
+        <v-btn color="grey" href="/sysPool.html">Pools<v-icon>account_box</v-icon></v-btn>     
+        <v-btn color="warning" href="/sysProduct.html">New Products<v-icon>directions_run</v-icon></v-btn>
+        <v-btn color="info" href="/apiTournament.html#/organiser/nba">Games<v-icon>directions_run</v-icon></v-btn>
+        <v-btn color="warning" href="/apiCustomer.html">Customer Profile<v-icon>account_box</v-icon></v-btn>      
+        <v-btn color="error" href="/apiRegister.html">Sign Up<v-icon>how_to_reg</v-icon></v-btn>
+        <v-btn color="success" href="/apiLogin.html">Sign in<v-icon>input</v-icon></v-btn>
+        <!-- v-btn color="info" href="/apiLogin.html">Log out<v-icon>logout</v-icon></v-btn> -->
+        <v-btn color="info" href="index.html#/login">Log out<v-icon>logout</v-icon></v-btn>
+        <v-btn icon><v-icon>search</v-icon></v-btn>
+        <v-btn icon><v-icon>more_vert</v-icon></v-btn> 
+      </v-toolbar-items>
+
+      <v-tabs slot="extension" v-model="tabs" color="cyan" align-with-title>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tab v-for="item in items" :key="item">
+          {{ item }}
+        </v-tab>
+      </v-tabs>
+    </v-toolbar>
+
+    <v-tabs-items v-model="tabs">
+      <v-tab-item>
+        <v-layout column>
+          <v-toolbar color="pink" dark><v-toolbar-title>User Management</v-toolbar-title></v-toolbar>
+          <v-container fluid grid-list-md>
+            <v-form v-model="valid" ref="form">
+              <v-layout row wrap>
+                <v-flex xs4><v-text-field label="User Name" v-model="user.username" :rules="usernameRules" :counter="10"></v-text-field></v-flex>
+                <v-flex xs4><v-combobox v-model="user.role" :items="roles" label="Select your role:"></v-combobox></v-flex>
+                <v-flex xs4><v-text-field label="First name" v-model="user.firstname"></v-text-field></v-flex>
+                <v-flex xs4><v-text-field label="Last name" v-model="user.lastname"></v-text-field></v-flex>
+                <v-flex xs4><v-text-field label="Email" v-model="user.email" :rules="emailRules"></v-text-field></v-flex>
+                <v-flex xs6><v-text-field label="Address 1" v-model="user.address1"></v-text-field></v-flex>
+                <v-flex xs6><v-text-field label="Address 2" v-model="user.address2"></v-text-field></v-flex>
+                <v-flex xs4><v-text-field label="Post Code" v-model="user.postcode"></v-text-field></v-flex>
+                <v-flex xs4><v-text-field label="Town" v-model="user.town"></v-text-field></v-flex>
+                <v-flex xs4><v-select label="Country" v-model="user.country" :items="countries"></v-select></v-flex>         
+                <v-flex xs6><v-text-field label="Bank BSB" v-model="user.bankbsb"></v-text-field></v-flex>
+                <v-flex xs6><v-text-field label="Bank Account" v-model="user.bankaccount"></v-text-field></v-flex>
+              </v-layout>
+              <v-btn @click="save" :class="{ red: !valid, green: valid }">save</v-btn>
+              Status: {{ result }}
+              <span class="badge badge-danger">{{error}}</span>
+              <!-- <button v-on:click="getAllData" class="btn btn-danger">Fetch Data from Server</button> -->
+            </v-form>
+          </v-container>
+          <v-container fluid grid-list-md>
+            <v-flex xs12>
+              <v-card dark color="primary">
+                <div>
+                  <v-data-table :headers="headers" :items="users" :search ="search" :pagination.sync="pagination">
+                    <template slot="items" slot-scope="props">
+                      <td>{{ props.item.username}}</td>   <!-- td>{{ props.item.password}}</td  -->
+                      <td>{{ props.item.email}}</td>
+                      <td>{{ props.item.role}}</td><td>{{ props.item.address1}}</td><td>{{ props.item.address2}}</td>
+                      <td class="justify-center layout px-0">
+                        <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+                        <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                      </td>
+                    </template>
+                  </v-data-table>
+                </div>            
+              </v-card>
+            </v-flex>
+          </v-container>
+        </v-layout>
+      </v-tab-item>
+      <!-- **************************************************************** -->
+      <v-tab-item><v-icon>build</v-icon><v-card><v-card-text><teamcomponent></teamcomponent></v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><periodcomponent></periodcomponent></v-card-text></v-card></v-tab-item> <!-- check point 1 -->
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><requestcomponent></requestcomponent></v-card-text></v-card></v-tab-item> <!-- check point 1 -->
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><plancomponent></plancomponent></v-card-text></v-card></v-tab-item>      
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><poolcomponent></poolcomponent></v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><gamecomponent></gamecomponent></v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><ticketcomponent></ticketcomponent></v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>waves</v-icon><v-card><v-card-text><ticketgamescomponent></ticketgamescomponent></v-card-text></v-card></v-tab-item>
+      <v-tab-item><v-icon>motor</v-icon><v-card><v-card-text><betcomponent></betcomponent></v-card-text></v-card></v-tab-item>
+      <!-- ***************************************************  -->
+    </v-tabs-items>
+  </v-app>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuex"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@1.3.4/dist/vuetify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/vuetify@1.3.4,npm/sweetalert2@7.28.12"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+<script src="lib/accounting.js"></script>
+<script src="lib/moment.js"></script>
+
+<script src="components/manteams.js"></script>
+<script src="components/manperiods.js"></script>  <!-- check point 2 -->
+<script src="components/manplans.js"></script>
+<script src="components/manpools.js"></script>
+<script src="components/mangames.js"></script>
+<script src="components/manrequests.js"></script>
+<script src="components/mantickets.js"></script>
+<script src="components/manticketgames.js"></script>
+
+<!-- <script src="components/betgames.js"></script>  -->
+
+<script src="components/comp2Bet.js"></script>
+<script src="components/serviceuser.js"></script>   <!-- check point 3 -->
+
+</body>
+</html>

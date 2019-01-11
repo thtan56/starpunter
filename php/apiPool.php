@@ -1,63 +1,114 @@
 <?php
-require_once('configLog.php');
+//require_once('configLog.php');
 require_once('Pool.php');
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
-
-$logger = getLogger();
 $op = $json->{'op'};
-//$logger->info('1) apiGame.php', array('op' => $op));
-//$logger->info('2) apiGame.php', array('json' => $json));
+//$logger = getLogger();
+//$logger->info('1) apiPool.php', array('op' => $op));
 
 if(isset($op)){
   switch($op){
     case "getPools":
       $code = -1;
       $obj = new Pool();
-      $ret = $obj->getPools();
+      $ret = $obj->getPools($json);
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret);
+      break;     
+    case "getPool":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getPool($json->{'pool_id'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret);
+      break;      
+    case "getOrgPools":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getOrgPools($json->{'organiser'}); 
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
-      break;
+      break;   
+    case "getOrgsPools":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getOrgsPools($json);    // selected organisers, round
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;    
+    case "getOrgDatePools":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getOrgDatePools($json);    // selected organisers, today
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;       
     case "getWeekPools":
       $code = -1;
       $obj = new Pool();
-      $ret = $obj->getWeekPools();
-      $logger->info('1) apiPool.php', array('ret' => $ret));
+      $ret = $obj->getWeekPools($json->{'date'});
+ //$logger->info('3) getWeekPools.php', array('ret' => $ret));   
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
-      break;
-    case "getGamePools":  
-      $game = $json->{'data'}->{'name'};
-      $date = $json->{'data'}->{'date'};
-
+      break;         
+    case "updateCount":
       $code = -1;
       $obj = new Pool();
-      $ret = $obj->getGamePools($game, $date );
+      $ret = $obj->updateCount($json->{'pid'});
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;
-    case "addcount":
+    case "reverseCount":
+      $code = -1;
       $obj = new Pool();
-      $code = $obj->updatePoolCount($json);                    
-      $resp = array('code' => $code, 'msg' => $obj->getMsg());   // empty msg => ok
-      break;      
+      $ret = $obj->reverseCount($json->{'pid'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;             
     case "save":
+//      $logger->info('3) save', array('json' => $json));
       $id = $json->{'data'}->{'id'};
-   
       $obj = new Pool();
-      if (empty($id) || $id=="") {
-//$logger->info('3) apiGame: save-insert', array('json' => $json));   
-         $code = $obj->insertPool($json);
-      } else {
-//$logger->info('4) apiGame: save-update', array('json' => $json)); 
-         $code = $obj->updatePool( $json);     
-      };                        
+      $code = (empty($id) || $id=="") ? $obj->insertPool($json) : $obj->updatePool( $json);                     
       $resp = array('code' => $code, 'msg' => $obj->getMsg());   // empty msg => ok
+      break;       
+    case "autoGenPool":
+      $obj = new Pool();
+      $code = $obj->autoGenPool();                     
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());  
       break;
+    case "updatePoolWinners":
+      $code = -1;
+      $obj = new Pool();
+      $obj->updatePoolWinners($json);
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());
+      break;      
+    case "getPoolGames":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getPoolGames($json->{'pid'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break; 
+    case "getPoolTickets":
+      $code = -1;
+      $obj = new Pool();
+      $ret = $obj->getPoolTickets($json->{'pid'});
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;      
     case "delete":
       $code = -1;
       $obj = new Pool();

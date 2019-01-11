@@ -12,9 +12,12 @@ Vue.component('dialog2bet', {
           	<v-container grid-list-md>  
  
             <v-layout wrap>
-              <v-flex xs4><v-text-field label="Game Name" v-model="mybet.game_name"></v-text-field></v-flex>
-              <v-flex xs4><v-combobox v-model="mybet.organiser" :items="organisers" label="Select your organiser:"></v-combobox></v-flex>
-              <v-flex xs4><v-text-field label="Venue" v-model="mybet.venue"></v-text-field></v-flex>
+              <v-flex xs2>
+                <v-select label="Organiser" :items="organisers" @change="changeOrganiser" v-model="mybet.organiser" ></v-select>
+              </v-flex>
+              <v-flex xs5><v-combobox v-model="mybet.home_team" :items="teams" label="Home Team:"></v-combobox></v-flex>
+              <v-flex xs5><v-combobox v-model="mybet.away_team" :items="teams" label="Away Team:"></v-combobox></v-flex>
+
               <v-flex xs4><v-text-field label="Odd" v-model="mybet.bet_odd"></v-text-field></v-flex>
 
               <v-flex xs4><v-text-field v-model="mybet.username" label="Username" readonly background-color="red"></v-text-field></v-flex>
@@ -82,7 +85,7 @@ Vue.component('dialog2bet', {
             <v-flex xs4><v-text-field label="Away Score" v-model="mybet.away_score"></v-text-field></v-flex>
             <v-flex xs4>
               <v-radio-group v-model="mybet.status" :mandatory="false" label="Status: " row>  
-                <v-radio label="open" value="open"></v-radio>
+                <v-radio label="pending" value="pending"></v-radio>
                 <v-radio label="closed" value="closed"></v-radio>
               </v-radio-group>
             </v-flex>
@@ -104,7 +107,8 @@ Vue.component('dialog2bet', {
   	data () {
     	return {
 				organisers: ['NBA', 'NBL', 'NFL', 'AFL', 'Asian Games'],
-				bettypes: ['head2head', 'over', 'under', 'standard' ],
+				bettypes: ['head2head', 'over', 'under', 'standard', 'odd' ],
+        teams: [],
 				menu: false,
         btabs: null,
         tabItems: ['Head 2 Head', 'Over / Under', 'Standard', 'Result'],
@@ -116,7 +120,7 @@ Vue.component('dialog2bet', {
 		created() {
 //			this.dialog = true;
         this.mybet.username = this.$store.state.loginUser.username;
-//     	this.mybet.status = 'open';
+//     	this.mybet.status = 'pending';
 		},
   	computed: {
       formTitle () { return this.mybet.id === 0 ? 'New Bet' : 'Edit Bet' },
@@ -126,18 +130,32 @@ Vue.component('dialog2bet', {
           return moment($today).format('MM/DD/YYYY');
         }
       }
-  },
+    },
     methods: {
+      changeOrganiser(selectObj) {
+        this.mybet.organiser = selectObj;
+        this.getTeams(selectObj);
+      },
+      getTeams(organiser) {
+        this.result = 'Getting data from server...';
+        var postdata = { op: "getOrgTeamNames", id: organiser };
+        this.$http.post('php/apiTeam.php', JSON.stringify(postdata), {
+            headers: { 'Content-Type': 'application/json' }
+          }).then(response => { this.teams = response.body.data;
+            console.log(this.teams);
+          },      response => { this.result = 'Failed to load data to server.';
+        });
+      },
 			save() {
         console.log("1) save: this.mybet");
         console.log(this.mybet);
-      	if(this.mybet.game_name=='' || this.mybet.organiser=='' || this.mybet.game_date =='' || this.mybet.bet_type=='' ){     // mysql name (match) problem 
-        	this.error = 'game name, organiser and date fields are required';           // use select `match`, ....
+      	if(this.mybet.home_team=='' || this.mybet.away_team=='' || this.mybet.organiser=='' || this.mybet.game_date =='' || this.mybet.bet_type=='' ){     // mysql name (match) problem 
+        	this.error = 'home and away team, organiser and date fields are required';           // use select `match`, ....
         	return;
       	};
      		
         this.mybet.username = this.$store.state.loginUser.username;
-        if (this.mybet.id === 0) { this.mybet.status = 'open'; };
+        if (this.mybet.id === 0) { this.mybet.status = 'pending'; };
 
       	this.error = '';
       	this.result = 'Saving data to server...';

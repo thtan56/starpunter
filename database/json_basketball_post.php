@@ -10,9 +10,9 @@ $json = json_decode($data);
 $pdo = getPdoConnection();
 $stmt = $pdo->prepare('update game set status=?, odd=? where id=?');
 $stmt->execute([
-				 	$json->{'data'}->{'status'}	
-				 	$json->{'data'}->{'odd'}
-					,$json->{'data'}->{'id'}
+				$json->{'data'}->{'status'}	
+				,$json->{'data'}->{'odd'}
+				,$json->{'data'}->{'id'}
 				]);
 $stmt = null;
 ?>

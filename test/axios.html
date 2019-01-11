@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js-Index.html</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.4/vuetify.css" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+<div id="app">
+  <v-app id="inspire">
+    <v-container fluid grid-list-md>
+      <div>
+        <v-data-table :headers="headers" :items="pools" :pagination.sync="pagination">
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.organiser}}</td>
+            <td>{{ props.item.round}}</td>
+            <td>{{ props.item.id}}</td>
+          </template>
+        </v-data-table>
+      </div>            
+    </v-container>
+  </v-app>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@1.3.4/dist/vuetify.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+new Vue({
+  el: '#app',
+  data: () => ({
+    rowsPerPageItems: [4, 8, 12],
+    pagination: { rowsPerPage: 4 },
+    pools: [],
+    headers: [ { text: 'Organiser', value: 'organiser' },{ text: 'Round', value: 'round' }
+              ,{ text: 'Id#',       value: 'id' }],
+  }),
+  methods: {
+    getAllData: function () {
+      console.log("1) axios - getAllData");
+      var postdata = { op: "getOrgPools", organiser: 'NBA' }; 
+      axios.post('/php/apiPool.php', JSON.stringify(postdata)
+                                  , { headers: {'Content-Type': 'application/json'}} )
+        .then( function(response) {
+          this.pools = response.data.data;
+          console.log("2) response", response);
+          console.log("3) response.data", response.data);
+          console.log("4) this.pools", this.pools);
+          console.log("5) organiser", this.pools[0].organiser);
+         }).catch( function(error) {
+          console.log(err);
+        });
+    },
+  },  // end of methods
+  beforeMount(){
+    this.getAllData();
+  }
+});   // Vue
+</script>
+</body>
+</html>

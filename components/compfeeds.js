@@ -26,7 +26,7 @@ const NBAnews = Vue.component('feed-item', {
   props:[ 'color','title','content','link','feedtitle', 'posted' ],
   template: `
     <v-content>
-      <navbars></navbars>
+      <!-- navbars></navbars -->
       <h2> Basketball News - Sports News Australia</h2>    
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
@@ -94,7 +94,7 @@ const AFLnews = Vue.component('feed-item2', {
   props:[ 'color','title','content','link','feedtitle', 'posted' ],
   template: `
     <v-content>
-      <navbars role="guest"></navbars>
+      <!-- navbars role="guest"></navbars -->
       <h2> AFL News - Sports News Australia</h2>
       <v-container fluid grid-list-lg>
         <v-layout row wrap>

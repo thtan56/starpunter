@@ -7,10 +7,11 @@ runtime_config:
 #  document_root: web
 ## Uncomment for Cloud SQL
 beta_settings:
-  cloud_sql_instances: tobisports-2018:us-central1:mysql1956
-
+  cloud_sql_instances: starpunter:us-central1:mysql56
+#  cloud_sql_instances: tobisports-2018:us-central1:mysql1956
 env_variables:
-  MYSQL_DSN: mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956
+#  MYSQL_DSN: mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956
+  MYSQL_DSN: mysql:dbname=test;unix_socket=/cloudsql/starpunter:us-central1:mysql56
   MYSQL_USER: root
   MYSQL_PASSWORD: cancer56
   

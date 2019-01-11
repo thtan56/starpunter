@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Vue-Echarts</title>
-    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- link rel="stylesheet" href="/css/style.css" -->
 </head>
 <body>
 <div id="app">
@@ -29,7 +29,7 @@
         </div>
     </div>
 </div>
-<script src="lib/echarts.min.js"></script>
+<script src="/lib/echarts.min.js"></script>
 <script type="text/javascript">
         // based on prepared DOM, initialize echarts instance
         var myChart1 = echarts.init(document.getElementById('chart1'));
@@ -60,17 +60,6 @@
         if (option2 && typeof option2 === "object") {
             myChart2.setOption(option2, true);
         }
-</script>  
-<!--
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-       <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
-       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
- -->      
+</script>      
 </body>
 </html>

@@ -11,12 +11,12 @@ const store = new Vuex.Store({
     loginUser: { username: 'thtan56', role: 'customer', email: 'thtan56@gmail.com' },
     baseUrl: 'http://vueapp.test/database/',
     resultUrl: 'https://www.footywire.com/afl/footy/ft_match_list',
-    xchgRate: 2.5 
+    xchgRate: 2.5,
+    sport: { organiser: 'NBA', round: 'Round 4', today: '2018/12/20' }  
   },
   mutations: {
-    modifyMyRecord (state, newUser) {
-        state.loginUser = newUser;
-    }
+    modifyMyRecord (state, newUser) { state.loginUser = newUser; },
+    modifySportRecord (state, newSport)   { state.sport = newSport; }     // same as organiser    
   }
 });
 
@@ -25,16 +25,17 @@ const demo = new Vue({
   store,
   data: {
     tabs: null,
-    items: [ 'User', 'Team', 'Game', 'Bet' ],
+    items: [ 'User', 'Team','Period', 'Request', 'Plan', 'Pool', 'Games', 'Ticket', 'Ticket Games', 'Bet' ],
     result: '',
     error: '',
-    user: { id: 0, username: '', password: '', email: '', role: '', address1: '', address2: '', town: '',
+    user: { id: 0, username: '', email: '', role: '', address1: '', address2: '', town: '',
             firstname: '', lastname: '', postcode: '', country: '', bankbsb: '', bankaccount: ''},
     users: [],
     search: '',
     pagination: {},
     headers: [
-      { text: 'User Name', value: 'username' }, { text: 'Password', value: 'password' }, { text: 'Email', value: 'email' },
+      { text: 'User Name', value: 'username' },
+      { text: 'Email', value: 'email' },
       { text: 'Role', value: 'role' }, { text: 'Address1', value: 'address1' }, { text: 'Address2', value: 'address2' }
     ],
     countries: ['Australia', 'Canada', 'China', 'France', 'Malaysia', 'Singapore', 'United Kingdom', 'United States'],
@@ -43,12 +44,14 @@ const demo = new Vue({
     emailRules: [     (v) => !!v || 'E-mail is required',
                       (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid' ],
     usernameRules: [  (v) => !!v || 'Username is required',
-                      (v) => v && v.length <= 10 || 'Username must be less than 10 characters']
+                      (v) => v && v.length <= 10 || 'Username must be less than 10 characters'],
+    menuItems: [{ title: "Period", href:"fcPeriod.html" }
+                ,{ title: "Game",  href:"fcGame.html" } ],
   },
   methods: {
     save: function () {
-      if(this.user.username=='' || this.user.password=='' || this.user.email==''){
-        this.error = 'username, password and email fields are required';
+      if(this.user.username=='' ||  this.user.email==''){
+        this.error = 'username and email fields are required';
         return;
       }
       this.error = '';
@@ -60,7 +63,6 @@ const demo = new Vue({
           this.result = response.body;
           this.getAllData();                 // refresh datatable
           this.user.id = 0;                  // problem if next new record only has few fields entries 
-          this.user.username = '';      this.user.password = '';
           this.user.email = '';         this.user.role = '';
           this.user.address1 = '';      this.user.address2 = '';
           this.user.firstname = '';     this.user.lastname = '';

@@ -192,7 +192,7 @@ const betTable = Vue.component('betComponent', {
               <td>{{ props.item.bet_type }}-{{ props.item.bet_odd_type }}</td>
               <td>{{ props.item.bet_odd }}</td>
               <td style="display:none;">{{ props.item.id }}</td>
-              <template v-if="props.item.status == 'open'">   
+              <template v-if="props.item.status == 'pending'">   
                 <td class="justify-center layout px-0">
                   <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
                   <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -308,7 +308,7 @@ const betTable = Vue.component('betComponent', {
       btabs: null,
       tabItems: ['Head 2 Head', 'Over / Under', 'Standard / Standalone', 'Result'],
       filterList: [
-        { status: 'open' },
+        { status: 'pending' },
         { status: 'closed' }
       ],
       columns: [   
@@ -402,7 +402,7 @@ const betTable = Vue.component('betComponent', {
         return;
       };
       this.bettedItem.username = this.$store.state.loginUser.username;
-      this.bettedItem.status = 'open';
+      this.bettedItem.status = 'pending';
 
       this.error = '';
       this.result = 'Saving data to server...';
@@ -609,7 +609,7 @@ const gameSchedule = Vue.component('schComponent', {
       tabs: null,
 
       filterList: [
-        { status: 'open' },
+        { status: 'pending' },
         { status: 'closed' }
       ],
       games: [],
@@ -735,7 +735,7 @@ const gameSchedule = Vue.component('schComponent', {
       };
       this.bettedItem.id = 0;    // insert (no editing in game schedule componenent)
       this.bettedItem.username = this.$store.state.loginUser.username;
-      this.bettedItem.status = 'open';
+      this.bettedItem.status = 'pending';
 
       this.error = '';
       this.result = 'Saving data to server...';

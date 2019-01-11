@@ -28,13 +28,17 @@ const store = new Vuex.Store({
 });
 
 const routes = [
-  { path: '/', component: loginCustomer },                  // { path: '/', component: Attractions },
+  { path: '/', component: sysManager },                  // { path: '/', component: Attractions },
   { path: '/breakfast', component: Breakfast },
   { path: '/meat', component: Meat },
   { path: '/sushi', component: Sushi },
-  { path: '/gameAFL', component: AFL },
-  { path: '/basketball/NBL', component: nbaBet },
-  { path: '/basketball/NBA', component: nbaBet },
+//  { path: '/gameAFL', component: AFL },
+//  { path: '/basketball/NBL', component: nbaBet },
+//  { path: '/basketball/NBA', component: nbaBet },
+  { path: '/basketballNBL', component: nblBet },
+  { path: '/basketballNBA', component: nbaBet },
+
+
   { path: '/AG2018Bas', component: asiaBet },  
   { path: '/gameNRL', component: NRL },    
   { path: '/product', component: Product },

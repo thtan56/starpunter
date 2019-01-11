@@ -1,15 +1,10 @@
 <?php
-//require_once('configLog.php');
 require_once('Team.php');
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
 
-//$logger = getLogger();
 $op = $json->{'op'};
-//$logger->info('1) apiUser.php', array('op' => $op));
-//$logger->info('2) apiUser.php', array('json' => $json));
-//---- start logging from here ----------------------------- 
 if(isset($op)){
   switch($op){
     case "getTeams":
@@ -29,6 +24,24 @@ if(isset($op)){
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;   
+    case "getOrgTeamNames":
+      $id = $json->{'id'};
+      $code = -1;
+      $obj = new Team();
+      $ret = $obj->getOrgTeamNames($id);
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;
+     case "getTeamLongNames":
+      $code = -1;
+      $obj = new Team();
+      $ret = $obj->getTeamLongNames($json->{'keys'});
+//       $logger->info('4) getTeamLongNames', array('ret' => $ret));
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;              
     case "save":
       $id = $json->{'data'}->{'id'};
       $obj = new Team();

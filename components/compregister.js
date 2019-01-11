@@ -65,7 +65,7 @@ const Register = Vue.component('registercomponent', {
       status: '', 
       user: { id: 0, firstname: '', lastname: '', username: '', password: '', email: '', role: '', address1: '', address2: '', town: '', postcode: '', country: '', bankbsb: '', bankaccount: '' },
       countries: ['Australia', 'Canada', 'France', 'Malaysia', 'United Kingdom', 'United States'],
-      roles: ['player', 'manager', 'administrator', 'guest'],
+      roles: ['customer', 'manager', 'guest'],
       submitted: false,
       error: '',
       result: ''   
@@ -79,7 +79,7 @@ const Register = Vue.component('registercomponent', {
       }
       this.error = '';
       this.result = 'Saving data to server...';
-        let postdata = { "op": "save", "data": this.user };
+        let postdata = { "op": "register", "data": this.user };
         //console.log(JSON.stringify(postdata));
         this.$http.post('php/apiUser.php', postdata, { 
           headers: { 'Content-Type': 'application/json' } })

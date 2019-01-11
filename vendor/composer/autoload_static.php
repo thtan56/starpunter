@@ -11,6 +11,7 @@ class ComposerStaticInitd5acad10b5e38bf9f1d673c72c0fb5a1
         array (
             'Psr\\Log\\' => 8,
             'PhpConsole\\' => 11,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
@@ -26,6 +27,10 @@ class ComposerStaticInitd5acad10b5e38bf9f1d673c72c0fb5a1
         'PhpConsole\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-console/php-console/src/PhpConsole',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Monolog\\' => 
         array (

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js-Index.html</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+<div id="app">
+  <game-list></game-list>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>
+
+<script>
+const GameComponent = Vue.component('gametable', { 
+  template: /* syntax: html */ `
+  <div>
+    <ul id="games">
+      <li v-for="game in games" :key="game.id">
+        <hr /><b>{{ game.orgweek }}</b>{{ game.home_team }}
+      </li>
+    </ul>
+  </div>
+  `,
+ data() {
+    return {
+      tickets: [],
+      games: [],
+      filtered: [], 
+    }
+  },
+  methods: {
+    removeDuplicates(myArr, prop) {
+        return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+        });
+    },   
+    getAllData() {
+      console.log("10) getAllData");
+      var result = 'Getting data from server...'; 
+      postdata = { op: "getWeek2Games" };  
+      this.$http.post('/php/apiGame.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }
+        }).then(response => {    
+            if (response.body === null) { this.games=[];  
+            } else {              
+              this.games = response.body.data;
+              console.log("11) this.games", this.games);
+//              this.filtered = this.removeDuplicates(this.games, 'orgweek');
+              this.filtered = _.uniqBy(this.games, 'orgweek');
+              console.log("13) this.filtered", this.filtered);
+ 
+   //  this.filtered = _.filter(this.pools, (pool) => _.includes(this.selected, pool.organiser) );
+   //  return this.filtered.filter(pool => pool.pool_type === key)       
+            };
+       },   response => { result = 'Failed to load data to server.';
+      });
+    },
+  },    // end of methods
+  created() {  this.getAllData(); }
+});
+
+new Vue({
+  el: '#app',
+  components: { 'game-list': GameComponent },
+  data: { },
+});       // end of Vue
+</script>
+</body>
+</html>

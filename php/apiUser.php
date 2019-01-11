@@ -1,14 +1,14 @@
 <?php
-//require_once('configLog.php');
+//require __DIR__.'/configLog.php';
 require_once('User.php');
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
+$op = $json->{'op'};
 
 //$logger = getLogger();
-$op = $json->{'op'};
-//$logger->info('1) apiUser.php', array('op' => $op));
-//$logger->info('2) apiUser.php', array('json' => $json));
+//$logger->info('1) apiUser.php', array('json' => $json));
+
 //---- start logging from here ----------------------------- 
 if(isset($op)){
   switch($op){
@@ -20,6 +20,12 @@ if(isset($op)){
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;
+    case "register":
+      $id = $json->{'data'}->{'id'};
+      $obj = new user();
+      $code = $obj->registerUser($json);                        
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());   // empty msg => ok
+      break;      
     case "save":
       $id = $json->{'data'}->{'id'};
       $obj = new user();
@@ -35,12 +41,48 @@ if(isset($op)){
     case "getUser":
       $code = -1;
       $obj = new User();
-      $ret = $obj->getUser($json->{'email'});
+      $ret = $obj->getUser('email', $json->{'email'});
 //      $logger->info('3) getUser', array('ret' => $ret));
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;
+    case "getUserByName":
+      $code = -1;
+      $obj = new User();
+      $ret = $obj->getUser('username', $json->{'username'});
+//      $logger->info('3) getUser', array('ret' => $ret));
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;   
+    case "getUserGameSummary":   // by ticket id
+      $code = -1;
+      $obj = new User();
+      $ret = $obj->getUserGameSummary($json);     // tid
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      break;          
+    case "changePassword":
+      $code = -1;
+      $obj = new user();
+      $obj->changePassword($json);            
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());
+      break;   
+    case "resetPassword":
+ //   $logger->info('3) resetPassword', array('json' => $json));
+      $code = -1;
+      $obj = new user();
+      $obj->changePassword($json);            
+      $resp = array('code' => $code, 'msg' => $obj->getMsg());
+      break;   
+     case "sendMail":
+      $code = -1;
+      $obj = new user();
+      $obj->sendMail($json);
+      $resp = array('code' => $code, 'msg' => $obj->getMsg()); 
+      break;       
     default:
       $ret = -999;
       $resp = array('code' => $ret, 'msg' => 'invalid operation');

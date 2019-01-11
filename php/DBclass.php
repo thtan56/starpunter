@@ -5,6 +5,7 @@ class DB {
     private $dbPass;
     public $dbServer;
     private $msg;
+    protected $pdo;    // $con
 
     private $local = array(
       'db_dsn' => 'mysql:dbname=test;host=localhost',
@@ -12,7 +13,8 @@ class DB {
       'db_pass' => 'cancer56'
       );
     private $google = array(
-      'db_dsn' => 'mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956',
+//      'db_dsn' => 'mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956',
+      'db_dsn' => 'mysql:dbname=test;unix_socket=/cloudsql/starpunter:us-central1:mysql56',
       'db_user' => 'root',
       'db_pass' => 'cancer56'
       );
@@ -45,10 +47,10 @@ class DB {
 		}
     public function getPDO() {
     	try {
-    		$pdo = new PDO($this->dbDsn, $this->dbUser, $this->dbPass);
-      	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    		$this->pdo = new PDO($this->dbDsn, $this->dbUser, $this->dbPass);
+      	$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     	} catch (PDOException $e) { $this->msg = $e->getMessage();  }   
-      return $pdo;
+      return $this->pdo;
     }
 }
 ?>

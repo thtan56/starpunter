@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue.js-Index.html</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.3.4/vuetify.css" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+<div id="app">
+  <h1>Hello App!</h1>
+  <p>
+    <router-link to="/">Go to Home Page</router-link>
+    <router-link to  ="/login">Login Page</router-link>
+    <router-link to="/register">Registration Page</router-link>
+  </p>
+  <router-view></router-view>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@1.3.4/dist/vuetify.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://unpkg.com/vuex"></script>
+
+<script>
+const Meat = { template: '<div>Meat</div>' } 
+
+const Home = Vue.component('homepage', {
+  template: /* syntax: html */ `
+  <v-content>
+    <ul id="posts">
+      <li v-for="post in posts" :key="post.id">
+        <hr /><b>{{ post.title }}</b>{{ post.body }}
+      </li>
+    </ul>
+  </v-content>
+  `,
+ data() {
+    return {
+      organiser: '',
+      posts: []
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log("10) beforeRouteEnter");
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+        .then(response => {
+          this.organiser="NBL";
+          this.organiser = store.state.sport.organiser;      // but what if not login
+    console.log("11) this.organiser", this.organiser);
+          next(vm => (vm.posts = response.data) )
+    })
+  },
+  created(){ 
+    console.log("20) created, this.posts",this.posts); 
+    console.log("21) organiser",this.organiser); 
+  }
+});   // Vue
+
+const store = new Vuex.Store({
+  state: {
+    loginUser: { username: '', role: 'guest', email: 'guest@gmail.com', vcash: 0 },
+    baseUrl: 'http://vueapp.test/database/',
+    resultUrl: 'https://www.footywire.com/afl/footy/ft_match_list',
+    xchgRate: 2.5,
+    myevent: '',
+    sport: { organiser: 'NBA', round: 'Round 4', today: '2018/12/20' },   // default keys   - servicebet 
+  },
+  mutations: {
+    modifyMyRecord (state, newUser)     { state.loginUser = newUser; },
+    modifyEventRecord (state, newEvent) { state.myevent = newEvent;  },
+    modifySportRecord (state, newSport)   { state.sport = newSport; },     // same as organiser
+  }
+});  
+const routes = [{ path: '/', component: Home } ]  
+const router = new VueRouter({
+  mode: 'history',
+  routes 
+})
+
+new Vue({
+  el: '#app',
+  router,
+  store,  
+  data() { return {} },
+  created(){ console.log("1) parent: created"); }    
+})
+
+ </script>
+</body>
+</html>

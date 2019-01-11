@@ -15,11 +15,17 @@ Vue.component('betNgame', {
   template: `
   <v-container fluid grid-list-md>
     <v-layout column>
-      <v-toolbar color="pink" dark><v-toolbar-title>Head 2 Head Betting</v-toolbar-title><v-spacer></v-spacer>
+      <v-toolbar color="pink" dark><v-toolbar-title>Games of the week</v-toolbar-title><v-spacer></v-spacer>
         <v-btn color="info" @click="newGame()">New Game</v-btn></v-toolbar>   
 
       <v-card-title>
-        <v-select label="Organiser" :items="organisers" @change="changeOrganiser" v-model="selectedOrganiser" ></v-select>
+        <v-layout row wrap>
+          <template v-for="org in orgs">
+            <v-flex xs2>
+            <input type="radio" :value="org.name" id="org.name" v-model="checkedOrganisers" @click="check($event)"> {{org.name}}
+            </v-flex>
+          </template>
+        </v-layout>
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
       </v-card-title>
@@ -28,10 +34,11 @@ Vue.component('betNgame', {
         <template slot="items" slot-scope="props">
           <td>{{ props.item.name}} - {{ props.item.winner}}
 
-                <gamepools :game="props.item" /></td>    <!-- need refresh for a organiser -->
+                <betpools :game="props.item" /></td>    <!-- need refresh for a organiser -->
 
           <td>{{ props.item.organiser}}</td><td>{{ props.item.venue}}</td>
-          <td>{{ props.item.date}}</td><td>{{ props.item.odd}}</td>
+          <td>{{ props.item.date}}</td>
+          <td>{{ props.item.home_odd}}</td><td>{{ props.item.away_odd}}</td>
           <td>
             <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
             <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -47,10 +54,12 @@ Vue.component('betNgame', {
         <v-card-text>
           <v-container grid-list-md>  
             <v-layout wrap>
-              <v-flex xs4><v-text-field label="Game Name" v-model="editedgame.name"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field label="Home Team" v-model="editedgame.home_team"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field label="Away Team" v-model="editedgame.away_team"></v-text-field></v-flex>
               <v-flex xs4><v-combobox v-model="editedgame.organiser" :items="organisers" label="Select your organiser:"></v-combobox></v-flex>
               <v-flex xs4><v-text-field label="Venue" v-model="editedgame.venue"></v-text-field></v-flex>
-              <v-flex xs4><v-text-field label="Odd" v-model="editedgame.odd"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field label="Home Odd" v-model="editedgame.home_odd"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field label="Away Odd" v-model="editedgame.away_odd"></v-text-field></v-flex>
 
               <v-flex xs4><v-text-field label="Id" v-model="editedgame.id" readonly background-color="red"></v-text-field></v-flex>
 
@@ -131,20 +140,21 @@ Vue.component('betNgame', {
 
         organiser: 'NBA',  
         organisers: ['NBA', 'NBL', 'NFL', 'AFL', 'Asian Games'],
+        orgs: [ {name: 'NBA'},{name:'NBL'}, {name:'NFL'},{name:'AFL'},{name:'Asian Games'}],
+        checkedOrganisers:[],
 
-
-        selectedOrganiser: '',
-        selectedgame: { name: '', organiser: '', venue: '', date: '', winner: '', home_score: 0, away_score: 0,
-              odd: 0, pool_id: 0, username: '', id: 0 },
+        selectedgame: { home_team: '', away_team:'', organiser: '', venue: '', date: '', winner: '', home_score: 0, away_score: 0,
+              status:'', pool_id: 0, username: '', id: 0 },
 
         editedIndex: -1,
-        editedgame: { name: '', organiser: '', venue: '', date: '', winner: '', home_score: 0, away_score: 0,
-              odd: 0, pool_id: 0, username: '', id: 0 },
+        editedgame: { home_team: '', away_team:'', organiser: '', venue: '', date: '', winner: '', home_score: 0, away_score: 0,
+              status: '', pool_id: 0, username: '', id: 0 },
 
         pagination: {},
         headers: [{ text: 'Game / Winner / Pools', value: 'name' },  { text: 'Organiser', value: 'organiser' } 
                   ,{ text: 'Venue', value: 'venue' },{ text: 'Date', value: 'date' }
-                  ,{ text: 'Odd', value: 'odd' } ],
+                  ,{ text: 'Home Odd', value: 'home_odd' },{ text: 'Away Odd', value: 'away_odd' }
+                   ],
         search: '',
       }
     },
@@ -152,16 +162,13 @@ Vue.component('betNgame', {
       formTitle () { return this.editedIndex === -1 ? 'New Game' : 'Edit Game' },
     },
     methods: {
-      changeOrganiser(selectObj) {
-        console.log('55) changeOrganiser');
-        console.log(selectObj);
-        console.log(this.selectedOrganiser);
-        this.organiser = this.selectedOrganiser;
-        this.getAllData();
-
-      },
-      handleTabChange(tabIndex, newTab, oldTab){
-        console.log(tabIndex, newTab.title, oldTab.title)
+      check: function(e) {
+        if (e.target.checked) {
+          console.log(e.target.value)
+          this.organiser = e.target.value;
+          console.log(this.organiser);
+          this.getAllData();
+        }
       },
       closeDialog () {
         console.log('51) closeDialog');
@@ -173,14 +180,18 @@ Vue.component('betNgame', {
         this.editedIndex = -1;
         this.editedgame.username = this.$store.state.loginUser.username;
         this.editedgame.id = 0;
-        this.editedgame.name = '';
+        this.editedgame.home_team = '';
+        this.editedgame.away_team = '';
+
         this.editedgame.organiser = '';
         this.editedgame.venue = '';
         this.editedgame.date ='';
         this.editedgame.winner = '';
         this.editedgame.home_score = 0;
         this.editedgame.away_score = 0;
-        this.editedgame.odd = 0;
+        //this.editedgame.home_odd = 0;
+        //this.editedgame.away_odd = 0;
+        this.editedgame.status = 'pending';
 
         this.editedgame.pool_id = 0;
         this.gamedialog = true;  
@@ -189,11 +200,15 @@ Vue.component('betNgame', {
         this.editedIndex = this.games.indexOf(item);
         this.editedgame = Object.assign({}, item);
 
-        this.editedgame.name = item.name;
+        this.editedgame.home_team = item.home_team;
+        this.editedgame.away_team = item.away_team;
         this.editedgame.organiser = item.organiser;
         this.editedgame.venue = item.venue;
         this.editedgame.date = item.date;
-        this.editedgame.odd = item.odd;
+        //this.editedgame.home_odd = item.home_odd;
+        //this.editedgame.away_odd = item.away_odd;
+        this.editedgame.status = item.status;
+
         this.editedgame.winner = item.winner;
         this.editedgame.id = item.id;
         this.gamedialog = true;  
@@ -201,7 +216,7 @@ Vue.component('betNgame', {
         console.log(this.editedgame);
       },
       deleteItem: function(item){
-        var r = confirm("Are you sure to delete this item ("+item.name+ ")?");
+        var r = confirm("Are you sure to delete this item ("+item.home_team+ " vs " +item.away_team+")?");
         if(r==true) {
           this.result = 'Deleting data to server...';
           var postdata = { op: "delete", id: item.id };
@@ -213,17 +228,18 @@ Vue.component('betNgame', {
         }
       },
       save() {
-        if(this.editedgame.name=='' || this.editedgame.organiser=='' || this.editedgame.date =='' ){     // mysql name (match) problem 
-          this.error = 'game name, organiser and date fields are required';           // use select `match`, ....
+        if(this.editedgame.home_team=='' || this.editedgame.away_team=='' || this.editedgame.organiser=='' 
+                                         || this.editedgame.date =='' ){     // mysql name (match) problem 
+          this.error = 'home & away team, organiser and date fields are required';           // use select `match`, ....
           return;
         };
         if (this.editedIndex > -1) {
           Object.assign(this.games[this.editedIndex], this.editedgame);
         } else {
+          this.editedgame.status = 'pending';
           this.games.push(this.editedgame);     // new
         };  
         
-        this.editedgame.status = 'open';
         this.error = '';
         this.result = 'Saving data to server...';
         var postdata = { "op": "save", "data": this.editedgame };
@@ -258,7 +274,7 @@ Vue.component('betNgame', {
       this.getAllData(); }
 });
 
-const pools = Vue.component('gamepools', {
+const pools = Vue.component('betpools', {
   props: { 
     'game': {type: Object },
     'dialog' : {type: Boolean, default: false }
@@ -271,7 +287,7 @@ const pools = Vue.component('gamepools', {
       :rows-per-page-items="rowsPerPageItems" :pagination.sync="pagination" 
       content-tag="v-layout" hide-actions row wrap dark>   <!-- every individuals bottom potion -->
       <v-toolbar slot="header" class="mb-2" color="indigo darken-5" dark flat>
-        <v-toolbar-title>{{ game.name }} - ({{ game.date }} ){{game.status}}
+        <v-toolbar-title>{{ game.home_team }} vs {{game.away_team}} - ({{ game.date }} ){{game.status}}
         
           <v-btn :disabled="role != 'manager'" 
                 color="info" @click="newPool(game)">
@@ -287,7 +303,7 @@ const pools = Vue.component('gamepools', {
           <v-list dense>
             <v-list-tile>
               <v-list-tile-content>Entry Quorum:</v-list-tile-content>
-              <v-list-tile-content class="align-end">{{ props.item.entry_count }} / {{ props.item.entry_quorum }}</v-list-tile-content>
+              <v-list-tile-content class="align-end">{{ props.item.entrants }} / {{ props.item.entry_quorum }}</v-list-tile-content>
             </v-list-tile>
             <v-list-tile>
               <v-list-tile-content>Pool Prize:</v-list-tile-content>
@@ -307,10 +323,10 @@ const pools = Vue.component('gamepools', {
               <v-list-tile-content class="align-end">{{ props.item.team2_count }}</v-list-tile-content>
             </v-list-tile>
 <!-- ============================================================ 
-    disable button         if entry_count == 2
+    disable button         if entrants == 2
     only manager           can edit & delete pool
 -->
-            <v-icon :disabled="!exceedQuorum(props.item.entry_quorum, props.item.entry_count)"
+            <v-icon :disabled="!exceedQuorum(props.item.entry_quorum, props.item.entrants)"
               small @click="betItem(props.item)">add_shopping_cart</v-icon>
 
             <v-icon :disabled="role != 'manager'" small class="mr-2" @click="editItem(props.item)">edit</v-icon>
@@ -326,19 +342,27 @@ const pools = Vue.component('gamepools', {
       </v-toolbar>
     </v-data-iterator>
     </v-card>
-
+    <!-- ===================================================================================================== -->
     <v-dialog v-model="pooldialog" max-width="500px">
       <v-card dark color="blue-grey">
         <v-card-title><span class="headline">{{formTitle}}</span></v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 sm8><v-text-field v-model="editedItem.name" label="Game name" readonly background-color="red"></v-text-field></v-flex>
-              <v-flex xs12 sm4><v-text-field v-model="editedItem.date" label="Date" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field v-model="editedItem.organiser" label="Organiser" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field v-model="editedItem.home_team" label="Home Team" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs4><v-text-field v-model="editedItem.away_team" label="Away Team" readonly background-color="red"></v-text-field></v-flex>
               
-              <v-flex xs12 sm6 md6><v-text-field v-model="editedItem.id" label="Pool id" readonly background-color="red"></v-text-field></v-flex>
-              <v-flex xs12 sm6 md6><v-text-field v-model="editedItem.entry_count" label="Entry Count" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs3><v-text-field v-model="editedItem.date" label="Date" readonly background-color="red"></v-text-field></v-flex>              
+              <v-flex xs3><v-text-field v-model="editedItem.round" label="Round" readonly background-color="red"></v-text-field></v-flex>  
+              <v-flex xs3><v-text-field v-model="editedItem.id" label="Pool id" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs3><v-text-field v-model="editedItem.entrants" label="Entry Count" readonly background-color="red"></v-text-field></v-flex>
 
+              <v-flex xs12>
+                <v-radio-group v-model="editedItem.bet_type" row label="Bet Type:" background-color="green">
+                  <v-radio v-for="item in ['head2head','group']" :key="item" :label="item" :value="item"></v-radio>
+                </v-radio-group>
+              </v-flex>
               <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entry_cost" label="Entry Cost" background-color="green"
               :disabled="editedItem.id > 0"></v-text-field></v-flex>
               <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entry_quorum" label="Entry Quorum" background-color="green"></v-text-field></v-flex>
@@ -357,19 +381,22 @@ const pools = Vue.component('gamepools', {
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!-- ======================================================================================================= -->
     <v-dialog v-model="placebetdialog" max-width="500px">
       <v-card dark color="blue-grey">
         <v-card-title><span class="headline">Place Bet</span></v-card-title>
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12><v-text-field v-model="editedItem.name" label="Game name" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs6><v-text-field v-model="editedItem.home_team" label="Home Team" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs6><v-text-field v-model="editedItem.away_team" label="Away Team" readonly background-color="red"></v-text-field></v-flex>
+
               <v-flex xs12 sm4><v-text-field v-model="editedItem.date" label="Date" readonly background-color="red"></v-text-field></v-flex>
               
               <v-flex xs12 sm6 md6><v-text-field v-model="editedItem.id" label="Pool id" readonly background-color="red"></v-text-field></v-flex>
               
               <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entry_cost" label="Entry Cost" readonly background-color="red"></v-text-field></v-flex>
-              <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entry_count" label="Entry Count" readonly background-color="red"></v-text-field></v-flex>
+              <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entrants" label="Entry Count" readonly background-color="red"></v-text-field></v-flex>
               <v-flex xs12 sm4 md4><v-text-field v-model="editedItem.entry_quorum" label="Entry Quorum" readonly background-color="red"></v-text-field></v-flex>
               
               <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.pool_prize" label="Pool Prize" readonly background-color="red"></v-text-field></v-flex>
@@ -377,7 +404,7 @@ const pools = Vue.component('gamepools', {
 
               <v-flex xs12 sm6 md4><v-text-field v-model="editedItem.username" label="Username" readonly background-color="red"></v-text-field></v-flex>
 
-              <v-flex xs12 sm8>
+              <v-flex xs12>
                 <v-radio-group v-model="editedItem.bet_winner" row label="Bet Winner:" background-color="green">
                   <v-radio v-for="item in editedItem.teams" :key="item" :label="item" :value="item"></v-radio>
                 </v-radio-group>
@@ -404,10 +431,12 @@ const pools = Vue.component('gamepools', {
       pooldialog: false,
       placebetdialog: false,
       editedIndex: -1,
-      editedItem: { name: '', organiser: '', venue: '', date: '', bet_winner: '', home_score: 0, away_score: 0,
-              odd: 0, pool_id: 0, username: '', id: 0 },
-      bettedItem: { game_name: '', organiser: '', venue: '', game_date: '', game_winner: '', 
+      editedItem: { home_team: '', away_team:'', organiser: '', venue: '', date: '', round: '', bet_type: '', bet_winner: ''
+              ,home_score: 0, away_score: 0,
+              odd_date: '', home_odd: 0, away_odd: 0, pool_id: 0, username: '', id: 0 },
+      bettedItem: { home_team: '', away_team: '', organiser: '', venue: '', game_date: '', game_winner: '', 
               bet_odd: 0, bet_type: '', pool_id: 0, username: '', bet_winner: '', bet_amount: 0, id: 0 },
+      bet_types: ['head2head','standard','group'],
       pools: [],
       teams: [],
     }
@@ -438,9 +467,15 @@ const pools = Vue.component('gamepools', {
     newPool (game) {
       this.editedIndex = -1;
       this.editedItem.id = 0;
-      this.editedItem.name = game.name;
-      this.editedItem.date = game.date;
-      this.editedItem.entry_count = 0;
+      this.editedItem.organiser = game.organiser;
+      this.editedItem.home_team = game.home_team;
+      this.editedItem.away_team = game.away_team;
+      this.editedItem.date      = game.date;
+      this.editedItem.round     = game.round;
+      this.editedItem.bet_type = "head2head";
+      this.editedItem.odd_date = "2018-10-10";
+
+      this.editedItem.entrants = 0;
       this.editedItem.entry_cost = 0;
       this.editedItem.entry_quorum = 0;
       this.editedItem.pool_prize = 0;
@@ -452,7 +487,11 @@ const pools = Vue.component('gamepools', {
       this.editedItem = Object.assign({}, item);
 
       this.editedItem.id = item.id;
-      this.editedItem.name = item.name;
+//      this.editedItem.name = item.name;
+      this.editedItem.home_team = item.home_team;
+      this.editedItem.away_team = item.away_team;
+
+
       this.editedItem.date = item.date;
 
       this.pooldialog = true;  
@@ -469,7 +508,8 @@ const pools = Vue.component('gamepools', {
       };
       this.editedItem.id       = item.id;
       this.editedItem.pool_id  = item.id;
-      this.editedItem.name     = item.name;
+      this.editedItem.home_team     = item.home_team;
+      this.editedItem.away_team     = item.away_team;
       this.editedItem.date     = item.date;
 
       this.editedItem.username = this.$store.state.loginUser.username;
@@ -479,14 +519,13 @@ const pools = Vue.component('gamepools', {
     },
     deleteItem: function(item){
       const index = this.pools.indexOf(item);
-      var r = confirm("Are you sure to delete this item ("+item.name+ ":Entry cost="+this.pools[index].entry_cost+")?");
+      var r = confirm("Are you sure to delete this item ("+item.home_team+" vs "+item.away_team+ ":Entry cost="+this.pools[index].entry_cost+")?");
       if(r==true) {
         this.pools.splice(index, 1);          // remove deleted item  
         this.result = 'Deleting data to server...';
         var postdata = { op: "delete", id: item.id };
-        this.$http.post('php/apiPool.php', JSON.stringify(postdata),{ headers: { 'Content-Type': 'application/json' } })
+        this.$http.post('php/apiPoolGames.php', JSON.stringify(postdata),{ headers: { 'Content-Type': 'application/json' } })
           .then(response => { this.result = response.body;
-       //                       this.getGamePools(item);    
           },      response => { this.result = 'Failed to delete data.'; }
           );
         }
@@ -504,7 +543,7 @@ const pools = Vue.component('gamepools', {
       this.error = '';
       this.result = 'Saving data to server...';
       var postdata = { "op": "save", "data": this.editedItem };      
-      this.$http.post('php/apiPool.php', postdata,{ headers: { 'Content-Type': 'application/json' } })
+      this.$http.post('php/apiPoolGames.php', postdata,{ headers: { 'Content-Type': 'application/json' } })
         .then(response => {
         }, response => { this.result = 'Failed to save data to server.'; }
         );       
@@ -522,7 +561,7 @@ const pools = Vue.component('gamepools', {
       this.result = 'Saving data to server...';
 
       var postdata = { "op": "addcount", "data": this.editedItem };      
-      this.$http.post('php/apiPool.php', postdata,{ headers: { 'Content-Type': 'application/json' } })
+      this.$http.post('php/apiPoolGames.php', postdata,{ headers: { 'Content-Type': 'application/json' } })
         .then(response => {
         }, response => { this.result = 'Failed to save data to server.'; }
         );    
@@ -533,9 +572,10 @@ const pools = Vue.component('gamepools', {
       this.bettedItem.game_winner='';
       this.bettedItem.bet_type = "head2head";
 
-      this.bettedItem.game_name = this.editedItem.name;
+      this.bettedItem.home_team = this.editedItem.home_team;
+      this.bettedItem.away_team = this.editedItem.away_team;
       this.bettedItem.game_date = this.editedItem.date;
-      this.bettedItem.bet_odd = this.editedItem.odd;
+//      this.bettedItem.bet_odd = this.editedItem.odd;
       this.bettedItem.pool_id = this.editedItem.pool_id;    // keep pool_id (id = 0 ????)
       this.bettedItem.bet_amount = this.editedItem.entry_cost;
       // ----- problems below: null values needs defaults (head 2 head does need these data in bet table) ------------
@@ -550,7 +590,7 @@ const pools = Vue.component('gamepools', {
         .then(response => {
         }, response => { this.result = 'Failed to save data to server.'; }
         ); 
-      this.getGamePools(this.editedItem);     // refresh - ok 
+      this.getBetPools(this.editedItem);     // refresh - ok 
  //     this.$emit('close-placebetdialog');  
       this.betClose();
     },
@@ -558,15 +598,15 @@ const pools = Vue.component('gamepools', {
       this.placebetdialog = false;
     },
     close() { this.pooldialog = false; },
-    getGamePools: function (game) {
-        console.log('98) getGamePools:game>');
+    getBetPools: function (game) {
+        console.log('98) getBetPools:game>');
         console.log(game);
         this.result = 'Getting data from server...';
-        var postdata = { op: "getGamePools", data: game };    // name, date
-        this.$http.post('php/apiPool.php', JSON.stringify(postdata), {
+        var postdata = { op: "getBetPools", data: game };    // name, date
+        this.$http.post('php/apiPoolGames.php', JSON.stringify(postdata), {
           headers: { 'Content-Type': 'application/json' }
           }).then(response => { this.pools = response.body.data;
-            console.log('99) getGamePools');
+            console.log('99) getBetPools');
             console.log(this.pools);        // null if new game created but no pools yet
           },      response => { this.result = 'Failed to load data to server.';
           });
@@ -574,8 +614,9 @@ const pools = Vue.component('gamepools', {
     },
     beforeMount(){
       console.log('1) beforeMount');
-      this.game.teams = this.game.name.split(' vs ');           // create teams from game name
-      this.getGamePools(this.game);                        // get this.pools
+      console.log(this.game);
+      this.game.teams = [this.game.home_team, this.game.away_team];
+      this.getBetPools(this.game);                        // get this.pools
     }
 });      
 

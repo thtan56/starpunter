@@ -1,0 +1,30 @@
+1) home page is similar for public and login user.
+2) home page shows the pools available to participate.
+3) join a pool by buying a ticket.
+	a) a $25 pool(entry cost) has a quorum of 2 (head to head) to 50 or more players (group).
+	b) the pool type is either head to head or group
+	c) other information in the pool are payout (top 1, 2, etc), pool prize.
+
+4) a ticket has information about the pool (pool id) and users in that pool.
+5) ticketgames will have games selected by the players with their favorite team.
+	a) the players need to indicate the amount to bet using virtual currency.
+	b) currency used in the pool is hard currency.
+
+
+
+
+
+B) Buy Ticket
+There are two ways to buy a ticket.
+
+i) On the home page, 
+
+
+
+
+a) select your plan;
+
+b) on the entrant section, there is a button to 'buy ticket' for that selected plan.
+
+
+	

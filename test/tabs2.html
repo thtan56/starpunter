@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>tabs.html</title>
+</head>
+<body>
+<div id="app">
+<button v-for="tab in tabs"
+   v-bind:key="tab"
+   v-bind:class="['tab-button', { active: currentTab === tab }]"
+   v-on:click="currentTab = tab">
+   {{ tab }}
+ </button>
+ <template v-if="currentTab === tabs[0]">
+     <div v-for="(fruit, index) in fruits" :key="index">
+      <p>{{ fruit.name }}</p>
+      <p >{{ fruit.price }}</p>
+     </div>
+ </template>
+ <template v-if="currentTab === tabs[1]">
+     <div v-for="(vege, index) in veges" :key="vege">
+      <p>{{ vege.name }}</p>
+      <p>{{ vege.price }}</p>
+    </div>
+ </template>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script>
+new Vue({
+  el: "#app",
+  data: {
+    currentTab: 'fruits',
+    tabs: ['fruits', 'veges'],
+    fruits: [ { name: 'fruit', price: '3$'} ],
+    veges: [ { name: 'vege', price: '1$' } ]
+  },
+  created() {
+  }
+});
+</script>
+</body>
+</html>

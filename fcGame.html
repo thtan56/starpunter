@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Event Scheduling Using fullcalendar</title>
+  <link rel="stylesheet" href="css/cssmenu.css">
+  <link href="fullcalendar/fullcalendar.min.css" rel="stylesheet">
+  <link href="fullcalendar/fullcalendar.print.css" media="print" rel="stylesheet">
+  <link href="fullcalendar/themes/jquery-ui/jquery-ui.css" rel="stylesheet">  
+ <style>
+    body { margin-top: 40px; text-align: center; font-size: 14px;
+        font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif; }
+    #wrap { width: 1100px;  margin: 0 auto; }      
+    #external-events { float: left; width: 150px; padding: 0 10px; border: 1px solid #ccc;
+        background: #eee;  text-align: left; }
+    #external-events h4 { font-size: 16px; margin-top: 0; padding-top: 1em; }
+    #external-events .fc-event { margin: 10px 0; cursor: pointer; }
+    #external-events p { margin: 1.5em 0; font-size: 11px; color: #666; }
+    #external-events p input { margin: 0; vertical-align: middle; }
+    #calendar { float: left;  width: 1200px; }
+    .centered { text-align: center; }
+    /* sweet alert popup */
+    .column { float: left; width: 50%; text-align: left; }
+    /* Clear floats after the columns */
+    .row:after { content: ""; display: table; clear: both; }
+    label { float: left; margin: 5px 0px; }
+  </style>
+</head>
+<body>
+    <div data-includeHTML="cssmenu.html"></div>
+
+  <h1 class="centered">Event Scheduling / Game Schedule</h1>
+
+  <div id='external-events'>
+    <a href="index.html">Home</a>
+    <div id='external-events-listing'>
+      <h4>Draggable Events</h4>
+      <div class='fc-event'>My Event 1</div>
+      <div class='fc-event'>My Event 2</div>
+      <div class='fc-event'>My Event 3</div>
+      <div class='fc-event'>My Event 4</div>
+      <div class='fc-event'>My Event 5</div>
+    </div>
+    <div id="trash"><img src="images/trash.png" /></div>
+    <p>
+      Organiser:<br>
+      <input type="radio" name="organiser" value="NBA" checked>NBA</>
+      <input type="radio" name="organiser" value="NBL">NBL</>
+      <input type="radio" name="organiser" value="AFL">AFL</>
+      <input type="radio" name="organiser" value="NFL">NFL</>
+    </p>
+    <p>
+      <input type='checkbox' id='drop-remove' checked='checked' />
+      <label for='drop-remove'>remove after drop</label>
+    </p>
+  </div>
+  <!-- calendar container -->
+  <div id='calendar'></div>
+  <!-- Create event dialog -->
+  <div id='calendar' class='appointments'></div>  
+  <div style='clear:both'></div>
+
+  <script src='fullcalendar/lib/sweetalert2.js'></script>
+  <script src='fullcalendar/lib/moment.min.js'></script>
+  <script src="fullcalendar/lib/jquery.min.js"></script>
+  <script src="fullcalendar/lib/jquery-ui.min.js"></script>  
+  <script src="fullcalendar/fullcalendar.min.js"></script>  
+  <script src="js/fc-game.js"></script>
+  <script src="js/cssmenu.js"></script>
+</body>
+</html>
