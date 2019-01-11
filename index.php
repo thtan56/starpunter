@@ -59,27 +59,15 @@ const TodoComponent={
       var round = "";                                   // 3)
       console.log("10) beforeRouteEnter", organiser, today);
       var result = 'Getting data from server...'; 
-      var postdata = { op: "getOrgCurrentRound", 
-                       data: {organiser: organiser, today: today} };
+      var postdata = { op: "getOrgCurrentRound", data: {organiser: organiser, today: today} };
       axios.post('/php/apiPeriod.php', JSON.stringify(postdata), 
-              { headers: { 'Content-Type': 'application/json' }
-          }).then(response => { 
-            if (response.data.length === 0) {  
-              swal({
-                title: '<strong>STOP!! Period info not found for today!</strong>',
-                type: 'info',
-                html: '** Ask system manager to setup the period for today',
-                showCloseButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Cancel!',
-              });                 
-            } else {
+              { headers: { 'Content-Type': 'application/json' } })
+          .then(response => { this.data = response.data;
               sport.organiser= organiser;                   // 1
               sport.today    = today;                       // 2
               sport.round    = response.data.data[0].round; // 3
-              // store.commit('modifySportRecord', sport); 
-              console.log("20) sport:", sport);    
-              // next(vm => vm.posts = response.data)
-            };
+              console.log("20) this.data:", this.data);
+              console.log("21) response:", response);      
           },      response => { this.result = 'Failed to load data to server.';
       });
     }
