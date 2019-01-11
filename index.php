@@ -43,7 +43,7 @@ const TodoComponent={
   methods: { 
     getAllData: function () {
       var postdata = { op: "getUsers" };
-      this.$http.post('php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
+      this.$http.post('/php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
         .then(response => { this.users = response.body.data;
                             console.log("10)getAllData:users:", this.users);
         },    response => { this.result = 'Failed to load data to server.'; }
