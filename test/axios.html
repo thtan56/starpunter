@@ -13,6 +13,7 @@
   <v-app id="inspire">
     <v-container fluid grid-list-md>
       <div>
+        <!-- pools table gives problem!!!!!!  -->
         <v-data-table :headers="headers" :items="pools" :pagination.sync="pagination">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.organiser}}</td>
