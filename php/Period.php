@@ -28,7 +28,7 @@ class Period {
     return $arr;
   }
   public function getOrgWeekPeriod($json) {
-    $sql = "select organiser, round, start, end from period ";
+    $sql = "select organiser, round, start, end_dt from period ";
     $sql .= " where organiser=? and round=? ";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ $json->{'data'}->{'organiser'}, $json->{'data'}->{'round'}  ]);   
@@ -38,8 +38,8 @@ class Period {
   public function getOrgCurrentRound($json) {
 //    $logger = getLogger();
 //    $logger->info('1) Period.php>getOrgCurrentRound', array('json' => $json));    
-    $sql = "select round, start, end from period ";
-    $sql .= " where organiser=? and ? between start and end ";
+    $sql = "select round, start, end_dt from period ";
+    $sql .= " where organiser=? and ? between start and end_dt ";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ $json->{'data'}->{'organiser'}, $json->{'data'}->{'today'}  ]);   
     $arr = $stmt->fetchAll(PDO::FETCH_ASSOC); 
@@ -50,9 +50,9 @@ class Period {
     $periodcomponents = explode(",", $POST['title']);
 
     $color = $this->getColor($periodcomponents[1]);     // week or round
-    $sql = "insert into period(start, end, title, color, organiser, round) values(?,?,?,?,?,?)";
+    $sql = "insert into period(start, end_dt, title, color, organiser, round) values(?,?,?,?,?,?)";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([ $POST['start'], $POST['end'], $POST['title'], $color
+    $stmt->execute([ $POST['start'], $POST['end_dt'], $POST['title'], $color
                     ,$periodcomponents[0], $periodcomponents[1]    
                   ]);
   }
@@ -64,34 +64,34 @@ class Period {
     $periodcomponents = explode(",", $POST['title']);
     $color = $this->getColor($periodcomponents[1]);     // week or round
 
-    $sql = "update period set start=?, end=?, title=?, color=?";
+    $sql = "update period set start=?, end_dt=?, title=?, color=?";
     $sql .= ",organiser=?, round=? where id=?";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute([ $POST['start'], $POST['end'], $POST['title'], $color
+    $stmt->execute([ $POST['start'], $POST['end_dt'], $POST['title'], $color
           ,$periodcomponents[0], $periodcomponents[1], $POST['id'] ]);
   }
   public function insertjPeriod($json) {
     $color = $this->getColor($json->{'data'}->{'title'});
-    $sql = "insert into period(title, start, end, color, organiser, round, remarks)";
+    $sql = "insert into period(title, start, end_dt, color, organiser, round, remarks)";
     $sql .= " values(?,?,?,?,?,?,?)";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ 
-      $json->{'data'}->{'title'} ,$json->{'data'}->{'start'}, $json->{'data'}->{'end'}
+      $json->{'data'}->{'title'} ,$json->{'data'}->{'start'}, $json->{'data'}->{'end_dt'}
       ,$color  ,$json->{'data'}->{'organiser'}, $json->{'data'}->{'round'}
       ,$json->{'data'}->{'remarks'}    ]);
   }
   public function updatejPeriod($json) {        // object, not array
-    $sql  = "update period set title=?, start=?, end=?, color=? ";
+    $sql  = "update period set title=?, start=?, end_dt=?, color=? ";
     $sql .= ",organiser=?, round=?, remarks=? where id=?";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ 
           $json->{'data'}->{'title'}      ,$json->{'data'}->{'start'} 
-         ,$json->{'data'}->{'end'}        ,$json->{'data'}->{'color'}  
+         ,$json->{'data'}->{'end_dt'}        ,$json->{'data'}->{'color'}  
          ,$json->{'data'}->{'organiser'}  ,$json->{'data'}->{'round'}   
          ,$json->{'data'}->{'remarks'}    ,$json->{'data'}->{'id'} ]);
   }
   public function autoGenPeriod($json) {
-    $sql = "insert into period(title, start, end, organiser, round, remarks)";
+    $sql = "insert into period(title, start, end_dt, organiser, round, remarks)";
     $sql .= " values(?,?,?,?,?, 'autogen')";
     $stmt = $this->db->prepare($sql);
 
@@ -115,9 +115,9 @@ class Period {
     return $color;
   }
   public function getOrgsWeeks($json) {
-    $sql = "select organiser, round, start, end ";
+    $sql = "select organiser, round, start, end_dt ";
     $sql .= ",concat(organiser,':',round) as orgweek from period ";   
-    $sql .= " where organiser=? and ? between start and end ";
+    $sql .= " where organiser=? and ? between start and end_dt ";
     $period = $this->db->prepare($sql);
 
     $organisers = $json->{'data'}->{'organisers'};
@@ -168,7 +168,7 @@ class Period {
     $stmt->execute([ $organiser ]);    
     $i=0;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      $results[$i++] = [ "start" => $row['start']   ,"end" => $row['end'], "title" => $row['title']
+      $results[$i++] = [ "start" => $row['start']   ,"end_dt" => $row['end_dt'], "title" => $row['title']
               ,"color" => $row['color'],"organiser" => $row['organiser']
               ,"round"=> $row['round'],"remarks"=>$row['remarks']
               ,"id" => $row['id']  ];

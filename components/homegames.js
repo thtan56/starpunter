@@ -402,7 +402,7 @@ Vue.component('poolentrants', {
             <template slot="items" slot-scope="props">
               <tr @click="showAlert(props.item)">
                 <td>{{ props.item.organiser}} / {{ props.item.round}}</td>
-                <td>{{ props.item.start | moment}} : {{ props.item.end | moment}}
+                <td>{{ props.item.start | moment}} : {{ props.item.end_dt | moment}}
                 <td>{{ props.item.pool_id}} / {{ props.item.pool_name}}</td>  
                 <td>{{ props.item.username}} / {{ props.item.id}}</td>  <!-- ticket#  -->
                 <td>{{ props.item.income}} / {{ props.item.total_score}}</td>
@@ -479,13 +479,13 @@ Vue.component('poolentrants', {
           }).then(response => { 
             if (response.body.data.length === 0) {
               this.editedItem.start = "";
-              this.editedItem.end ="";
+              this.editedItem.end_dt ="";
               console.log('103) this.editedItem', this.editedItem);
             } else {
               var start = response.body.data[0].start;
-              var end = response.body.data[0].end;
+              var end_dt = response.body.data[0].end_dt;
               this.editedItem.start=moment(start).format('YYYY/MM/DD');
-              this.editedItem.end=moment(end).format('YYYY/MM/DD');
+              this.editedItem.end_dt=moment(end_dt).format('YYYY/MM/DD');
         //-------------------------------------      
               this.editedItem.username = this.$store.state.loginUser.username;
               this.editedItem.balcash  = this.$store.state.loginUser.cash;

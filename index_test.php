@@ -63,7 +63,7 @@ const PeriodTableComponent={
         <v-data-table :headers="headers" :items="periods" :pagination.sync="pagination">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.start}}</td>
-            <td>{{ props.item.end}}</td>
+            <td>{{ props.item.end_dt}}</td>
             <td>{{ props.item.title}}</td>
           </template>
         </v-data-table>
@@ -75,7 +75,7 @@ const PeriodTableComponent={
       periods: [],
       result: '',
       pagination: { rowsPerPage: 4 },
-      headers: [ { text: 'Start', value: 'start' },{ text: 'End', value: 'end' },{ text: 'Title', value: 'title' }]
+      headers: [ { text: 'Start', value: 'start' },{ text: 'End', value: 'end_dt' },{ text: 'Title', value: 'title' }]
     }
   },     // end of data  
   methods: { 

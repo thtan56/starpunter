@@ -99,7 +99,7 @@ const FormComponent = { template: `
               <v-data-table :headers="headers" :items="periods" :pagination.sync="pagination" :search="search">
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.title}}</td>    <td>{{ props.item.start}}</td>
-                  <td>{{ props.item.end}}</td>      <td>{{ props.item.color}}</td>
+                  <td>{{ props.item.end_dt}}</td>      <td>{{ props.item.color}}</td>
                   <td>{{ props.item.organiser}}</td>      <td>{{ props.item.round}}</td>
                   <td>{{ props.item.remarks}}</td>  <td>{{ props.item.id}}</td>
                   <td>
@@ -134,7 +134,7 @@ const FormComponent = { template: `
 
       pagination: {},
       headers: [ { text: 'Title', value: 'title' },        { text: 'Start', value: 'start' } 
-                ,{ text: 'End', value: 'end' },        { text: 'Color', value: 'color' }
+                ,{ text: 'End', value: 'end_dt' },        { text: 'Color', value: 'color' }
                 ,{ text: 'Organiser', value: 'organiser' }, { text: 'Round', value: 'round' }
                 ,{ text: 'Remarks', value: 'remarks' },{ text: 'Id', value: 'id' } ],
     }

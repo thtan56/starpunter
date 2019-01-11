@@ -43,7 +43,7 @@ Vue.component('buyTickets', {
           <v-card-title class="subheading font-weight-bold">
             Entry cost:{{ props.item.entry_cost }}-{{ props.item.organiser }}           
           </v-card-title>
-          {{ props.item.round }} : {{ props.item.start | moment}} - {{ props.item.end | moment }}
+          {{ props.item.round }} : {{ props.item.start | moment}} - {{ props.item.end_dt | moment }}
           <v-divider></v-divider>
           <v-list dense>
             <v-list-tile>
@@ -98,7 +98,7 @@ Vue.component('buyTickets', {
 
       editedIndex: -1,
       editedItem: { entry_cost: 0, entrants: 0, entry_quorum: 0, pool_prize: 0
-        ,payout: '', id: 0,  pool_id: 0, pool_name: '', pool_type: '', start: '', end: ''
+        ,payout: '', id: 0,  pool_id: 0, pool_name: '', pool_type: '', start: '', end_dt: ''
         ,username: '' },
       pools: [],
       teams: [],
@@ -221,7 +221,7 @@ Vue.component('buyTickets', {
             } else {
               this.round = response.body.data[0].round;
               this.pstart = response.body.data[0].start;
-              this.pend = response.body.data[0].end;
+              this.pend = response.body.data[0].end_dt;
             };
             this.getAllData();  // asyn problem
         },  response => { this.result = 'Failed to load data to server.';
@@ -279,7 +279,7 @@ const ticketStatus = Vue.component('ticketstatuscomponent', {
               <template slot="items" slot-scope="props">                            
                 <td class="text-xs-left">{{ props.item.username }}</td>
                 <td class="text-xs-left">{{ props.item.organiser }}/{{ props.item.round }}</td>
-                <td class="text-xs-left">{{ props.item.start | moment }}-{{ props.item.end | moment }}</td>
+                <td class="text-xs-left">{{ props.item.start | moment }}-{{ props.item.end_dt | moment }}</td>
                 <td class="text-xs-left">{{ props.item.pool_type }} / {{ props.item.pool_id }}</td>
                 <td class="text-xs-left">{{ props.item.entry_cost | currency(2) }}</td>
                 <td class="text-xs-left">{{ props.item.entry_quorum}} / {{ props.item.entrants}}</td>
@@ -314,7 +314,7 @@ const ticketStatus = Vue.component('ticketstatuscomponent', {
       error: '',
       valid: false,
       editedIndex: -1,
-      editedItem: { id: 0, username: '', organiser: '', round: '', start:'', end: ''
+      editedItem: { id: 0, username: '', organiser: '', round: '', start:'', end_dt: ''
           ,pool_type: '', pool_id:'', entry_cost: '', entry_quorum:'', entrants:''
           ,pool_prize: '', payout: '', created: ''
           , id: '', status: '' },

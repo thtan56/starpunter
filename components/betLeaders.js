@@ -326,7 +326,7 @@ Vue.component('betresults', {
               } else {
                 this.round = response.body.data[0].round;
                 this.pstart = response.body.data[0].start;
-                this.pend = response.body.data[0].end;
+                this.pend = response.body.data[0].end_dt;
                 this.getAllData();  // asyn problem
               };
           },  response => { this.result = 'Failed to load data to server.';

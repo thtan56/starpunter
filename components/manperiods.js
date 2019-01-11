@@ -24,11 +24,11 @@ const Period = Vue.component('periodcomponent', {
             <v-flex xs2>   
               <!-- =============== date picker-end ==========================  -->
               <v-menu ref="menu2" lazy :close-on-content-click="false" v-model="menu2" transition="scale-transition" 
-                          offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="editedItem.end">
-                <v-text-field slot="activator" label="End date" v-model="editedItem.end" prepend-icon="event" readonly></v-text-field>
-                <v-date-picker v-model="editedItem.end" no-title scrollable><v-spacer></v-spacer>
+                          offset-y full-width :nudge-right="40" min-width="290px" :return-value.sync="editedItem.end_dt">
+                <v-text-field slot="activator" label="End date" v-model="editedItem.end_dt" prepend-icon="event" readonly></v-text-field>
+                <v-date-picker v-model="editedItem.end_dt" no-title scrollable><v-spacer></v-spacer>
                   <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
-                  <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.end)">OK</v-btn>
+                  <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.end_dt)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
               <!-- --------------------------------------------------------------------------- -->
@@ -56,7 +56,7 @@ const Period = Vue.component('periodcomponent', {
               <v-data-table :headers="headers" :items="periods" :pagination.sync="pagination" :search="search">
                 <template slot="items" slot-scope="props">
                   <td>{{ props.item.title}}</td>    <td>{{ props.item.start}}</td>
-                  <td>{{ props.item.end}}</td>      <td>{{ props.item.color}}</td>
+                  <td>{{ props.item.end_dt}}</td>      <td>{{ props.item.color}}</td>
                   <td>{{ props.item.organiser}}</td>      <td>{{ props.item.round}}</td>
                   <td>{{ props.item.remarks}}</td>  <td>{{ props.item.id}}</td>
                   <td>
@@ -84,12 +84,12 @@ const Period = Vue.component('periodcomponent', {
       error: '',
       valid: false,
       editedIndex: -1,
-      editedItem: { id: 0, title: '', start: '', end: '', color:''
+      editedItem: { id: 0, title: '', start: '', end_dt: '', color:''
           ,organiser: '', round:'', remarks: '', id: '' },
       organisers: ['NBA', 'NBL', 'NFL', 'AFL'],
       pagination: {},
       headers: [ { text: 'Title', value: 'title' },        { text: 'Start', value: 'start' } 
-                ,{ text: 'End', value: 'end' },        { text: 'Color', value: 'color' }
+                ,{ text: 'End', value: 'end_dt' },        { text: 'Color', value: 'color' }
                 ,{ text: 'Organiser', value: 'organiser' }, { text: 'Round', value: 'round' }
                 ,{ text: 'Remarks', value: 'remarks' },{ text: 'Id', value: 'id' } ],
     }

@@ -74,7 +74,7 @@ const GameResults = Vue.component('gameresultcomponent', {
             } else {
               this.round = response.body.data[0].round;
               this.pstart = response.body.data[0].start;
-              this.pend = response.body.data[0].end;
+              this.pend = response.body.data[0].end_dt;
             };
         },  response => { this.result = 'Failed to load data to server.';
       });
@@ -105,7 +105,7 @@ Vue.component('poolgames', {
             <td>{{ props.item.id}} / {{ props.item.pool_name}}
             <v-icon small @click="showGameWinners(props.item)">more_horiz</v-icon></td>   
             <td>{{ props.item.entrants}}</td>       
-            <td>{{ props.item.start | moment}} : {{ props.item.end | moment}}</td>
+            <td>{{ props.item.start | moment}} : {{ props.item.end_dt | moment}}</td>
           </template>
         </v-data-table>
       </v-card-text>            
