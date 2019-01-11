@@ -12,22 +12,6 @@ class Period {
   }
   //-------------------------------------
   public function getMsg() { return $this->msg; }
-  /*
-  public function getPeriods($organiser=NULL) {
-    $sql = "select * from period ";
-    $sql .= ($organiser !== NULL) ? " where organiser=?" : "";
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([ $organiser ]);    
-    $i=0;
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-      $results[$i++] = [ "start" => $row['start']   ,"end" => $row['end'], "title" => $row['title']
-              ,"color" => $row['color'],"organiser" => $row['organiser']
-              ,"round"=> $row['round'],"remarks"=>$row['remarks']
-              ,"id" => $row['id']  ];
-    };
-    return $results;
-  }
-  */
   public function getPeriods() {
     $sql = "select * from period ";
     $stmt = $this->db->prepare($sql);
@@ -176,3 +160,19 @@ class Period {
     return $results;
   }   
 }
+/*
+  public function getPeriods($organiser=NULL) {
+    $sql = "select * from period ";
+    $sql .= ($organiser !== NULL) ? " where organiser=?" : "";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([ $organiser ]);    
+    $i=0;
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      $results[$i++] = [ "start" => $row['start']   ,"end" => $row['end'], "title" => $row['title']
+              ,"color" => $row['color'],"organiser" => $row['organiser']
+              ,"round"=> $row['round'],"remarks"=>$row['remarks']
+              ,"id" => $row['id']  ];
+    };
+    return $results;
+  }
+*/
