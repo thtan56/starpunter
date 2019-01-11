@@ -8,9 +8,15 @@ class DB {
     protected $pdo;    // $con
 
     private $local = array(
+      // version 1
       'db_dsn' => 'mysql:dbname=test;host=localhost',
       'db_user' => 'root',
       'db_pass' => 'cancer56'
+      //----------------------------
+      // version 2
+      //'db_dsn' => 'pgsql:host=ec2-54-235-242-63.compute-1.amazonaws.com;port=5432;sslmode=require;dbname=dc1cog334s79lk',
+      //'db_user' => 'uorfkbdhshqhlv',
+      //'db_pass' => '4c6f9e3adecae17f2f8b3ac2351f75a5effe164dd867f176d6c9e6be90400050'
       );
     private $google = array(
 //      'db_dsn' => 'mysql:dbname=test;unix_socket=/cloudsql/tobisports-2018:us-central1:mysql1956',
@@ -20,8 +26,6 @@ class DB {
       );
     private $heroku = array(
       'db_dsn' => 'pgsql:host=ec2-54-235-242-63.compute-1.amazonaws.com;port=5432;sslmode=require;dbname=dc1cog334s79lk',
-      'db_user' => 'root',
-      'db_pass' => 'cancer56',
       'db_user' => 'uorfkbdhshqhlv',
       'db_pass' => '4c6f9e3adecae17f2f8b3ac2351f75a5effe164dd867f176d6c9e6be90400050'
     );
