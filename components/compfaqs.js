@@ -1,4 +1,3 @@
-/*
 const myfaqs=Vue.component('faqsComponent', {
   template: `
   <v-content>
@@ -37,7 +36,7 @@ const myfaqs=Vue.component('faqsComponent', {
     }
   }  
 });
-*/
+
 const FAQs = Vue.component('faqs', {
   template: `
   <v-content>

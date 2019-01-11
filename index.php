@@ -64,10 +64,9 @@
 <script src="components/compNRL.js"></script>
 <script src="components/compproduct.js"></script>
 
-<!-- script src="https://unpkg.com/vue@2.5.21/dist/vue.min.js"></script  
+<!-- script src="https://unpkg.com/vue@2.5.21/dist/vue.min.js"></script  -->
 <script src="https://unpkg.com/showdown@1.9.0/dist/showdown.min.js"></script>
 <script src="https://unpkg.com/vue-showdown@2.3.0/dist/vue-showdown.min.js"></script>
--->
 
 <script src="components/compfaqs.js"></script>
 

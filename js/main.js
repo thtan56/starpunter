@@ -34,12 +34,12 @@ const store = new Vuex.Store({
 
 const routes = [
 //  { path: '/', redirect: '/calendar/list-views.html' },
-//  { path: '/',              component: Home },                      // homeinfo.js
+  { path: '/',              component: Home },                      // homeinfo.js
   { path: '/user'   ,       component: loginCustomer },     // components/customerinfo.js    - old cust home
-//  { path: '/faqs'   ,       component: myfaqs },       
+  { path: '/faqs'   ,       component: myfaqs },       
   { path: '/manager',       component: loginManager },     // components/customerinfo.js
   { path: '/homecalendar',  component: homeCalendar },                      // homeinfo.js
-  { path: '/', component: NBAnews },               
+//  { path: '/', component: NBAnews },               
   { path: '/breakfast', component: Breakfast },
   { path: '/meat', component: Meat },
   { path: '/sushi', component: Sushi },
@@ -49,7 +49,6 @@ const routes = [
   { path: '/cashbalance', component: cashBalance },  // 3e) 
   { path: '/vcashbalance', component: vcashBalance },  // 3f) 
 
-
   { path: '/basketballNBL', component: nblBet },
   { path: '/basketballNBA', component: nbaBet },
   { path: '/AG2018Bas', component: asiaBet },  
@@ -58,8 +57,6 @@ const routes = [
 
   { path: '/signup', component: Register },
   { path: '/login', component: Login },
-
-
 
   { path: '/password/:activity', component: password, props: true }, 
   { path: '/request/:activity', component: request, props: true },             // 3a) withdraw, deposit, buy, sell (components/compcash)
