@@ -16,6 +16,8 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify@1.3.4/dist/vuetify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src='lib/moment.js'></script>
 <script>
 
 const TodoComponent={
@@ -41,7 +43,7 @@ const TodoComponent={
     }
   },     // end of data  
   methods: { 
-    getAllData: function () {
+    getAllUsers: function () {
       var postdata = { op: "getUsers" };
       this.$http.post('/php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
         .then(response => { this.users = response.body.data;
@@ -49,6 +51,38 @@ const TodoComponent={
         },    response => { this.result = 'Failed to load data to server.'; }
       );
     },
+    getAllData: function () {
+      var sport = {};
+      var organiser = "NBA";                            // 1) default
+      let $today = new Date;                            
+      var today = moment($today).format('YYYY/MM/DD');  // 2)  
+      var round = "";                                   // 3)
+      console.log("10) beforeRouteEnter", organiser, today);
+      var result = 'Getting data from server...'; 
+      var postdata = { op: "getOrgCurrentRound", 
+                       data: {organiser: organiser, today: today} };
+      axios.post('/php/apiPeriod.php', JSON.stringify(postdata), 
+              { headers: { 'Content-Type': 'application/json' }
+          }).then(response => { 
+            if (response.data.length === 0) {  
+              swal({
+                title: '<strong>STOP!! Period info not found for today!</strong>',
+                type: 'info',
+                html: '** Ask system manager to setup the period for today',
+                showCloseButton: true,
+                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Cancel!',
+              });                 
+            } else {
+              sport.organiser= organiser;                   // 1
+              sport.today    = today;                       // 2
+              sport.round    = response.data.data[0].round; // 3
+              // store.commit('modifySportRecord', sport); 
+              console.log("20) sport:", sport);    
+              // next(vm => vm.posts = response.data)
+            };
+          },      response => { this.result = 'Failed to load data to server.';
+      });
+    }
   },  // end of methods
   created() { this.getAllData(); }
 };
