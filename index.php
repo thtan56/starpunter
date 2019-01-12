@@ -46,7 +46,7 @@ const UserTableComponent={
   methods: { 
     getAllData: function () {
       var postdata = { op: "getUsers" };
-      this.$http.post('/php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
+      this.$http.post('php/apiUser.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
         .then(response => { this.users = response.body.data;
                             console.log("20)getAllData:users:", this.users);
         },    response => { this.result = 'Failed to load data to server.'; }
@@ -81,7 +81,7 @@ const PeriodTableComponent={
   methods: { 
     getAllData: function () {
       var postdata = { op: "getPeriods" };
-      axios.post('/php/apiPeriod.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
+      axios.post('php/apiPeriod.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }})
         .then(response => { this.periods = response.data.data;
                             console.log("30)getAllData:periods:", this.periods);
         },    response => { this.result = 'Failed to load data to server.'; }
@@ -101,7 +101,7 @@ new Vue({
       console.log("10) getSystemDetails"); 
       var result = 'Getting data from server...';
       var postdata = { op: "getSystemInfo" };   // redundant
-      this.$http.post('/php/apiSystem.php', JSON.stringify(postdata), {
+      this.$http.post('php/apiSystem.php', JSON.stringify(postdata), {
             headers: { 'Content-Type': 'application/json' }
           }).then(response => { this.sysinfo = response.body; console.log("11) sysinfo", this.sysinfo);
           },      response => { result = 'Failed to load data to server.';
