@@ -86,8 +86,7 @@ const PeriodTableComponent={
                             console.log("30)getAllData:periods:", this.periods);
         },    response => { this.result = 'Failed to load data to server.'; }
       );
-    },    
-  },  // end of methods
+    },      },  // end of methods
   created() { this.getAllData(); }
 };
 

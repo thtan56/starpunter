@@ -1,5 +1,5 @@
 <?php
-require __DIR__.'/php/DBclass.php';
+require __DIR__.'/php/DB2class.php';
 
 //header("Location: index.html"); /* Redirect browser */
 //exit();
@@ -13,7 +13,7 @@ require __DIR__.'/php/DBclass.php';
 //exit();
 
 
-$dbObj = new DB();
+$dbObj = new DB2();
 $db = $dbObj->getPDO();
 echo "** 1) calling from index.php <br>"; 
 echo "** 2) Hello from ".$dbObj->dbServer."** <br>"; 
