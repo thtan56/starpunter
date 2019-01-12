@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Vue.js-Index.html</title>
+  <title>Starpunter(19-1-12)</title>
 
   <link href="/css/bootstrap.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
