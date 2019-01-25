@@ -63,14 +63,19 @@ module.exports.pitch = function (remainingRequest) {
     // also make sure to dedupe based on loader path.
     // assumes you'd probably never want to apply the same loader on the same
     // file twice.
+    // Exception: in Vue CLI we do need two instances of postcss-loader
+    // for user config and inline minification. So we need to dedupe baesd on
+    // path AND query to be safe.
     const seen = new Map()
     const loaderStrings = []
 
     loaders.forEach(loader => {
-      const type = typeof loader === 'string' ? loader : loader.path
+      const identifier = typeof loader === 'string'
+        ? loader
+        : (loader.path + loader.query)
       const request = typeof loader === 'string' ? loader : loader.request
-      if (!seen.has(type)) {
-        seen.set(type, true)
+      if (!seen.has(identifier)) {
+        seen.set(identifier, true)
         // loader.request contains both the resolved loader path and its options
         // query (e.g. ??ref-0)
         loaderStrings.push(request)
@@ -107,9 +112,9 @@ module.exports.pitch = function (remainingRequest) {
         // For some reason, webpack fails to generate consistent hash if we
         // use absolute paths here, even though the path is only used in a
         // comment. For now we have to ensure cacheDirectory is a relative path.
-        cacheDirectory: path.isAbsolute(cacheDirectory)
+        cacheDirectory: (path.isAbsolute(cacheDirectory)
           ? path.relative(process.cwd(), cacheDirectory)
-          : cacheDirectory,
+          : cacheDirectory).replace(/\\/g, '/'),
         cacheIdentifier: hash(cacheIdentifier) + '-vue-loader-template'
       })}`]
       : []

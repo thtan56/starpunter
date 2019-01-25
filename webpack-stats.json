@@ -1,0 +1,19 @@
+Installing 'webpack-cli' (running 'npm install -D webpack-cli')...
+
+> webpack-cli@3.2.1 postinstall C:\xampp\htdocs\starpunter2\node_modules\webpack-cli
+> lightercollective
+
+
+     [1m***[0m Thank you for using webpack-cli! [1m***[0m
+
+Please consider donating to our open collective
+     to help us maintain this package.
+
+  https://opencollective.com/webpack/donate
+
+                    [1m***[0m
+
++ webpack-cli@3.2.1
+updated 1 package and audited 12417 packages in 9.949s
+found 2 vulnerabilities (1 moderate, 1 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
