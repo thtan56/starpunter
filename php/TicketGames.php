@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/DBclass.php';
-//require_once('configLog.php');
+// require_once('configLog.php');
 
 class TicketGames {
     private $msg = "";
@@ -93,6 +93,25 @@ class TicketGames {
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $results;
     }   
+    public function getOrgWeekTicketGames($orgweek) {    // orgweek   (for ticket summary)
+    // $logger = getLogger();
+
+      $sql =  "select concat(a.organiser,':',a.round) as orgweek, a.username, a.ticket_id ";
+      $sql .= ", a.game_id, a.pool_id, a.bet_team, a.bet_score ";
+      $sql .= ", g.home_team, g.away_team, g.start, g.game_winner, g.home_score, g.away_score, g.status "; 
+      $sql .= " from ticket_games a ";
+      $sql .= " inner join game g on a.game_id = g.id ";    
+      $sql .= " where concat(a.organiser,':',a.round)=? ";
+    // $logger->info('21) getOrgWeekTicketGames.php', array('orgweek' => ['orgweek'=>$orgweek]) );      
+      // $sql .= ", p.pool_name, p.pool_type, p.entry_cost "; 
+      // $sql .= ", p.entry_quorum, p.pool_prize, p.payout, p.entrants "; 
+      // $sql .= " inner join pool p on a.pool_id = p.id "; 
+      $stmt = $this->db->prepare($sql); 
+      $stmt->execute([ $orgweek ]);            
+      $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // $logger->info('25) getOrgWeekTicketGames.php', array('results' => $results) );
+      return $results;
+    }     
     public function getTicketGames2($json) {    // orgweek, ticket#   (for game summary)
       $sql =  "select concat(a.organiser,':',a.round) as orgweek, a.username, a.ticket_id ";
       $sql .= ", a.game_id, a.pool_id, a.bet_team, a.bet_score ";
@@ -108,7 +127,7 @@ class TicketGames {
                         ,$json->{'data'}->{'game_id'}      ]);            
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return $results;
-    }     
+    }        
     public function getUserTicketGames($json) {    // orgweek, username, ticket#
       $sql =  "select concat(a.organiser,':',a.round) as orgweek, a.username, a.ticket_id ";
       $sql .= ", a.game_id, a.pool_id, a.bet_team, a.bet_score ";

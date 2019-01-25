@@ -38,7 +38,7 @@ class Period {
   public function getOrgCurrentRound($json) {
 //    $logger = getLogger();
 //    $logger->info('1) Period.php>getOrgCurrentRound', array('json' => $json));    
-    $sql = "select round, start, end_dt from period ";
+    $sql = "select concat(organiser,':',round) as orgweek, round, start, end_dt from period ";
     $sql .= " where organiser=? and ? between start and end_dt ";
     $stmt = $this->db->prepare($sql);
     $stmt->execute([ $json->{'data'}->{'organiser'}, $json->{'data'}->{'today'}  ]);   

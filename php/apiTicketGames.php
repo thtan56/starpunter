@@ -1,13 +1,13 @@
 <?php
-//require_once('configLog.php');
 require_once('TicketGames.php');
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
-
-//$logger = getLogger();
 $op = $json->{'op'};
-//$logger->info('1) apiTicketGames.php', array('json' => $json));
+
+// require_once('configLog.php');
+// $logger = getLogger();
+// $logger->info('1) apiTicketGames.php', array('json' => $json));
 
 if(isset($op)){
   switch($op){  
@@ -69,14 +69,24 @@ if(isset($op)){
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
       break;   
-     case "getTicketGames2":   // orgweek, gid     - gamesummary
+    case "getTicketGames2":   // orgweek, gid     - gamesummary
       $code = -1;
       $obj = new TicketGames();
       $ret = $obj->getTicketGames2($json);   
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 
-      break;           
+      break;  
+    case "getOrgWeekTicketGames":   // orgweek      - ticketsummary
+      $orgweek = $json->{'orgweek'};
+      $code = -1;
+      $obj = new TicketGames();
+      $ret = $obj->getOrgWeekTicketGames($orgweek);   
+      $msg = $obj->getMsg();
+      $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
+                             : array('code' => 1, 'msg' => '', 'data' => $ret); 
+      // $logger->info('12) getOrgWeekTicketGames', array('resp' => $resp) );
+      break;
       //*********************************************************             
     case "getUserTicketGames":   // apiUser.html
       $code = -1;

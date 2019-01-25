@@ -1,13 +1,13 @@
 <?php
-//require __DIR__.'/configLog.php';
+// require __DIR__.'/configLog.php';
 require_once('User.php');
 
 $data = file_get_contents('php://input');
 $json = json_decode($data);
 $op = $json->{'op'};
 
-//$logger = getLogger();
-//$logger->info('1) apiUser.php', array('json' => $json));
+// $logger = getLogger();
+// $logger->info('1) apiUser.php', array('json' => $json));
 
 //---- start logging from here ----------------------------- 
 if(isset($op)){
@@ -16,6 +16,7 @@ if(isset($op)){
       $code = -1;
       $obj = new User();
       $ret = $obj->getUsers();
+      // $logger->info('10) apiUser.php', array('ret' => $ret));
       $msg = $obj->getMsg();
       $resp = (!empty($msg)) ? array('code' => -1, 'msg' => $msg) 
                              : array('code' => 1, 'msg' => '', 'data' => $ret); 

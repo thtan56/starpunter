@@ -56,11 +56,13 @@ class Pool {
     foreach($organisers as $organiser) {
       $period->execute([ $organiser, $today ]);   
       $arr = $period->fetchAll(PDO::FETCH_ASSOC);
-      $round = $arr[0]['round']; 
+      $round = $arr[0]['round'];
       $pool->execute( [$organiser, $round ]);
       while ($row = $pool->fetch(PDO::FETCH_ASSOC)) {
         $row['orgweek'] = $row['organiser'].':'.$row['round'];    // additional
         $row['pool_id'] = $row['id'];
+        $row['start']  = $arr[0]['start'];
+        $row['end_dt'] = $arr[0]['end_dt'];
         array_push($results, $row);
       };
     };
