@@ -88,6 +88,7 @@
 import homebars from './HomeBars.vue';
 import topboxes from './TopBoxes.vue';
 import fullCalendar from 'vue-fullcalendar';
+import moment from 'moment';
 
 export default {
   name: 'homeCalendar',

@@ -1,14 +1,12 @@
 // Vue.component('topboxes', {
-// "ion ion-ios-gear-outline">
-// ion ion-ios-football
-// ion ion-ios-cart-outline
-// ion ion-ios-people-outline
 <template>
   <!-- Info boxes -->
   <div class="row">
     <div class="col">  <!-- bootstrap 4 format -->
       <div class="info-box">
-        <span class="info-box-icon bg-aqua"><i class="fa fa-calendar fa-9x"></i></span>
+        <span class="info-box-icon bg-aqua">
+          <font-awesome-icon icon="calendar"></font-awesome-icon>
+        </span>
         <div class="info-box-content">
           <span class="info-box-text">
             <router-link :to="{name: 'poolSummary'}">Plans</router-link>
@@ -23,8 +21,9 @@
         </div></div></div>
     <div class="col">
       <div class="info-box">
-        <span class="info-box-icon bg-red"><i class="fa fa-star fa-spin fa-7x"></i></span>
-          <!-- i class="fa fa-google-plus"></i -->
+        <span class="info-box-icon bg-red">
+          <font-awesome-icon icon="star"></font-awesome-icon>
+        </span>
         <div class="info-box-content">
           <span class="info-box-text">
             <router-link :to="{name: 'gameSummary'}">Games</router-link>
@@ -40,7 +39,9 @@
     
     <div class="col">
       <div class="info-box">
-        <span class="info-box-icon bg-green"><i class="fa fa-heart fa-9x"></i></span>
+        <span class="info-box-icon bg-green">
+            <font-awesome-icon icon="heart"></font-awesome-icon>
+        </span>
         <div class="info-box-content">
           <span class="info-box-text">
             <router-link :to="{name: 'ticketSummary'}">Tickets</router-link>            
@@ -55,7 +56,9 @@
         </div></div></div>
     <div class="col">
       <div class="info-box">
-        <span class="info-box-icon bg-yellow"><i class="fa fa-user fa-9x"></i></span>
+        <span class="info-box-icon bg-yellow">
+          <font-awesome-icon icon="user"></font-awesome-icon>
+        </span>
         <div class="info-box-content">
           <span class="info-box-text">
             <router-link :to="{name: 'userSummary2'}">Members</router-link>
@@ -69,7 +72,7 @@
 
 <script>
 import store from '../store';
-// import 'ionicons/css/ionicons.min.css';  // 2.01 - topboxes
+import moment from 'moment';
 export default {
   name: 'topbar',
   components: { store },   // 2

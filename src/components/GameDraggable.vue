@@ -122,6 +122,7 @@
 <script>
 import draggable from 'vuedraggable'
 import topmenu from './TopMenu.vue';
+import moment from 'moment';
 export default {
   name: 'gamedraggable',
   components: { topmenu, draggable },   // 2
@@ -313,7 +314,7 @@ export default {
                       +'Game <u>'+this.selectedItem.home_team+' vs '+ this.selectedItem.away_team
                       +'</u><br> already meet the quorum<br>in Ticket <u>'+this.selectedItem.tid+'</u>',
             showCloseButton: true,
-            confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+            confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
           }); 
         } else {
           /* ************************************************************************* */
@@ -329,7 +330,7 @@ export default {
                   +'Game <u>'+this.selectedItem.home_team+' vs '+ this.selectedItem.away_team
                   +'</u><br> already in the betting list<br>in Ticket <u>'+this.selectedItem.tid+'</u>',
               showCloseButton: true,
-              confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+              confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
             });
           } else {
             /* ************************************************************************* */

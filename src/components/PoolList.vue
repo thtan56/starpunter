@@ -277,6 +277,7 @@
 
 <script>
 import topmenu from './TopMenu.vue';
+import moment from 'moment';
 export default {
   name: 'poolList',
   props: { 'gameid': {type: String } },

@@ -122,13 +122,7 @@ export default {
     // 	this.mybet.status = 'pending';
 	},
   computed: {
-    formTitle () { return this.mybet.id === 0 ? 'New Bet' : 'Edit Bet' },
-    displayDate: {
-      get: function () {
-        let $today = new Date;
-        return moment($today).format('MM/DD/YYYY');
-      }
-    }
+    formTitle () { return this.mybet.id === 0 ? 'New Bet' : 'Edit Bet' }
   },
   methods: {
     changeOrganiser(selectObj) {

@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'userticketgames',   // component name
   props: { gameData: {type: Array }  },     // ticketlist 

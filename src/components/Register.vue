@@ -47,9 +47,9 @@
                
             </v-card-text>
             <v-card-actions>
-              <v-btn icon><v-icon color="blue">fa fa-facebook-square fa-lg</v-icon></v-btn>
-              <v-btn icon><v-icon color="red">fa fa-google fa-lg</v-icon></v-btn>
-              <v-btn icon><v-icon color="light-blue">fa fa-twitter fa-lg</v-icon></v-btn>
+              <v-btn icon><font-awesome-icon :icon="['fab', 'facebook-f']" style="color:blue"  /></v-btn>
+              <v-btn icon><font-awesome-icon :icon="['fab', 'google']" style="color:red"  /></v-btn>
+              <v-btn icon><font-awesome-icon :icon="['fab', 'twitter']" style="color:light-blue"/></v-btn>
               <v-spacer></v-spacer>
               <v-btn block color="primary" @click="save" :loading="loading">Register</v-btn>
             </v-card-actions>

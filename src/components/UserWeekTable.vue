@@ -40,9 +40,8 @@ export default {
       userlist: [],
       poollist: []        
     }
-  },
-     
-  filters: { moment: function (date) { return moment(date).format('YYYY-MM-DD'); } },  
+  },    
+
   methods: {
     getPCount(item) {
       var results=this.poollist.filter(pool => pool.orgweek === item.orgweek && pool.username === item.username);

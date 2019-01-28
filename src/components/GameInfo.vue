@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'gameinfo',
   props: { gameData: {type: Object } }, 

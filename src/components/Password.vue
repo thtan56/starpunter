@@ -58,7 +58,7 @@ export default {
           type: 'info',
           html: '** Your <u>new password</u> does not match <u>confirm password</u>',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Retry!',
+          confirmButtonText: '<i class="material-icons">thumb_down</i> Retry!',
         }); 
       } else {
         this.user.password = this.newpassword;
@@ -77,7 +77,7 @@ export default {
           type: 'info',
           html: '** Your password has changed successfully',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         }); 
         this.$router.push({ path: '/login' }); 
       };
@@ -91,7 +91,7 @@ export default {
           type: 'info',
           html: '** You have entered incorrect password '+this.oldpassword,
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Retry!',
+          confirmButtonText: '<i class="material-icons">thumb_down</i> Retry!',
         }); 
       } else if (this.newpassword !== this.confirmpassword) {
         swal({
@@ -99,7 +99,7 @@ export default {
           type: 'info',
           html: '** Your <u>new password</u> does not match <u>confirm password</u>',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> Retry!',
+          confirmButtonText: '<i class="material-icons">thumb_down</i> Retry!',
         }); 
       } else {
         this.user.password = this.newpassword;
@@ -115,7 +115,7 @@ export default {
           type: 'info',
           html: '** Your password has changed successfully',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         }); 
         this.$router.push({ path: '/login' }); 
       };

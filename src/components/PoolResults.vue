@@ -52,6 +52,7 @@
 <script>
 import topmenu from './TopMenu.vue';
 import store from '../store';    // 1
+import moment from 'moment';
 
 export default {
   name: 'poolResults',
@@ -128,7 +129,7 @@ export default {
         type: 'info',
         html: '** Done **',
         showCloseButton: true,
-        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+        confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
       });  
 
     },

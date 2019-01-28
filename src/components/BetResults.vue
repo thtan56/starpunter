@@ -144,6 +144,7 @@
 <script>
 import _ from 'lodash';
 import store from '../store';
+import moment from 'moment';
 export default {
   name: 'betResults',
   components: { store },

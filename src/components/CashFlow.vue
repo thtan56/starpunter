@@ -28,6 +28,7 @@
 
 <script>
 import store from '../store';    // 1
+import moment from 'moment';
 import axios from 'axios';
 import vcashBuySell from './VCashBuySell.vue';
 import cashDepositWithdraw from './CashDepositWithdraw.vue';

@@ -73,7 +73,6 @@ export default {
       selected: [],             
     }
   },
-  filters: { moment: function (date) { return moment(date).format('YYYY-MM-DD'); } },
   methods: {    
     changeRound(days) {
       let objDate = moment(this.today, 'YYYY/MM/DD').toDate();   // this.today = string
@@ -103,7 +102,7 @@ export default {
     let $today = new Date;                            
     var today = moment($today).format('YYYY/MM/DD');  // 2)  
     var round = "";                                   // 3)
-    console.log("10) beforeRouteEnter", organiser, today);
+    console.log("10) Home.vue:beforeRouteEnter", organiser, today);
     var result = 'Getting data from server...'; 
     var postdata = { op: "getOrgCurrentRound", 
                    data: {organiser: organiser, today: today} };
@@ -111,12 +110,12 @@ export default {
             { headers: { 'Content-Type': 'application/json' }
         }).then(response => { 
           if (response.data.length === 0) {  
-            swal({
+            this.$swal({
               title: '<strong>STOP!! Period info not found for today!</strong>',
               type: 'info',
               html: '** Ask system manager to setup the period for today',
               showCloseButton: true,
-              confirmButtonText: '<i class="fa fa-thumbs-up"></i> Cancel!',
+              confirmButtonText: '<i class="material-icons">thumb_down</i> Cancel!',
             });                 
           } else {
             sport.organiser= organiser;                   // 1
@@ -133,7 +132,7 @@ export default {
     this.organiser = this.$store.state.sport.organiser;      // 1)
     this.round     = this.$store.state.sport.round;          // 2)
     this.today     = this.$store.state.sport.today;          // 3) important, use for 2nd organiser
-    console.log("29) today", this.today);
+    console.log("11) home.vue:created:today", this.today);
     this.selected  =[this.organiser];     // default filter (1st time) 
   }
 };

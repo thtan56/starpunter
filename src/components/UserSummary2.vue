@@ -1,7 +1,7 @@
 // const userSummary2 = Vue.component('usersummarycomponent', {
 <template>
   <v-content>
-    <topmenu></topmenu>
+    <homebars></homebars>
     <topboxes></topboxes>   
     <v-container fluid grid-list-md>
       <v-layout row wrap>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import topmenu from './TopMenu.vue'
+import homebars from './HomeBars.vue'
 import topboxes from './TopBoxes.vue';
 import userscashchart from './UsersCashChart.vue'
 import usersscorechart from './UsersScoreChart.vue'
@@ -37,7 +37,7 @@ import userinfo2 from './UserInfo2.vue'
 
 export default {
   name: 'userSummary2',   // component name
-  components: { topmenu, topboxes, 
+  components: { homebars, topboxes, 
     userscashchart, usersscorechart, userprofitschart, userinfo2 },   // 2
   data() {
     return {

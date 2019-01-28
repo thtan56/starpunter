@@ -175,13 +175,7 @@ export default {
   },
   computed: {
     role() { return this.$store.state.loginUser.role; },
-    formTitle () { return this.editedIndex === -1 ? 'New Pool' : 'Edit Pool' },
-    displayDate: {
-      get: function () {
-        let $today = new Date;
-        return moment($today).format('MM/DD/YYYY');
-      }
-    }
+    formTitle () { return this.editedIndex === -1 ? 'New Pool' : 'Edit Pool' }
   },
   methods: {
     check: function(e) {

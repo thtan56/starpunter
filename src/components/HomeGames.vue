@@ -59,7 +59,7 @@ export default {
       var orgweek  = c2item.organiser.concat(":",c2item.round);
       var username = this.$store.state.loginUser.username;
       this.result = 'Getting data from server...'; 
-      postdata = { op: "getPoolUserGames", 
+      var postdata = { op: "getPoolUserGames", 
                   data: {orgweek: orgweek, username: username, pool_id: c2item.pool_id } };   // orgweek, pid, username
       this.$http.post('/php/apiTicketGames.php', JSON.stringify(postdata), { 
             headers: { 'Content-Type': 'application/json' }
@@ -71,6 +71,8 @@ export default {
     }
   },
   created() {
+    console.log("1) HG: created: username, poolData:", this.username, this.poolData); 
+    // poolData: {type: Object }      // orgweek replaces organiser,round
     this.getUserGames(this.poolData);
   }
 };

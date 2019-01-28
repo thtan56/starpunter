@@ -16,9 +16,9 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
-                <v-btn icon><v-icon color="blue">fa fa-facebook-square fa-lg</v-icon></v-btn>
-                <v-btn icon><v-icon color="red">fa fa-google fa-lg</v-icon></v-btn>
-                <v-btn icon><v-icon color="light-blue">fa fa-twitter fa-lg</v-icon></v-btn>
+                 <v-btn icon><font-awesome-icon :icon="['fab', 'facebook-f']" style="color:blue"  /></v-btn>
+                <v-btn icon><font-awesome-icon :icon="['fab', 'google']" style="color:red"  /></v-btn>
+                <v-btn icon><font-awesome-icon :icon="['fab', 'twitter']" style="color:light-blue"/></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn block  @click="login">Login</v-btn>
                 <v-btn block  @click="$router.push('/signup')">Register</v-btn>
@@ -35,7 +35,7 @@
 <script>
 import store from '../store';    // 1
 import axios from 'axios';
-
+import moment from 'moment';
 export default {
   name: 'Login',
   components: { store, axios },   // 2
@@ -86,7 +86,7 @@ export default {
                 type: 'info',
                 html: '** Ask system manager to setup the period for today',
                 showCloseButton: true,
-                confirmButtonText: '<i class="ion ion-thumbsup"></i> Cancel!',
+                  confirmButtonText: '<i class="material-icons">thumb_down</i> Cancel!',
               });                 
               this.$router.push({ path: '/login' });
               // this.sport.round = "";  // not found
@@ -121,7 +121,7 @@ export default {
              '<br>Change your password'+
              '<br>after log in with the temporary password',
         showCloseButton: true,
-        confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+        confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
       }); 
     },
     forgot() {
@@ -132,8 +132,8 @@ export default {
         focusConfirm: false,
         preConfirm: () => { return  document.getElementById('email-input').value; },
         showCancelButton: true,
-        confirmButtonText: 'Submit',
-        // Close dialog if user clicks outside
+        confirmButtonText: '<i class="material-icons">thumb_up</i> Submit',
+// Close dialog if user clicks outside
         allowOutsideClick: () => !this.$swal.isLoading()
       }).then((result) => {
         if (result.value) {
@@ -152,7 +152,7 @@ export default {
                   html: '** Email address not registered'
                       + '<br>in our database',
                   showCloseButton: true,
-                  confirmButtonText: '<i class="fa fa-thumbs-up"></i> Retry!',
+                  confirmButtonText: '<i class="material-icons">thumb_up</i> Retry!',
                 });
               } else {
                 var newpassword = "12345678";
@@ -186,7 +186,7 @@ export default {
                 type: 'info',
                 html: '** You have entered incorrect password '+this.oldpassword,
                 showCloseButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> Retry!',
+                confirmButtonText: '<i class="material-icons">thumb_up</i> Retry!',
               });                 
               this.$router.push({ path: '/login' });
             } else {

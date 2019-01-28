@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'userjournals',   // component name
   props: { username: {type: String} },

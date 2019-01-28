@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'usertable',   // component name
   data() {

@@ -80,6 +80,7 @@
 </template>
 <script>
 import store from '../store';
+import moment from 'moment';
 import dialog2bet from './Dialog2Bet.vue';
 export default {
   name: 'schComponent',

@@ -16,6 +16,7 @@
 <script>
 import ECharts from 'vue-echarts'
 import 'echarts/lib/chart/bar'
+import moment from 'moment';
 
 export default {
   name: 'gamesummaryschart',

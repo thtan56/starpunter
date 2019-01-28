@@ -40,6 +40,7 @@
 <script>
 import topmenu from './TopMenu.vue';
 import store from '../store';    // 1
+import moment from 'moment';
 import mybetresults from './MyBetResults.vue';
 import mypoolresults from './MyPoolResults.vue';
 

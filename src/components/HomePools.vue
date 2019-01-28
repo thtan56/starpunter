@@ -29,6 +29,7 @@
 
 <script>
 import store from '../store';
+import moment from 'moment';
 export default {
   name: 'homePools',   // component name
   props: { selected: {type: Array},    today: {type: String}  },
@@ -79,7 +80,7 @@ export default {
       return res
     },
     showDetails(item) { 
-      console.log("991) item", item);
+      console.log("101) HP:showDetails: item", item);
       if (this.username==="") 
            this.$router.push({name:'homeGames', params: {username: "demo", poolData: item} })
       else this.$router.push({name:'homeGames', params: {username: this.username, poolData: item} });     
@@ -104,7 +105,7 @@ export default {
   },    // end of methods
   beforeMount(){
     this.username=this.$store.state.loginUser.username;
-    console.log("1) beforeMount this.username", this.username); // undefined - 1st time
+    console.log("1) HP.vue:beforeMount this.username", this.username); // undefined - 1st time
     this.getOrgPools(); }
 };
 </script>

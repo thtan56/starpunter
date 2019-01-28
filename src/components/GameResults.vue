@@ -39,6 +39,7 @@
 import topmenu from './TopMenu.vue';
 import gameWeekResults from './GameWeekResults.vue';
 import poolgames from './PoolGames.vue';
+import moment from 'moment';
 
 export default {
   name: 'gameResults',

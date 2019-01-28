@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'Bet',   // component name
   data () {

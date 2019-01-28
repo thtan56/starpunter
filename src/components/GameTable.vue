@@ -88,6 +88,7 @@
 
 <script>
 import homebars from './HomeBars.vue';
+import moment from 'moment';
 export default {
   name: 'gameTable',
   props: { 'organiser': {type: String } },

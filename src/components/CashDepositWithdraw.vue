@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'cashDepositWithdraw',   // component name
   data () {

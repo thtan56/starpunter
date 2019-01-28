@@ -27,6 +27,7 @@
 
 <script>
 import store from '../store';
+import moment from 'moment';
 export default {
   name: 'menunon',
   components: { store },   // 2

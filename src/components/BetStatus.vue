@@ -50,7 +50,7 @@
 
 <script>
 import topmenu from './TopMenu.vue';
-
+import moment from 'moment';
 export default {
   name: 'betStatus',
   components: { topmenu },   // 2

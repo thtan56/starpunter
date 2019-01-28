@@ -27,6 +27,8 @@
   </div>
 </template>
 <script>
+
+import moment from 'moment';
 export default {
   name: 'poolentrants',
   props: { 
@@ -53,7 +55,7 @@ export default {
         +"<br>exceeded:"+this.exceeded);
     },  
     exceedQuorum(strQuorum, icount) {
-      console.log("101) exceedQuorum", strQuorum, icount);
+      console.log("100) PE: exceedQuorum", strQuorum, icount);
       if (this.poolData.status == 'closed') { return false };   // closed, cannot buy ticket
       let regex= /[+]/g;
       let found = strQuorum.match(regex);
@@ -63,19 +65,19 @@ export default {
     buyTicket(item){
       this.editedItem         = item;     // poolData
       this.editedItem.pool_id = item.id; 
-      console.log('101) buyTicket > this.editedItem(no cash)', this.editedItem);
+      console.log('101) PE: buyTicket > this.editedItem(no cash)', this.editedItem);
       console.log('102) this.editedItem.entry_cost',this.editedItem.entry_cost);
       if ( typeof this.editedItem.entry_cost === "undefined" ) {
-        swal({
+        this.$swal({
           title: '<strong>Error! Unknown User!</strong>',
           type: 'info',
           html: '** You need to login to your account **'
                   +'<br>before you can buy a ticket',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         });        
       } else if (this.editedItem.entry_cost > this.$store.state.loginUser.vcash) {
-        swal({
+        this.$swal({
           title: '<strong>Error! Insufficient fund!</strong>',
           type: 'info',
           html: '** You cannot bought ticket **'
@@ -86,7 +88,7 @@ export default {
                   + this.editedItem.pool_type+'</td><td>'
                   + this.editedItem.entry_cost+'</td></tr></table>',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         });  
       } else {
         // use orgweek to get start and end of week from period
@@ -121,7 +123,7 @@ export default {
                 }, response => {  this.result = 'Failed to save data to server.'; } 
                 );
               this.poolData.entrants++;
-              swal({
+              this.$swal({
                 title: '<strong>Congratulation!</strong>',
                 type: 'info',
                 html: '** You have just bought ticket <br>'
@@ -129,7 +131,7 @@ export default {
                   + this.editedItem.pool_type
                   +'</u><br>Entry cost:<u>'+this.editedItem.entry_cost+'</u>',
                 showCloseButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
               });
               //-------------------------------------      
             };
@@ -164,7 +166,7 @@ export default {
     },
   },    // end of methods
   beforeMount(){
-      console.log("1) poolData", this.poolData);
+      console.log("1)PEntrants.vue:beforeMount: poolData", this.poolData);
       this.organiser = this.poolData.organiser;
       this.round     = this.poolData.round;
       this.editedItem = this.poolData;      

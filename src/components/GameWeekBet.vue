@@ -94,6 +94,7 @@
 </template>
   <script>
 import store from '../store';    // 1
+import moment from 'moment';
 export default {
   name: 'gameweekbet',
   props: { 
@@ -187,14 +188,14 @@ export default {
             console.log("41) this.mytickets", this.mytickets);
 //-----------------------------------------------
             if (this.mytickets.length===0) {
-              swal({
+              this.$swal({
                 title: '<strong>Stop! No Ticket found!</strong>',
                 type: 'info',
                 html: "** You cannot bet **<br>You don't have ticket<br>"
                         + " in this <u>Pool#"+this.poolid+"</u><br>"
                         +"You need to buy a ticket first",
                 showCloseButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
               }); 
             } else {
               this.bettedItem = item;
@@ -264,7 +265,7 @@ export default {
     betClose() { this.placebetdialog = false; },
     close() { this.pooldialog = false; },
     getAllData: function () {
-      console.log("20) getAllData:"+this.organiser+":"+this.round);
+      console.log("20)GWB: getAllData:"+this.organiser+":"+this.round);
       this.games=[];
       if (this.round !== '') { 
         this.result = 'Getting data from server...'; 
@@ -279,7 +280,7 @@ export default {
     },
   },
   beforeMount(){
-      console.log("1) poolData", this.poolData);
+      console.log("1)GWB: beforeMount: poolData", this.poolData);
       this.organiser = this.poolData.organiser;
       this.round     = this.poolData.round;
       this.poolid     = this.poolData.pool_id;     

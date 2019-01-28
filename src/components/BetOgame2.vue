@@ -8,13 +8,13 @@
       </v-toolbar>   
       <v-card-title>
         <v-layout row wrap>
-          <template v-for="org in orgs">
+          <div v-for="org in orgs" :key="org">
             <v-flex xs2>
             <input type="radio" :value="org.name" id="org.name" v-model="checkedOrganisers" @click="check($event)"
               :checked="org.name==organiser">
              {{org.name}}
             </v-flex>
-          </template>
+          </div>
         </v-layout>
         <v-spacer></v-spacer>
         ** To place bet, click on the numbers
@@ -176,13 +176,7 @@ export default {
   },
   computed: {
     role() { return this.$store.state.loginUser.role; },
-    formTitle () { return this.editedIndex === -1 ? 'New Pool' : 'Edit Pool' },
-    displayDate: {
-      get: function () {
-        let $today = new Date;
-        return moment($today).format('MM/DD/YYYY');
-      }
-    }
+    formTitle () { return this.editedIndex === -1 ? 'New Pool' : 'Edit Pool' }
   },
   methods: {
     check: function(e) {

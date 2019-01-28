@@ -21,6 +21,7 @@
 
 <script>
 import store from '../store';
+import moment from 'moment';
 import leftsidebar from './LeftSideBar.vue';
 import topbar from './TopBar.vue';    //1
 import topadmbar from './TopAdmBar.vue';    

@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'userweektickettable',
   props: { ticketData: {type: Array } },

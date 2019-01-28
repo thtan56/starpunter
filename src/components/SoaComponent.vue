@@ -34,7 +34,7 @@
 </template>
 
 <script>
-
+import moment from 'moment';
 export default {
   name: 'soacomponent',
   props: { 'username': {type: String} },

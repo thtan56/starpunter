@@ -28,6 +28,7 @@
 
 <script>
 import store from '../store';    // 1
+import moment from 'moment';
 export default {
   name: 'vcashBuySell',   // component name
   components: { store },

@@ -74,6 +74,7 @@
 
 <script>
 import topmenu from './TopMenu.vue';
+import moment from 'moment';
 
 export default {
   name: 'buyTicket',
@@ -150,7 +151,7 @@ export default {
                   +'</u><br>Entry cost:<u>'+this.editedItem.entry_cost+'</u>'
                   +'<br>due to insufficient fund<br>buy additional vcash first',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         });  
       } else {
         this.editedIndex = this.pools.indexOf(item);
@@ -192,12 +193,12 @@ export default {
                   + this.editedItem.pool_type
                   +'</u><br>Entry cost:<u>'+this.editedItem.entry_cost+'</u>',
           showCloseButton: true,
-          confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+          confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
         });
       };   // else    
     },
     getRound: function () {
-      console.log("11) getRound",this.organiser, this.displayDate);
+      console.log("11)BT: getRound",this.organiser, this.displayDate);
       this.result = 'Getting data from server...'; 
       var postdata = { op: "getOrgCurrentRound", data: {organiser: this.organiser, today: this.displayDate} };    
       this.$http.post('/php/apiPeriod.php', JSON.stringify(postdata), 
@@ -217,7 +218,7 @@ export default {
       });
     },
     getAllData: function () {
-      console.log("11) getAllData", this.organiser, this.round);
+      console.log("12)BT: getAllData", this.organiser, this.round);
       this.result = 'Getting data from server...';
       var postdata = { op: "getPools", data: { organiser: this.organiser, round: this.round } };    // name, date
       this.$http.post('/php/apiPool.php', JSON.stringify(postdata), { headers: { 'Content-Type': 'application/json' }
@@ -231,7 +232,7 @@ export default {
                   +'<br>Organiser#<u>'+this.organiser
                   + ' '+ this.round +'</u>',
                 showCloseButton: true,
-                confirmButtonText: '<i class="fa fa-thumbs-up"></i> OK!',
+                confirmButtonText: '<i class="material-icons">thumb_up</i> OK!',
               });
             } else {
               console.log("12) response.body", response.body);
@@ -243,6 +244,7 @@ export default {
     },
   },    // end of methods
   beforeMount(){
+    console.log("1) BuyT:beforeMount");
     this.username = this.$store.state.loginUser.username;
     this.organiser = this.$store.state.sport.organiser;
     this.getRound();
