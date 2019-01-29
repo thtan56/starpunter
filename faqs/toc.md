@@ -1,5 +1,30 @@
-An h1 header TOC
-============
+(setq markdown-xhtml-header-content
+      "<style type='text/css'>
+img[alt="Homepage"] {
+   width: 1200px;
+   height: 800px;
+}
+</style>")
+
+A) How to play
+==============
+
+## Table of Content <a name="toc"/>
+
+- [1. Goto Home page](#1-homepage) 
+- [2. Open account - Registration](#2-registration)  
+- [3. Login to account](#3-login)
+- [4. Make a cash deposit](#4-cash-deposit)
+- [5. Buy virtual currency](#5-buy-vcash)
+- [6. Select a game plan](faqs/readmd.html?fileToRender='60_select_plan.md' "Plan")
+  * [6.1 Buy ticket](faqs/readmd.html?fileToRender='61_buy_ticket.md' "BuyTicket")
+  * [6.2 Place a bet](faqs/readmd.html?fileToRender='62_place_bet.md' "PlaceBet")
+- [7. View my game results](faqs/readmd.html?fileToRender='70_mygame_results.md' "MyGameResults")
+- [9. Test css](faqs/readmd.html?fileToRender='testcss.md' "TestCss")
+
+* [Another section](#new-section)    <-- it's called 'Another section' in this list but refers to 'New section'
+
+
 
 Paragraphs are separated by a blank line.
 
@@ -26,16 +51,9 @@ Unicode is supported. ☺
 
 [goto details](#detail-section)
 
-# Contents from the 'chapter2.md' 
+# Contents from the 'chapter2.md'
 
-Read more [here](faqs/chapter2.html) # chapter2!
-
-## Table of Content <a name="toc"/>
-
-* [Hello](#hello)  
-* [Hello World](#hello-world)
-* [Another section](#new-section)    <-- it's called 'Another section' in this list but refers to 'New section'
-
+Read more [here](faqs/readmd.html?fileToRender='chapter2.md') # chapter2!
 
 An h2 header
 ------------
@@ -134,7 +152,7 @@ green     Leaves, grass, frogs
           and other things it's
           not easy being.
 --------  -----------------------
-# <a name="detail-section"></a> DETAIL SECTION
+# <a name="detail-section"></a> 9) DETAIL SECTION
 
 A horizontal rule follows.
 
@@ -172,14 +190,100 @@ which you wish to be displayed literally, ex.: \`foo\`, \*bar\*, etc.
 
 <div id="hello-world"/>
 
-### Hello World 
-* [:house:](#toc) 
-[:arrow_backward:](#detail-section) 
-[:arrow_forward:](#hello) 
+# <a name="1-homepage"></a> 1) Home Page
+* [:house:](#toc)
+[:arrow_forward:](#2-registration)
+
+1)The home page is similar for public and login user.
+
+![Homepage](faqs/homepage.png "home page image")
+
+
+<div style="text-align: left">
+<img src="/faqs/homepage.png" width="1200" /></div>
+
+A)  Plan (or Game Plan)
+
+1)  The home page shows the plans available to participate.
+
+•  This week, there are 4 different plans available ie $10, $20, $25 and $50 plans.
+
+2)  To join a plan, you have to buy a ticket for the chosen plan.
+
+•  When a participant buys a plan, the money will be deducted from his account.
+•  As such you need to deposit money into your account first.
+
+3)  a $25 plan (entry cost) may has a quorum of 2 (head to head) 
+to 50 or more entrants (group)
+
+•  the name ‘pool’ and ‘plan’ are the same and interchangeable
+
+•  the pool type is either ‘head to head’ or ‘group’
+
+•  other information in the pool are payout (top 1, 2, etc), pool prize.
+B)  Entrants
+•  This section shows the participants for current week and the plan bought (column 3)
+
+•  Beside the plan number, it shows the number of games selected for betting by the participant.
+
+C)  Leadership Board
+This board displays the betting score and income by participants for the week.
+
+D)  Game Board
+This displays the matches playing for this week.
+
+
+# <a name="2-registration"></a> 2) Registration / Sign up
+* [:house:](#toc)
+[:arrow_backward:](#1-homepage) 
+[:arrow_forward:](#3-login)* 
+
+
+
 
 ## New section <a name="new-section" />
 
 ## Using emoji
+
+
+
+
+
+
+
+
+# <a name="3-login"></a> 3) Login / Sign in
+* [:house:](#toc) 
+[:arrow_backward:](#2-registration) 
+[:arrow_forward:](#4-cash-deposit) 
+
+## New section <a name="new-section" />
+
+## Using emoji
+
+dsfgdsfg
+
+
+
+# <a name="4-cash-deposit"></a> 4) Make a cash deposit
+* [:house:](#toc) 
+[:arrow_backward:](#3-login) 
+[:arrow_forward:](#5-buy-vcash) 
+
+## New section <a name="new-section" />
+
+## Using emoji
+
+
+
+
+
+
+# <a name="5-buy-vcash"></a> 5) Buy virtual currency
+* [:house:](#toc) 
+[:arrow_backward:](#4-cash-deposit) 
+[:arrow_forward:](#6-select-plan) 
+
 
 @octocat :+1: This PR looks great - it's read to merge! :shipit:
 
@@ -203,8 +307,5 @@ Colons can be used to align columns
 ## Auto links
 
 http://localhost/test/showdown.html
-
-
-
 
 

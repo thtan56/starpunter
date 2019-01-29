@@ -1,0 +1,16 @@
+body {
+  background: light-blue;
+}
+img[alt="Homepage"] {
+   width: 600px;
+   height: 600px;
+}
+img[src*='#left'] {
+  float: right;
+}
+img[src*="#thumbnail"] {
+  width:150px;
+  height:100px;
+}
+a { text-decoration: none; }
+a:hover { text-decoration: underline; color: red;}

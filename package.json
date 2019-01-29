@@ -61,6 +61,7 @@
   "dependencies": {
     "admin-lte": "^2.4.8",
     "axios": "^0.18.0",
+    "github-markdown-css": "^2.10.0",
     "popper.js": "^1.14.6",
     "vue": "^2.5.22",
     "vue-sweetalert2": "^1.6.4"

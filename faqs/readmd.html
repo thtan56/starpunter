@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
   <head>
-    <title>ShowDown example</title>  
+    <title>Read a Markdown document via ShowDown</title>  
   </head>
   <body>
   <div id='app'>      
-    <todo-list></todo-list>
+    <markdown-page></markdown-page>
   </div>
 <script src="https://unpkg.com/vue@2.5.21/dist/vue.min.js"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
@@ -13,7 +13,7 @@
 <script src="https://unpkg.com/vue-showdown@2.3.0/dist/vue-showdown.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 <script>
-const TodoComponent={
+const MarkdownComponent={
   template: `
    <VueShowdown :markdown="fileContent" flavor="github"
                 :option="{ emoji: true}"
@@ -30,9 +30,7 @@ const TodoComponent={
   },
   methods: {
     getContent() {
-      console.log("10) getContent");
       this.fileContent = "rendering ";
-      // var self;
       this.$http.get(this.fileToRender).then(
         response => { this.fileContent = response.body; },
         response => { this.fileContent = "An error ocurred"; }
@@ -40,25 +38,19 @@ const TodoComponent={
     }
   },
   created: function() {
-  	console.log('10) chapter2.html:created:fileToRender:', this.fileToRender);
-  	console.log('11) this', this);
-    console.log('12) route:', this.$route);
-    console.log('13)', this.$route.query.fileToRender);
-    this.fileToRender = this.$route.query.fileToRender;
+    var parameter1 = this.$route.query.fileToRender;
+    this.fileToRender = parameter1.replace(/'/g,'');   // remove single quotes
     //  const fileToRender = `./assets/documentation/general/welcome.md`;
     //const rawContent = ""; // Read the file content using fileToRender
     // this.fileContent = "### marked(rawContent) should get executed";
     this.getContent();
   }
 };
-const router = new VueRouter({
-  mode: 'history',
-  routes: []
-});
+const router = new VueRouter({ mode: 'history', routes: [] });
 const app=new Vue({
-  el: '#app',
   router,
-  components: { 'todo-list' : TodoComponent }
+  el: '#app',
+  components: { 'markdown-page' : MarkdownComponent }
 });
 </script>
 </body>
