@@ -4,15 +4,15 @@ img[alt="Placebet1"] { width: 1200px; height: 800px; }
 img[alt="Placebet2"] { width: 1200px; height: 800px; }
 </style>")
 
-[:house: Table of Content](faqs/readmd.html?fileToRender='toc.md')
-[:arrow_backward: 6.1 Buy ticket](faqs/readmd.html?fileToRender='61_buy_ticket.md')
-[:arrow_forward: 7 View My Games Results](faqs/readmd.html?fileToRender='70_view_myresults.md')
+[:house: Table of Content](readmd.html?fileToRender='toc.md' "TOC")
+[:arrow_backward: 6.1 Buy ticket](readmd.html?fileToRender='61_buy_ticket.md' "BuyTicket")
+[:arrow_forward: 7 View My Games Results](readmd.html?fileToRender='70_view_myresults.md' "MyResults")
 
 # Chapter 6.2 - Place a bet<a name="top"/>
 
 ## Screen 6.2.1 – Place Bet - unsuccessful
 
-![Placebet1](faqs/placebet.png "place bet image")
+![Placebet1](/faqs/placebet.png "place bet image")
 
 
 ## Comments
@@ -27,7 +27,7 @@ On successful click of
 button on 
 <font color="red">Selected Plan</font> screen (screen 2), you will be presented with the screen below:
 
-![Placebet2](faqs/placebet.png "place bet image")
+![Placebet2](/faqs/placebet.png "place bet image")
 
 
 

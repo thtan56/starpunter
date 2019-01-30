@@ -56,8 +56,7 @@ export default new Router({
   routes: [
     { path: '/', name: 'Home', component: Home},
     { path: '/user', component: loginCustomer },
-    { path: '/manager', component: loginManager},        
-    { path: '/faqs', component: myfaqs },
+    { path: '/manager', component: loginManager},   
     { path: '/homecalendar', component: homeCalendar },
     { path: '/betPools', component: betPools }, // 2) nTop games WIP
     { path: '/betOdds', component: betOdds }, // 2) nTop games
@@ -117,6 +116,8 @@ export default new Router({
     // { path: '/product', component: Product },
     { path: '/newsNBA', component: NBAnews },
     { path: '/newsAFL', component: AFLnews },
-    { path: '/dragtest', component: dragTest }    
+    { path: '/dragtest', component: dragTest }, 
+    { path: '/faqs/:fileToRender', name: 'myFaqs', component: myfaqs, props: true },  // dynamic
+    { path: '/howtoplay', component: myfaqs, props: { name: 'fileToRender'} } // static: use default  
   ]
  })

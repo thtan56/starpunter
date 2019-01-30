@@ -3,9 +3,9 @@
 img[alt="Homepage"] { width: 1200px; height: 800px; }
 </style>")
 
-[:house: Table of Content](faqs/readmd.html?fileToRender='toc.md')
-[:arrow_backward: 2 Registration](faqs/readmd.html?fileToRender='20_registration.md')
-[:arrow_forward: 4 Make a cash deposit](faqs/readmd.html?fileToRender='40_deposit_cash.md')
+[:house: Table of Content](readmd.html?fileToRender='toc.md' "TOC")
+[:arrow_backward: 2 Registration](readmd.html?fileToRender='20_registration.md' "Registration")
+[:arrow_forward: 4 Make a cash deposit](readmd.html?fileToRender='40_deposit_cash.md' "DepositCash")
 
 # Chapter 3 - Login<a name="top"/>
 

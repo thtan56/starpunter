@@ -37,7 +37,9 @@ export default {
       let menuItems = [
         { icon: 'home', title: 'Home',    link:'/'},
         { icon: 'face', title: 'Sign up', link:'/signup'},
-        { icon: 'lock_open', title: 'Sign in', link:'/login'} ];
+        { icon: 'lock_open', title: 'Sign in', link:'/login'},
+        { title: 'How to play', icon: 'help', link: '/howtoplay'}
+      ];
       return menuItems;
     },
     displayToday() { return this.$store.state.sport.today; },  

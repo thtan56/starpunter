@@ -9,7 +9,7 @@ const WebpackMonitor = require('webpack-monitor');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 module.exports = {
-  mode: "production",   // production | development | none
+  mode: "development",   // production | development | none
   entry: './src/main.js',    // string | object | array
   output: {
     filename: 'bundle.js',
@@ -63,7 +63,7 @@ module.exports = {
   devServer: {
     proxy: [{
       context: ['/php', '/api'],
-      target: 'http://wp4project',
+      target: 'http://starpunter',
       changeOrigin: true,
       secure: false      
     }]

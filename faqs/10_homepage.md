@@ -3,8 +3,8 @@
 img[alt="Homepage"] { width: 1200px; height: 800px; }
 </style>")
 
-[:house: Table of Content](faqs/readmd.html?fileToRender='toc.md')
-[:arrow_forward: 2 Open an account / registration](faqs/readmd.html?fileToRender='20_registration.md')
+[:house: Table of Content](readmd.html?fileToRender='toc.md' "TOC")
+[:arrow_forward: 2 Open an account / registration](readmd.html?fileToRender='20_registration.md' "Registration")
 
 # Chapter 1 - Home Page<a name="top"/>
 
@@ -12,7 +12,7 @@ img[alt="Homepage"] { width: 1200px; height: 800px; }
 
 1)The home page is similar for public and login user.
 
-![Homepage](faqs/homepage.png "home page image")
+![Homepage](/faqs/homepage.png "home page image")
 
 ## A) Select a plan (or Game Plan)
 

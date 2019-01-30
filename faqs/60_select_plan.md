@@ -3,9 +3,9 @@
 img[alt="Poolplans"] { width: 1200px; height: 800px; }
 </style>")
 
-[:house: Table of Content](faqs/readmd.html?fileToRender='toc.md')
-[:arrow_backward: 6.0 Select a plan](faqs/readmd.html?fileToRender='50_buy_vcash.md')
-[:arrow_forward: 6.2 Place a bet](faqs/readmd.html?fileToRender='61_buy_ticket.md')
+[:house: Table of Content](readmd.html?fileToRender='toc.md' "TOC")
+[:arrow_backward: 6.0 Select a plan](readmd.html?fileToRender='50_buy_vcash.md' "BuyVcash")
+[:arrow_forward: 6.1 Buy ticket](readmd.html?fileToRender='61_buy_ticket.md' "BuyTicket")
 
 # Chapter 6 - Select a game plan <a name="top"/>
 
@@ -14,7 +14,7 @@ img[alt="Poolplans"] { width: 1200px; height: 800px; }
 •  When you selected ‘Enter’ in the pool plan, you will be presented with a screen as shown below.
 
 
-![Poolplans](faqs/poolplans.png "Pool Plan image")
+![Poolplans](/faqs/selectplan.png "Pool Plan image")
 
 
 ## Pool Highlights
@@ -29,8 +29,7 @@ Shows
 
       * game, 
       * team and 
-      * amount bet 
-      
+      * amount bet      
 for each game during the week
 
 ## My Journals
@@ -43,6 +42,6 @@ Give a log of your activities like
       e.  any winnings as well.
 
 ## Miscellaneous
-•  You can also [buy ticket](faqs/readmd.html?fileToRender='61_buy_ticket.md') for the pool here.
+•  You can also [buy ticket](readmd.html?fileToRender='61_buy_ticket.md') for the pool here.
 
-•  You can select the game to [place bet](faqs/readmd.html?fileToRender='62_place_bet.md') in this screen.
+•  You can select the game to [place bet](readmd.html?fileToRender='62_place_bet.md') in this screen.

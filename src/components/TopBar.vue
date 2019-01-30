@@ -63,9 +63,9 @@ export default {
             { title: 'Change Password', icon: 'lock', link: '/password/change' },
             { title: 'Reset Password', icon: 'lock', link: '/password/reset' },
             { title: 'Statement of Account', icon: 'lock', link: '/statement' },
+            { title: 'How to play', icon: 'help', link: '/howtoplay'},
             { title: 'Log Out', icon: 'logout', link: '../login' }
             ]},
-        { icon: 'help', title: 'FAQs', link: '/faqs'},
         { icon: 'help', title: 'Drag & Sort', link: '/dragtest'}
       ]
     }
